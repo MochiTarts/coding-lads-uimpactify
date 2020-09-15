@@ -1,3 +1,4 @@
+Team members information + discord for CSCC01 
 
 | Full Name | UTORID | Student ID Email | Contact | 
 | --------- | ------ | ---------------- | ------- |
