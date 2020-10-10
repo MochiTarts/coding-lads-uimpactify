@@ -10,3 +10,10 @@
 7. in Goals field, type "clean install"
 8. In the checkboxes below, click "Skip Tests" to be true
 9. Left click the project at the root level, then click your new run config to do a clean install
+
+
+### Run the spring application
+After building the project, do the following to run the spring application
+1. Right click the root project, and select show in local terminal.  Alternatively, left click the root project and hit ctrl+alt+t
+2. Type "mvn spring-boot:run"
+3. Wait until you see the giant SPRING logo and it says that your server is up and running, hit ctrl+c to kill it.
