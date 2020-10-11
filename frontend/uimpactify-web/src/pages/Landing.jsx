@@ -22,6 +22,9 @@ class Landing extends React.Component {
                     <NavItem>
                         <NavLink style={styles.navText} href="#">Pricing</NavLink>
                     </NavItem>
+                    <NavItem>
+                        <NavLink style={styles.navText} href="/authenticated">DEBUG: Simulate authenticated</NavLink>
+                    </NavItem>
                 </Nav>
              </Navbar>
         )
