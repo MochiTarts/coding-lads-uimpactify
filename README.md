@@ -17,3 +17,11 @@ After building the project, do the following to run the spring application
 1. Right click the root project, and select show in local terminal.  Alternatively, left click the root project and hit ctrl+alt+t
 2. Type "mvn spring-boot:run"
 3. Wait until you see the giant SPRING logo and it says that your server is up and running, hit ctrl+c to kill it.
+
+### Running the front-end
+Go to "project-coding-lads\frontend\uimpactify-web"
+With node installed (https://nodejs.org/en/), run:
+1. npm install
+2. npm start
+The first command installs all dependencies.
+The second command runs the react script after which, a new window should open with the website.
