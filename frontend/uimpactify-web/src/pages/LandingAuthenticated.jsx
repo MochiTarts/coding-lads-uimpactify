@@ -1,15 +1,8 @@
 import React from "react";
-import Sidebar from "../components/Sidebar.jsx";
-
-const styles = {
-  navText: {
-    color: "white",
-  },
-};
 
 class Landing extends React.Component {
   render() {
-    return <Sidebar></Sidebar>;
+    return <div>Hello user</div>;
   }
 }
 export default Landing;

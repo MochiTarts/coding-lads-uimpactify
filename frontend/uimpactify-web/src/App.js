@@ -1,27 +1,33 @@
-import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import Landing from './pages/Landing.jsx';
-import LandingAuthenticated from './pages/LandingAuthenticated.jsx';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Dashboard from "./pages/Dashboard.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "shards-ui/dist/css/shards.min.css"
-import bubbleBackground from './img/double-bubble-outline.png';
+import "shards-ui/dist/css/shards.min.css";
+import bubbleBackground from "./img/double-bubble-outline.png";
+import "./App.css";
+import Sidebar from "./components/Sidebar";
+import Landing from "./pages/Landing.jsx";
+
 
 const styles = {
   main: {
-      backgroundImage: `url(${bubbleBackground})`,
-      backgroundRepeat:  "repeat",
-      height: '100vh'
-  }
+    backgroundImage: `url(${bubbleBackground})`,
+    backgroundRepeat: "repeat",
+    height: "100vh",
+  },
 };
 
 function App() {
   return (
-    <div style={styles.main}>
+    <div id="main-container" style={styles.main}>
       <BrowserRouter>
-        <Route path="/" exact component={Landing} /> 
-        <Route path="/authenticated" component={LandingAuthenticated} /> 
+        <Switch>
+          <Route path="/" exact component={Landing} />
+          <Fragment>
+            <Sidebar />
+            <Route path="/dashboard" component={Dashboard} />
+          </Fragment>
+        </Switch>
       </BrowserRouter>
     </div>
 
