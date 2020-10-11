@@ -1,0 +1,14 @@
+.sidebar {
+  max-width: -webkit-min-content;
+  max-width: -moz-min-content;
+  max-width: min-content;
+  min-height: 100%;
+  background-color: white;
+  -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+}
+
+#sidebar-logo {
+  max-height: 150px;
+}
+/*# sourceMappingURL=Sidebar.css.map */

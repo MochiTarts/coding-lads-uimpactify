@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import Landing from './pages/Landing';
+import Landing from './pages/Landing.jsx';
+import LandingAuthenticated from './pages/LandingAuthenticated.jsx';
 import logo from './logo.svg';
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,7 +20,8 @@ function App() {
   return (
     <div style={styles.main}>
       <BrowserRouter>
-        <Route path="/" component={Landing} /> 
+        <Route path="/" exact component={Landing} /> 
+        <Route path="/authenticated" component={LandingAuthenticated} /> 
       </BrowserRouter>
     </div>
 
