@@ -13,15 +13,13 @@ class Sidebar extends React.Component {
           />
         </NavItem>
         <NavItem>
-          <NavLink active href="#">
-            Dashboard
-          </NavLink>
+          <NavLink href="/dashboard">Dashboard</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">Opportunities</NavLink>
+          <NavLink href="/oppurtunities">Opportunities</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="#">Settings</NavLink>
+          <NavLink href="/settings">Settings</NavLink>
         </NavItem>
       </Nav>
     );
