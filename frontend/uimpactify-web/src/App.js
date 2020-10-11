@@ -8,7 +8,6 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Landing from "./pages/Landing.jsx";
 
-
 const styles = {
   main: {
     backgroundImage: `url(${bubbleBackground})`,
@@ -19,17 +18,17 @@ const styles = {
 
 function App() {
   return (
-    <div id="main-container" style={styles.main}>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={Landing} />
-          <Fragment>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact component={Landing} />
+        <Fragment>
+          <div id="main-container" style={styles.main}>
             <Sidebar />
             <Route path="/dashboard" component={Dashboard} />
-          </Fragment>
-        </Switch>
-      </BrowserRouter>
-    </div>
+          </div>
+        </Fragment>
+      </Switch>
+    </BrowserRouter>
 
     // <div className="App">
     //   <header className="App-header">
