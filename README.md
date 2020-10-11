@@ -24,4 +24,4 @@ With node installed (https://nodejs.org/en/), run:
 1. npm install
 2. npm start  
 The first command installs all dependencies.
-The second command runs the react script after which, a new window should open with the website.
+The second command runs the react script after which, a new browser window should open the website on localhost.
