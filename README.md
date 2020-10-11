@@ -22,6 +22,6 @@ After building the project, do the following to run the spring application
 Go to "project-coding-lads\frontend\uimpactify-web"
 With node installed (https://nodejs.org/en/), run:
 1. npm install
-2. npm start
+2. npm start  
 The first command installs all dependencies.
 The second command runs the react script after which, a new window should open with the website.
