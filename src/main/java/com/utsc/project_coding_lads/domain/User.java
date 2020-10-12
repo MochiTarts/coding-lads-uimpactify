@@ -1,5 +1,8 @@
 package com.utsc.project_coding_lads.domain;
 
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class User extends BaseDataEntity {
 
 	private String firstName;
