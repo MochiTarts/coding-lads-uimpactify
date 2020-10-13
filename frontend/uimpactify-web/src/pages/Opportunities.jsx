@@ -26,7 +26,7 @@ const styles = {
 class Opportunities extends Component {
     constructor(props) {
         super(props);
-        // hard coded opportunities, will be deleted
+        // TODO: hard coded opportunities, remove this
         const volOpp = [
             {id: '00125', title: "Reg in the Abyss", description: "The hole in front; a mere gap on the planet compares not to the opening within..."},
             {id: '12981', title: "Billy's Wish", description: "On an autumn day, Billy walks down where none have passed, as a shadow of longing swiftly eludes through the crevices..."}
@@ -42,7 +42,7 @@ class Opportunities extends Component {
     }
 
     componentDidMount() {
-        // fetch opportunities from DB and update state
+        // TODO: fetch opportunities from DB and update state
         console.log("mounted");
     }
 
@@ -57,7 +57,7 @@ class Opportunities extends Component {
 
                 <h3 style={styles.subheadStyle}>Volunteer Opportunities</h3>
                 <a href="/oppurtunities/new" 
-                   class="btn btn-sm btn-outline-dark" 
+                   className="btn btn-sm btn-outline-dark" 
                    style={styles.newButtonStyle}>
                     New
                 </a>
@@ -72,7 +72,7 @@ class Opportunities extends Component {
 
                 <h3 style={styles.subheadStyle}>Employment Opportunities</h3>
                 <a href="/oppurtunities/new" 
-                   class="btn btn-sm btn-outline-dark" 
+                   className="btn btn-sm btn-outline-dark" 
                    style={styles.newButtonStyle}>
                     New
                 </a>
