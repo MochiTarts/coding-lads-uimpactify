@@ -1,11 +1,12 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USER";
+	public static final String TABLE_NAME = "USERS";
 	
 	private String firstName;
 	private String lastName;
@@ -22,14 +23,15 @@ public class User extends BaseDataEntity {
 	private SocialInitiative socialInit;
 	private Role role;
 	private Integer age;
+//	private List<Application> application;
 	
 	
 	@ManyToOne(optional = true)
 	@JoinColumn(name="socialinit_id")
-	public SocialInitiative getSocialInitiative() {
+	public SocialInitiative getSocialInit() {
 		return socialInit;
 	}
-	public void setSocialInitiative(SocialInitiative socialInit) {
+	public void setSocialInit(SocialInitiative socialInit) {
 		this.socialInit = socialInit;
 	}
 	@ManyToOne(optional = true)
@@ -75,6 +77,16 @@ public class User extends BaseDataEntity {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
+//	@OneToMany
+//	@JoinColumn(name="application_id")
+//	public List<Application> getApplication() {
+//		return application;
+//	}
+//	public void setApplication(List<Application> application) {
+//		this.application = application;
+//	}
+	
+	
 	
 	
 	
