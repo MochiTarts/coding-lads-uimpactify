@@ -24,7 +24,7 @@ class OpportunityEditForm extends Component {
 
     render() {
         return (
-            <form action="/oppurtunities">
+            <form action="/opportunities">
                 <div className="form-group">
                     <label for="title">Title</label>
                     <input 
