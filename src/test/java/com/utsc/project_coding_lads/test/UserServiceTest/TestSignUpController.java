@@ -26,6 +26,7 @@ import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.controller.UserController;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.repository.UserRepository;
 
 
@@ -136,7 +137,7 @@ public class TestSignUpController {
 	}
 	
 	@Test
-	public void emptyRequest() throws Exception {
+	public void emptyJSONRequest() throws Exception {
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
@@ -173,6 +174,32 @@ public class TestSignUpController {
 		
 		assertEquals("Request is either improperly formatted or missing info", message);
 		assertEquals(400, status);
+		
+	}
+	
+	@Test
+	public void nullFieldsRequest() throws Exception {
+		
+		User newUser = new User();
+		
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+		String json = ow.writeValueAsString(newUser).replace("firstName", "firstname");
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
+		
+		int status = mvc.getResponse().getStatus();
+		String message = mvc.getResponse().getErrorMessage();
+		
+		assertEquals("Request is either improperly formatted or missing info", message);
+		assertEquals(400, status);
+		
+	}
+	
+	@Test(expected=BadRequestException.class)
+	public void nullRequest() throws Exception {
+		
+		controller.storeUser(null);
 		
 	}
 

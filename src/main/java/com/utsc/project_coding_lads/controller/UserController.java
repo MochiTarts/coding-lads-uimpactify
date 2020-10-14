@@ -15,7 +15,7 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping(value="/signup")
-	public void storeUser(@RequestBody(required=true) User user) throws Exception {
+	public void storeUser(@RequestBody User user) throws Exception {
 		userService.storeUser(user);
 	}
 	
