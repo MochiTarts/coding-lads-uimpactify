@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = Role.TABLE_NAME)
 public class Role extends BaseDataEntity {
 
-	public static final String TABLE_NAME = "ROLE";
+	public static final String TABLE_NAME = "ROLES";
 	
 	private String name;
 	
