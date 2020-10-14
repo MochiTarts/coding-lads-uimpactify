@@ -24,8 +24,6 @@ public class TestUserRepo {
 	@Test
 	public void testCRUD() {
 		
-		
-		
 		User user = new User();
 		user.setAge(90);
 		user.setFirstName("firstName");

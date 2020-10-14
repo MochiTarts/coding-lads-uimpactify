@@ -24,6 +24,7 @@ public class User extends BaseDataEntity {
 	private Role role;
 	private Integer age;
 //	private List<Application> application;
+	private List<Event> events;
 	
 	
 	@ManyToOne(optional = true)
@@ -85,6 +86,15 @@ public class User extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
+	@OneToMany
+	@JoinColumn(name = "event_id")
+	public List<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+	
 	
 	
 	
