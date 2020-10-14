@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = ImpactLearner.TABLE_NAME)
 public class ImpactLearner extends BaseDataEntity {
 
-	public static final String TABLE_NAME = "IMPACT_LEARNER";
+	public static final String TABLE_NAME = "IMPACT_LEARNERS";
 	
 	private User user;
 
