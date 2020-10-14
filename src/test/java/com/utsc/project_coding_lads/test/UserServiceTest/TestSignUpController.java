@@ -48,9 +48,6 @@ public class TestSignUpController {
 	@Test
 	public void addOneUser() throws Exception {
 		
-		SocialInitiative socialInit = new SocialInitiative();
-		socialInit.setName("Heart");
-		
 		User newUser = new User();
 		
 		newUser.setId(1);
@@ -59,7 +56,6 @@ public class TestSignUpController {
 		newUser.setUsername("username");
 		newUser.setHashedPassword("password");
 		newUser.setAge(18);
-		newUser.setSocialInitiative(socialInit);
 		
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -74,21 +70,6 @@ public class TestSignUpController {
 		assertEquals(200, status);
 		assertTrue(found);
 		
-	}
-	
-	@Test
-	public void addNullUser() throws Exception {
-	    
-	    ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		String json = ow.writeValueAsString(null);
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
-		
-		int status = mvc.getResponse().getStatus();
-		
-		assertEquals(400, status);
-	    
 	}
 	
 	@Test
@@ -125,6 +106,73 @@ public class TestSignUpController {
 		int status2 = mvc2.getResponse().getStatus();
 		
 		assertEquals(200, status2);
+		
+	}
+	
+	@Test
+	public void missingInfo() throws Exception {
+		
+		User newUser = new User();
+		
+		newUser.setId(1);
+		newUser.setLastName("last");
+		newUser.setUsername("username");
+		newUser.setHashedPassword("password");
+		newUser.setAge(18);
+		
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+		String json = ow.writeValueAsString(newUser);
+		
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
+		
+		int status = mvc.getResponse().getStatus();
+		String message = mvc.getResponse().getErrorMessage();
+		
+		assertEquals("Request is either improperly formatted or missing info", message);
+		assertEquals(400, status);
+		
+	}
+	
+	@Test
+	public void emptyRequest() throws Exception {
+		
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content("{}")).andReturn();
+		
+		int status = mvc.getResponse().getStatus();
+		String message = mvc.getResponse().getErrorMessage();
+		
+		assertEquals("Request is either improperly formatted or missing info", message);
+		assertEquals(400, status);
+		
+	}
+	
+	@Test
+	public void improperRequest() throws Exception {
+		
+		User newUser = new User();
+		
+		newUser.setId(1);
+		newUser.setFirstName("first");
+		newUser.setLastName("last");
+		newUser.setUsername("username");
+		newUser.setHashedPassword("password");
+		newUser.setAge(18);
+		
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		
+		String json = ow.writeValueAsString(newUser).replace("firstName", "firstname");
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
+		
+		int status = mvc.getResponse().getStatus();
+		String message = mvc.getResponse().getErrorMessage();
+		
+		assertEquals("Request is either improperly formatted or missing info", message);
+		assertEquals(400, status);
 		
 	}
 

@@ -1,9 +1,12 @@
 package com.utsc.project_coding_lads.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -15,7 +18,18 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void storeUser(User user) throws Exception {
-		userRepo.save(user);
+		//Check user object for all necessary fields and make sure is not null, then send appropriate exception
+		
+		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty() &&
+				user.getLastName() != null && !user.getLastName().trim().isEmpty() &&
+				user.getUsername() != null && !user.getUsername().trim().isEmpty() &&
+				user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty() &&
+				user.getAge() != null) {
+			userRepo.save(user);
+		} else {
+			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Request is either improperly formatted or missing info");
+		}
+		
 	}
 
 }

@@ -15,18 +15,8 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping(value="/signup")
-	public void storeUser(@RequestBody User user) throws Exception {
-		try {
-			if (user != null) {
-				userService.storeUser(user);
-				System.out.println("Added a user");
-			} else {
-				System.out.println("Request body was empty");
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("Could not add user");
-		}
+	public void storeUser(@RequestBody(required=true) User user) throws Exception {
+		userService.storeUser(user);
 	}
 	
 	
