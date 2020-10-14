@@ -1,40 +1,32 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
-const styles = {
-    cardStyle: {
-        backgroundColor: `rgb(239, 239, 242)`,
-        marginLeft: 5,
-        marginRight: 5
-    },
-    descripStyle: {
-        display: "-webkit-box",
-        WebkitLineClamp: 3,
-        WebkitBoxOrient: "vertical",
-        overflow: "hidden",
-        textOverflow: "ellipsis"
-    }
-}
+import "../stylesheets/css/OpportunityCard.css";
 
 function OpportunityCard(props) {
+    var linkPath = "/";
+    if (props.button == "Manage") {
+        linkPath = "/myopportunities/manage";
+    } else if (props.button == "Apply") {
+        linkPath = "/myopportunities";
+    }
+
     return (
-        <div className="col-sm-3 border rounded" style={styles.cardStyle}>
+        <div className="col-sm-3 border rounded cardContainer">
             <div className="card" />
             <div className="card-body">
                 <h4 className="card-title">{props.title}</h4>
-                <p className="card-text" style={styles.descripStyle}>{props.description}</p>
+                <p className="card-text cardDescription">{props.description}</p>
                 <Link 
                 className="btn btn-primary"
                 to={{
-                    pathname: "/opportunities/manage",
+                    pathname: linkPath,
                     state: {
                         title: props.title,
                         description: props.description,
                     }
-                }}
-                >
-                    Manage &rarr;
-                </Link>
+                }}>
+                    {props.button} &rarr;
+                </Link>;
             </div>
         </div>
     )

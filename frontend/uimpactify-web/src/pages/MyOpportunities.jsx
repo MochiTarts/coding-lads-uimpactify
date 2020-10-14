@@ -1,27 +1,6 @@
 import React, { Component } from 'react';
-import OpportunityCard from '../components/OpportunityCard';
-
-const styles = {
-    pageStyle: {
-        marginRight: 25,
-        marginLeft: 25,
-        marginTop: 25
-    },
-    headStyle: {
-        color: `rgb(172, 119, 206)`
-    },
-    subheadStyle: {
-        color: `rgb(79, 79, 79)`,
-        display: 'inline',
-        marginRight: 10
-    },
-    oppListStyle: {
-        marginBottom: 20
-    },
-    newButtonStyle: {
-        marginBottom: 5
-    }
-}
+import OpportunityCard from '../components/OpportunityCard.jsx';
+import "../stylesheets/css/Opportunities.css";
 
 class MyOpportunities extends Component {
     constructor(props) {
@@ -50,37 +29,37 @@ class MyOpportunities extends Component {
         const { volOpp, empOpp } = this.state;
 
         return (
-            <div style={styles.pageStyle}>
+            <div className="pageContainer">
                 <div className="shadow p-3 mb-5 bg-white rounded">
-                    <h3 style={styles.headStyle}>My Opportunities</h3>
+                    <h3 className="pageHeader">My Opportunities</h3>
                 </div>
 
-                <h3 style={styles.subheadStyle}>Volunteer Opportunities</h3>
-                <a href="/opportunities/new" 
-                   className="btn btn-sm btn-outline-dark" 
-                   style={styles.newButtonStyle}>
+                <h3 className="pageSubheader">Volunteer Opportunities</h3>
+                <a href="/myopportunities/new" 
+                   className="btn btn-sm btn-outline-dark newButton">
                     New
                 </a>
-                <div className="row" style={styles.oppListStyle}>
+                <div className="row opportunityList">
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             title={opp.title}
                             description={opp.description}
+                            button="Manage"
                         />
                     ))}
                 </div>
 
-                <h3 style={styles.subheadStyle}>Employment Opportunities</h3>
-                <a href="/opportunities/new" 
-                   className="btn btn-sm btn-outline-dark" 
-                   style={styles.newButtonStyle}>
+                <h3 className="pageSubheader">Employment Opportunities</h3>
+                <a href="/myopportunities/new" 
+                   className="btn btn-sm btn-outline-dark newButton">
                     New
                 </a>
-                <div className="row" style={styles.oppListStyle}>
+                <div className="row opportunityList">
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             title={opp.title}
                             description={opp.description}
+                            button="Manage"
                         />
                     ))}
                 </div>

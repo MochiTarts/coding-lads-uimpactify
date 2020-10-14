@@ -1,0 +1,24 @@
+.pageContainer {
+    margin-right: 25px;
+    margin-left: 25px;
+    margin-top: 25px;
+}
+
+.pageHeader {
+    color: rgb(172, 119, 206);
+    width: 80vw;
+}
+
+.pageSubheader {
+    color: rgb(79, 79, 79);
+    display: inline;
+    margin-right: 10px;
+}
+
+.opportunityList {
+    margin-bottom: 20px;
+}
+
+.newButton {
+    margin-bottom: 10px;
+}

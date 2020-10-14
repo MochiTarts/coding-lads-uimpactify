@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from "./pages/Dashboard.jsx";
 import MyOpportunities from "./pages/MyOpportunities.jsx";
+import ExploreOpportunities from "./pages/ExploreOpportunities.jsx";
 import OpportunityNew from "./pages/OpportunityNew.jsx";
 import OpportunityManage from "./pages/OpportunityManage.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -31,9 +32,10 @@ function App() {
             <Route path="/" exact component={Landing} />
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/opportunities" exact component={MyOpportunities} />
-              <PrivateRoute path="/opportunities/new" component={OpportunityNew} />
-              <PrivateRoute path="/opportunities/manage" component={OpportunityManage} />
+              <PrivateRoute path="/explore-opportunities" component={ExploreOpportunities} />
+              <PrivateRoute path="/myopportunities" exact component={MyOpportunities} />
+              <PrivateRoute path="/myopportunities/new" component={OpportunityNew} />
+              <PrivateRoute path="/myopportunities/manage" component={OpportunityManage} />
             </Fragment>
           </Switch>
         </BrowserRouter>

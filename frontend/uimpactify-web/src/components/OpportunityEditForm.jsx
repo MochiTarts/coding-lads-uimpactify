@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormTextarea } from 'shards-react';
+import "../stylesheets/css/OpportunityEditForm.css";
 
 class OpportunityEditForm extends Component {
     constructor(props) {
@@ -18,18 +18,18 @@ class OpportunityEditForm extends Component {
     }
 
     handleSave() {
-        // make API call to write to DB
+        // TODO: make API call to write to DB
         console.log("Clicked Save!");
     }
 
     render() {
         return (
-            <form action="/opportunities">
+            <form action="/myopportunities">
                 <div className="form-group">
                     <label for="title">Title</label>
                     <input 
                         type="text" 
-                        className="form-control" 
+                        className="form-control"
                         id="title" 
                         value={this.state.title}
                         onChange={(event) => this.setState({title: event.target.value})} />
