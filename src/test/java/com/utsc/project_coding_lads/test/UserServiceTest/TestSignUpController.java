@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.controller.UserController;
+import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.repository.UserRepository;
 
@@ -47,13 +48,18 @@ public class TestSignUpController {
 	@Test
 	public void addOneUser() throws Exception {
 		
+		SocialInitiative socialInit = new SocialInitiative();
+		socialInit.setName("Heart");
+		
 		User newUser = new User();
 		
+		newUser.setId(1);
 		newUser.setFirstName("first");
 		newUser.setLastName("last");
 		newUser.setUsername("username");
 		newUser.setHashedPassword("password");
 		newUser.setAge(18);
+		newUser.setSocialInitiative(socialInit);
 		
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -61,9 +67,12 @@ public class TestSignUpController {
 		String json = ow.writeValueAsString(newUser);
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
 		
+		boolean found = userRepo.existsById(1);
+		
 		int status = mvc.getResponse().getStatus();
 		
 		assertEquals(200, status);
+		assertTrue(found);
 		
 	}
 	

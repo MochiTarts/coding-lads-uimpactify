@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -24,7 +25,7 @@ public class User extends BaseDataEntity {
 	private Integer age;
 	
 	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, cascade = CascadeType.ALL) //Feel free to remove cascade, I only needed it for testing my signup api controller
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInitiative() {
 		return socialInit;
