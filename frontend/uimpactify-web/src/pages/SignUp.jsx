@@ -24,6 +24,7 @@ class SignUp extends React.Component {
       accountType: "",
       firstName: "",
       lastName: "",
+      age: "",
       username: "",
       password: "",
       confirmPassword: ""
@@ -58,6 +59,15 @@ class SignUp extends React.Component {
   handleChangeUsername = (event) => {
     this.setState({username: event.target.value});
   }
+  handleChangeAge = (event) => {
+    const re = /^[1-9]\d*$/;
+    var enteredAge = event.target.value;
+    if(enteredAge !== "" && !re.test(enteredAge)) {
+      this.setState({age: ""});
+    } else {
+      this.setState({age: enteredAge});
+    }
+  }
   handleChangePassword = (event) => {
     this.setState({password: event.target.value});
   }
@@ -66,8 +76,9 @@ class SignUp extends React.Component {
   }
 
   render() {
-    const {firstName, lastName, username, password, confirmPassword} = this.state;
-    const isFormValid = firstName && lastName && username && password && confirmPassword;
+    const {firstName, lastName, username, age, password, confirmPassword} = this.state;
+    const passwordsMatch = password === confirmPassword;
+    const isFormValid = firstName && lastName && username && age && password && confirmPassword && passwordsMatch;
     return (
         <Container 
         className = "container" 
@@ -120,10 +131,16 @@ class SignUp extends React.Component {
                         </Col>
                       </Row>
                       <Row>
-                        <Col>
+                        <Col sm="9">
                           <FormGroup>
                             <label>Username</label>
                             <FormInput placeholder="Username" onChange={this.handleChangeUsername}/>    
+                          </FormGroup>   
+                        </Col>
+                        <Col sm="3">
+                          <FormGroup>
+                            <label>Age</label>
+                            <FormInput type="number"  min="1" step="1" placeholder="Age" onChange={this.handleChangeAge} value={this.state.age}/>    
                           </FormGroup>   
                         </Col>
                       </Row>
@@ -131,7 +148,7 @@ class SignUp extends React.Component {
                         <Col>
                           <FormGroup>
                             <label>Password</label>
-                            <FormInput placeholder="Password" onChange={this.handleChangePassword}/>    
+                            <FormInput type="password" placeholder="Password" onChange={this.handleChangePassword}/>    
                           </FormGroup>   
                         </Col>
                       </Row>
@@ -139,7 +156,8 @@ class SignUp extends React.Component {
                         <Col>
                           <FormGroup>
                             <label>Confirm Password</label>
-                            <FormInput placeholder="Confirm Password" onChange={this.handleChangeConfirmPassword}/>    
+                            <FormInput type="password" placeholder="Confirm Password" onChange={this.handleChangeConfirmPassword}/>
+                            {!passwordsMatch && <p className="error">Passwords not matching</p>}
                           </FormGroup>   
                         </Col>
                       </Row>
