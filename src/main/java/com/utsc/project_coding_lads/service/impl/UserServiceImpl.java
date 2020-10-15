@@ -27,7 +27,8 @@ public class UserServiceImpl implements UserService {
 				user.getAge() != null) {
 			userRepo.save(user);
 		} else {
-			throw new BadRequestException(HttpStatus.BAD_REQUEST, "Request is either improperly formatted or missing info");
+			System.out.println("Reached throwing exception");
+			throw new BadRequestException("Request is either improperly formatted or missing info");
 		}
 		
 	}

@@ -5,12 +5,16 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import org.aspectj.lang.annotation.Before;
 import org.hibernate.Hibernate;
 import org.junit.Test;
+import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.utsc.project_coding_lads.Application;
+import com.utsc.project_coding_lads.controller.GlobalExceptionHandler;
 import com.utsc.project_coding_lads.controller.UserController;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
@@ -33,6 +38,7 @@ import com.utsc.project_coding_lads.repository.UserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {Application.class})
 @WebAppConfiguration
+@ImportAutoConfiguration(GlobalExceptionHandler.class)
 public class TestSignUpController {
 
 	@Autowired
@@ -110,7 +116,7 @@ public class TestSignUpController {
 		
 	}
 	
-	@Test
+	@Test(expected=BadRequestException.class)
 	public void missingInfo() throws Exception {
 		
 		User newUser = new User();
@@ -136,7 +142,7 @@ public class TestSignUpController {
 		
 	}
 	
-	@Test
+	/*@Test
 	public void emptyJSONRequest() throws Exception {
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -190,7 +196,7 @@ public class TestSignUpController {
 		
 		int status = mvc.getResponse().getStatus();
 		String message = mvc.getResponse().getErrorMessage();
-		
+		System.out.println(message);
 		assertEquals("Request is either improperly formatted or missing info", message);
 		assertEquals(400, status);
 		
@@ -201,6 +207,6 @@ public class TestSignUpController {
 		
 		controller.storeUser(null);
 		
-	}
+	}*/
 
 }
