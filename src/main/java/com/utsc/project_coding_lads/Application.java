@@ -3,10 +3,10 @@ package com.utsc.project_coding_lads;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class SpringRunner {
+@SpringBootApplication(scanBasePackages = "com.utsc")
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringRunner.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }
