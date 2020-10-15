@@ -27,7 +27,6 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.utsc.project_coding_lads.Application;
-import com.utsc.project_coding_lads.controller.GlobalExceptionHandler;
 import com.utsc.project_coding_lads.controller.UserController;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
@@ -38,7 +37,6 @@ import com.utsc.project_coding_lads.repository.UserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {Application.class})
 @WebAppConfiguration
-@ImportAutoConfiguration(GlobalExceptionHandler.class)
 public class TestSignUpController {
 
 	@Autowired
@@ -116,7 +114,7 @@ public class TestSignUpController {
 		
 	}
 	
-	@Test(expected=BadRequestException.class)
+	@Test
 	public void missingInfo() throws Exception {
 		
 		User newUser = new User();
@@ -135,14 +133,14 @@ public class TestSignUpController {
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
 		
 		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getErrorMessage();
+		String message = mvc.getResponse().getContentAsString();
 		
-		assertEquals("Request is either improperly formatted or missing info", message);
+		assertTrue(message.contains("Request is either improperly formatted or missing info"));
 		assertEquals(400, status);
 		
 	}
 	
-	/*@Test
+	@Test
 	public void emptyJSONRequest() throws Exception {
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -150,9 +148,9 @@ public class TestSignUpController {
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content("{}")).andReturn();
 		
 		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getErrorMessage();
+		String message = mvc.getResponse().getContentAsString();
 		
-		assertEquals("Request is either improperly formatted or missing info", message);
+		assertTrue(message.contains("Request is either improperly formatted or missing info"));
 		assertEquals(400, status);
 		
 	}
@@ -174,11 +172,11 @@ public class TestSignUpController {
 		
 		String json = ow.writeValueAsString(newUser).replace("firstName", "firstname");
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
-		
+
 		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getErrorMessage();
+		String message = mvc.getResponse().getContentAsString();
 		
-		assertEquals("Request is either improperly formatted or missing info", message);
+		assertTrue(message.contains("Request is either improperly formatted or missing info"));
 		assertEquals(400, status);
 		
 	}
@@ -195,9 +193,8 @@ public class TestSignUpController {
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup").contentType(MediaType.APPLICATION_JSON).content(json)).andReturn();
 		
 		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getErrorMessage();
-		System.out.println(message);
-		assertEquals("Request is either improperly formatted or missing info", message);
+		String message = mvc.getResponse().getContentAsString();
+		assertTrue(message.contains("Request is either improperly formatted or missing info"));
 		assertEquals(400, status);
 		
 	}
@@ -207,6 +204,6 @@ public class TestSignUpController {
 		
 		controller.storeUser(null);
 		
-	}*/
+	}
 
 }
