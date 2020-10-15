@@ -120,7 +120,7 @@ public class TestSignUpController {
 	@Test
 	public void missingInfo() throws Exception {
 		User newUser = new User();
-
+		//Missing first name field
 		newUser.setId(1);
 		newUser.setLastName("last");
 		newUser.setUsername("username");
@@ -145,8 +145,7 @@ public class TestSignUpController {
 
 	@Test
 	public void emptyJSONRequest() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-				.build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
 								.contentType(MediaType.APPLICATION_JSON).content("{}"))
@@ -170,13 +169,10 @@ public class TestSignUpController {
 		newUser.setHashedPassword("password");
 		newUser.setAge(18);
 
-		ObjectWriter ow = new ObjectMapper().writer()
-				.withDefaultPrettyPrinter();
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-				.build();
-
-		String json = ow.writeValueAsString(newUser).replace("firstName",
-				"firstname");
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		//Misspelled firstName field as firstname
+		String json = ow.writeValueAsString(newUser).replace("firstName", "firstname");
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
 								.contentType(MediaType.APPLICATION_JSON).content(json))
 								.andReturn();
@@ -192,8 +188,7 @@ public class TestSignUpController {
 	public void nullFieldsRequest() throws Exception {
 		User newUser = new User();
 
-		ObjectWriter ow = new ObjectMapper().writer()
-				.withDefaultPrettyPrinter();
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
 		String json = ow.writeValueAsString(newUser);
