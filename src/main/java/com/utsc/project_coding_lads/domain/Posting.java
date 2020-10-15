@@ -1,7 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
-import java.util.List;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = Posting.TABLE_NAME)
 public class Posting extends BaseDataEntity {
 
-	public static final String TABLE_NAME = "POSTINGS";
+	public static final String TABLE_NAME = "POSTING";
 	
 //	private List<Application> application;
 	private String name;
@@ -21,12 +20,14 @@ public class Posting extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
+	@Column(name = "name", length = 32)
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Column(name = "desc", length = 32)
 	public String getDesc() {
 		return desc;
 	}
