@@ -15,21 +15,19 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
-	
+
 	@Override
-	public void storeUser(User user) throws Exception {
-		//Check user object for all necessary fields and make sure is not null, then send appropriate exception
-		
-		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty() &&
-				user.getLastName() != null && !user.getLastName().trim().isEmpty() &&
-				user.getUsername() != null && !user.getUsername().trim().isEmpty() &&
-				user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty() &&
-				user.getAge() != null) {
-			userRepo.save(user);
+	public Integer storeUser(User user) throws Exception {
+		// Check user object for all necessary fields and make sure is not null
+		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty()
+				&& user.getLastName() != null && !user.getLastName().trim().isEmpty()
+				&& user.getUsername() != null && !user.getUsername().trim().isEmpty()
+				&& user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty()
+				&& user.getAge() != null) {
+			return userRepo.save(user).getId();
 		} else {
 			throw new BadRequestException("Request is either improperly formatted or missing info");
 		}
-		
 	}
 
 }

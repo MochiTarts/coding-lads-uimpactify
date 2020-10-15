@@ -23,8 +23,8 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping(value="/signup")
-	public void storeUser(@RequestBody User user) throws Exception {
-		userService.storeUser(user);
+	public Integer storeUser(@RequestBody User user) throws Exception {
+		return userService.storeUser(user);
 	}
 	
 	@ExceptionHandler(BadRequestException.class)

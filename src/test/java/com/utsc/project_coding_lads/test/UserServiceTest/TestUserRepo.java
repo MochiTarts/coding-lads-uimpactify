@@ -29,7 +29,7 @@ public class TestUserRepo {
 		user.setLastName("lastname");
 		user.setUsername("username");
 		user.setHashedPassword("pw");
-		
+
 //		user.setRole(new Role("impact_learner"));
 //		user.setSocialInitiative(null);
 		

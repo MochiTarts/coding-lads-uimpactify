@@ -8,5 +8,5 @@ import com.utsc.project_coding_lads.domain.User;
 @Validated
 public interface UserService {
 
-	public void storeUser(@NotNull User user) throws Exception;
+	public Integer storeUser(@NotNull User user) throws Exception;
 }
