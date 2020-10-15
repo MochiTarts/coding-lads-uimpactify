@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = Event.TABLE_NAME)
 public class Event extends BaseDataEntity {
 
-	public static final String TABLE_NAME = "EVENTS";
+	public static final String TABLE_NAME = "EVENT";
 	
 	private String eventName;
 	private String eventDesc;
