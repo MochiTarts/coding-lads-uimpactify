@@ -1,20 +1,24 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = Course.TABLE_NAME)
 public class Course extends BaseDataEntity {
 
-	public static final String TABLE_NAME = "COURSES";
+	public static final String TABLE_NAME = "COURSE";
 	
 	private String courseName;
 	private String courseDesc;
 	private ImpactConsultant instructor;
+	private List<ClassSession> sessions;
 	
 	@Column(name = "course_name", length = 64)
 	public String getCourseName() {
@@ -38,6 +42,17 @@ public class Course extends BaseDataEntity {
 	public void setInstructor(ImpactConsultant instructor) {
 		this.instructor = instructor;
 	}
+	@OneToMany
+	@JoinColumn(name = "class_session_id")
+	public List<ClassSession> getSessions() {
+		return sessions;
+	}
+	public void setSessions(List<ClassSession> sessions) {
+		this.sessions = sessions;
+	}
+	
+	
+	
 	
 	
 }

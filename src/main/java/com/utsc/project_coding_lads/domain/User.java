@@ -14,7 +14,7 @@ import javax.persistence.Table;
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USERS";
+	public static final String TABLE_NAME = "USER";
 	
 	private String firstName;
 	private String lastName;
