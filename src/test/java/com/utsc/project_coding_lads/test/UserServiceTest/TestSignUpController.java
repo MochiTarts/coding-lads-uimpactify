@@ -1,21 +1,11 @@
 package com.utsc.project_coding_lads.test.UserServiceTest;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import org.aspectj.lang.annotation.Before;
-import org.hibernate.Hibernate;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.platform.engine.TestExecutionResult.Status;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -29,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.controller.UserController;
-import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.repository.UserRepository;
@@ -37,6 +26,7 @@ import com.utsc.project_coding_lads.repository.UserRepository;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {Application.class})
 @WebAppConfiguration
+@AutoConfigureMockMvc
 public class TestSignUpController {
 
 	@Autowired
@@ -45,6 +35,7 @@ public class TestSignUpController {
 	@Autowired
 	UserController controller;
 
+	@Autowired
 	MockMvc mockMvc;
 
 	@Autowired
