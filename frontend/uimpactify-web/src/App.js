@@ -7,6 +7,7 @@ import bubbleBackground from "./img/double-bubble-outline.png";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Landing from "./pages/Landing.jsx";
+import SignUp from "./pages/SignUp.jsx";
 import  {UserContextProvider} from "./components/UserContextProvider";
 import  PrivateRoute from "./components/PrivateRoute";
 
@@ -26,6 +27,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact component={Landing} />
+            <Route path="/signup" exact component={SignUp} />
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
             </Fragment>
