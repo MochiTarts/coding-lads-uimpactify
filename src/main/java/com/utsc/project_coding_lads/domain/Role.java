@@ -2,6 +2,7 @@ package com.utsc.project_coding_lads.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
 
 @Entity
@@ -11,6 +12,8 @@ public class Role extends BaseDataEntity {
 	public static final String TABLE_NAME = "ROLE";
 	
 	private String name;
+	
+	public Role() {}
 	
 	public Role(String name) {
 		super();

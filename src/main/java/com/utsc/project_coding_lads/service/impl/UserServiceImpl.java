@@ -3,8 +3,14 @@ package com.utsc.project_coding_lads.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.repository.ImpactConsultantRepository;
+import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
+import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -13,6 +19,15 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	RoleRepository roleRepo;
+	
+	@Autowired
+	ImpactConsultantRepository impactConsultantRepo;
+	
+	@Autowired
+	ImpactLearnerRepository impactLearnerRepo;
 
 	@Override
 	public Integer storeUser(User user) throws Exception {
