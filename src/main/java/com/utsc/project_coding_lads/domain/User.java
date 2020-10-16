@@ -2,8 +2,10 @@ package com.utsc.project_coding_lads.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -35,10 +37,10 @@ public class User extends BaseDataEntity {
 	public void setSocialInit(SocialInitiative socialInit) {
 		this.socialInit = socialInit;
 	}
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
-		return role;
+		return this.role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
