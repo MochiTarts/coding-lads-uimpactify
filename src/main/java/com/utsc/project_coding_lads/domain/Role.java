@@ -1,8 +1,11 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -10,6 +13,9 @@ import javax.persistence.Table;
 public class Role extends BaseDataEntity {
 
 	public static final String TABLE_NAME = "ROLE";
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "getRole")
+	private Set<User> users;
 	
 	private String name;
 	

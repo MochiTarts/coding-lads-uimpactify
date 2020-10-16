@@ -37,7 +37,7 @@ public class User extends BaseDataEntity {
 	public void setSocialInit(SocialInitiative socialInit) {
 		this.socialInit = socialInit;
 	}
-	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	@ManyToOne(optional = true)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
 		return this.role;

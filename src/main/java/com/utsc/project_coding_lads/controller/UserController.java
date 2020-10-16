@@ -78,9 +78,9 @@ public class UserController {
 				throw new BadRequestException("Request is either improperly formatted or missing info");
 			}
 			
-			Role userRole = new Role(userType);
-			userRole.setId(roleService.findRoleIdByName(userType));
-			user.setRole(userRole);
+			//Role userRole = new Role(userType);
+			//userRole.setId(roleService.findRoleIdByName(userType));
+			//user.setRole(userRole);
 		} else {
 			//Is a social initiative employee
 		}
