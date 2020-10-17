@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = User.TABLE_NAME)
 //@Inheritance(strategy = InheritanceType.JOINED)
@@ -20,13 +22,26 @@ public class User extends BaseDataEntity {
 	
 	private boolean isAuthenticated;
 	
+	@JsonProperty("firstName")
 	private String firstName;
+	
+	@JsonProperty("lastName")
 	private String lastName;
+	
+	@JsonProperty("username")
 	private String username;
+	
+	@JsonProperty("password")
 	private String hashedPassword;
-	private SocialInitiative socialInit;
-	private Role role;
+	
+	@JsonProperty("age")
 	private Integer age;
+	
+	@JsonProperty("socialInit")
+	private SocialInitiative socialInit;
+	
+	@JsonProperty("role")
+	private Role role;
 //	private List<Application> application;
 	private List<Event> events;
 

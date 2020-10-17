@@ -62,23 +62,19 @@ public class TestSignUpController {
 	}
 	
 	@Test
-	public void addSocialOrg() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("firstName", "first");
-		request.put("lastName", "last");
-		request.put("username", "username");
-		request.put("hashedPassword", "password");
-		request.put("age", 18);
-		request.put("userType", "impact_learner");
-		request.put("userSocialInit", "Org A");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
+	public void addSocialOrgImpactLearner() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-								.contentType(MediaType.APPLICATION_JSON).content(json))
+								.contentType(MediaType.APPLICATION_JSON).content("{\n"
+										+ "  \"firstName\" : \"first\",\n"
+										+ "  \"lastName\" : \"last\",\n"
+										+ "  \"username\" : \"1\",\n"
+										+ "  \"password\" : \"asdf\",\n"
+										+ "  \"age\" : 18,\n"
+										+ "  \"role\": \"\",\n"
+										+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
+										+ "}"))
 								.andReturn();
 
 		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
@@ -89,30 +85,26 @@ public class TestSignUpController {
 	}
 	
 	@Test
-	public void addImpactLearner() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("firstName", "first");
-		request.put("lastName", "last");
-		request.put("username", "username1");
-		request.put("hashedPassword", "password");
-		request.put("age", 18);
-		request.put("userType", "impact_learner");
-		request.put("userSocialInit", null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
+	public void addImpactLearnerNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json))
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"2\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
 				.andReturn();
 
-		//boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
-		//int status = mvc.getResponse().getStatus();
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
 		
-		//Assert.assertTrue(found);
-		//Assert.assertEquals(200, status);
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
 	}
 	
 	/*@Test
@@ -320,7 +312,7 @@ public class TestSignUpController {
 		Assert.assertEquals(400, status);
 	}*/
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = BadRequestException.class)
 	public void nullRequest() throws Exception {
 		controller.storeUser(null);
 	}
