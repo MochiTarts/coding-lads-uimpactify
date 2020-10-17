@@ -37,32 +37,9 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@Autowired
-	ImpactConsultantService impactConsultantService;
-	
-	@Autowired
-	ImpactLearnerService impactLearnerService;
-	
-	@Autowired
-	RoleService roleService;
-	
-	@Autowired
-	SocialInitiativeService socialInitService;
-	
-	Role userRole;
-	SocialInitiative socialInit;
-	String userType;
-	String userSocialInit;
 	
 	@PostMapping(path="/signup")
 	public Integer storeUser(@RequestBody User user) throws Exception {
-		/*ObjectMapper mapper = new ObjectMapper();
-		ObjectNode node = mapper.readValue(request, ObjectNode.class);
-
-		userType = node.get("userType").textValue();
-		userSocialInit = node.get("userSocialInit").textValue();
-		node.remove("userType");
-		node.remove("userSocialInit");*/
 		try {
 			PasswordHash encoder = new PasswordHash();
 			user.setHashedPassword(encoder.passwordEncoder(user.getHashedPassword()));
@@ -71,22 +48,6 @@ public class UserController {
 		} catch(NullPointerException e) {
 			throw new BadRequestException("Request cannot be null");
 		}
-		/*User user = new User();
-		user.setFirstName(node.get("firstName").textValue());
-		user.setLastName(node.get("lastName").textValue());
-		user.setUsername(node.get("username").textValue());
-		user.setAge(node.get("age").asInt());
-		user.setEvents(null);
-
-		userRole = new Role(userType);
-		userRole.setId(roleService.findRoleIdByName(userType));
-		user.setRole(userRole);
-
-		socialInit = new SocialInitiative();
-		socialInit.setName(userSocialInit);
-		user.setSocialInit(socialInit);*/
-		
-		//return 1;
 	}
 	
 	@ExceptionHandler(UserTypeInvalidException.class)
