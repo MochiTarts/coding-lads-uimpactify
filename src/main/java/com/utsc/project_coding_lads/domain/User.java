@@ -16,7 +16,7 @@ import javax.persistence.Table;
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USER";
+	public static final String TABLE_NAME = "USERS";
 	
 	private String firstName;
 	private String lastName;
@@ -27,7 +27,7 @@ public class User extends BaseDataEntity {
 	private Integer age;
 //	private List<Application> application;
 	private List<Event> events;
-	
+
 	
 	@ManyToOne(optional = true)
 	@JoinColumn(name="socialinit_id")
@@ -66,7 +66,7 @@ public class User extends BaseDataEntity {
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
-	@Column(name="username", nullable = false, length = 32)
+	@Column(name="username", nullable = false, length = 32, unique = true)
 	public String getUsername() {
 		return username;
 	}

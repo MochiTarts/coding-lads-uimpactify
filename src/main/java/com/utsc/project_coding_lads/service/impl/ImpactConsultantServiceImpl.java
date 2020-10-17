@@ -16,11 +16,7 @@ public class ImpactConsultantServiceImpl implements ImpactConsultantService {
 	
 	@Override
 	public Integer storeImpactConsultantService(ImpactConsultant impactConsultant) throws Exception {
-		if (impactConsultant.getUser() != null) {
-			return impactConsultantRepo.save(impactConsultant).getId();
-		} else {
-			throw new BadRequestException("Attempted to store ImpactConsultant with no associated User");
-		}
+		return impactConsultantRepo.save(impactConsultant).getId();
 	}
 
 }

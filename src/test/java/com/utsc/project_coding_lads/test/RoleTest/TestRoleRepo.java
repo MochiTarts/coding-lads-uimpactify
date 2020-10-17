@@ -31,7 +31,7 @@ public class TestRoleRepo {
 		
 		Integer impactLearnerId = roleRepo.findRoleIdByName("impact_learner");
 		Integer impactConsultantId = roleRepo.findRoleIdByName("impact_consultant");
-		
+
 		Assert.assertEquals(role_1.getId(), impactLearnerId);
 		Assert.assertEquals(role_2.getId(), impactConsultantId);
 	}

@@ -16,11 +16,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
-		if (impactLearner.getUser() != null) {
-			return impactLearnerRepo.save(impactLearner).getId();
-		} else {
-			throw new BadRequestException("Attempted to store ImpactLearner with no associated User");
-		}
+		return impactLearnerRepo.save(impactLearner).getId();
 	}
 
 }

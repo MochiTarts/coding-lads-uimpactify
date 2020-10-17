@@ -38,6 +38,6 @@ public class ImpactConsultant extends BaseDataEntity {
 		this.courses = courses;
 	}
 	
-	
+
 	
 }

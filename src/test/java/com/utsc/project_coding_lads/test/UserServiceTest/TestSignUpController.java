@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,50 +49,26 @@ public class TestSignUpController {
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
-
-	@Test
-	public void addOneUser() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
-		request.put("firstName", "first");
-		request.put("lastName", "last");
-		request.put("username", "username");
-		request.put("hashedPassword", "password");
-		request.put("socialInit", null);
-		request.put("role", null);
-		request.put("age", 18);
-		request.put("events", null);
-		request.put("userType", null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-								.contentType(MediaType.APPLICATION_JSON).content(json))
-								.andReturn();
-
-		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
-		int status = mvc.getResponse().getStatus();
-		//System.out.println(mvc.getResponse().getContentAsString());
-		Assert.assertTrue(found);
-		Assert.assertEquals(200, status);
+	
+	@Before
+	public void setUp() {
+		Role impactLearner = new Role("impact_learner");
+		Role impactConsultant = new Role("impact_consultant");
+	
+		roleRepo.save(impactLearner);
+		roleRepo.save(impactConsultant);
 	}
 	
 	@Test
-	public void addImpactConsultant() throws Exception {
+	public void addSocialOrg() throws Exception {
 		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
 		request.put("firstName", "first");
 		request.put("lastName", "last");
 		request.put("username", "username");
 		request.put("hashedPassword", "password");
-		request.put("socialInit", null);
-		request.put("role", null);
 		request.put("age", 18);
-		request.put("events", null);
-		request.put("userType", "impact_consultant");
+		request.put("userType", "");
+		request.put("userSocialInit", "Org A");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(request);
@@ -112,22 +89,19 @@ public class TestSignUpController {
 	@Test
 	public void addImpactLearner() throws Exception {
 		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
 		request.put("firstName", "first");
 		request.put("lastName", "last");
-		request.put("username", "username");
+		request.put("username", "username1");
 		request.put("hashedPassword", "password");
-		request.put("socialInit", null);
-		request.put("role", null);
 		request.put("age", 18);
-		request.put("events", null);
 		request.put("userType", "impact_learner");
+		request.put("userSocialInit", null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json = mapper.writeValueAsString(request);
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
+
 		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
 				.contentType(MediaType.APPLICATION_JSON).content(json))
 				.andReturn();
@@ -138,82 +112,32 @@ public class TestSignUpController {
 		Assert.assertTrue(found);
 		Assert.assertEquals(200, status);
 	}
-
-	@Test
-	public void addManyUsers() throws Exception {
-		Map<String, Object> request1 = new HashMap<>();
-		request1.put("id", null);
-		request1.put("firstName", "first");
-		request1.put("lastName", "last");
-		request1.put("username", "username");
-		request1.put("hashedPassword", "password");
-		request1.put("socialInit", null);
-		request1.put("role", null);
-		request1.put("age", 18);
-		request1.put("events", null);
-		request1.put("userType", null);
-		
-		Map<String, Object> request2 = new HashMap<>();
-		request2.put("id", null);
-		request2.put("firstName", "first");
-		request2.put("lastName", "last");
-		request2.put("username", "username");
-		request2.put("hashedPassword", "password");
-		request2.put("socialInit", null);
-		request2.put("role", null);
-		request2.put("age", 18);
-		request2.put("events", null);
-		request2.put("userType", null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json1 = mapper.writeValueAsString(request1);
-		String json2 = mapper.writeValueAsString(request2);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc1 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json1))
-				.andReturn();
-		MvcResult mvc2 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json2))
-				.andReturn();
-
-		boolean found1 = userRepo.existsById(Integer.parseInt(mvc1.getResponse().getContentAsString()));
-		int status1 = mvc1.getResponse().getStatus();
-		boolean found2 = userRepo.existsById(Integer.parseInt(mvc2.getResponse().getContentAsString()));
-		int status2 = mvc2.getResponse().getStatus();
-		
-		Assert.assertTrue(found1);
-		Assert.assertEquals(200, status1);
-		Assert.assertTrue(found2);
-		Assert.assertEquals(200, status2);
-	}
 	
-	@Test
+	/*@Test
 	public void addManyImpactLearners() throws Exception {
+		Role impactLearner = new Role("impact_learner");
+		Role impactConsultant = new Role("impact_consultant");
+	
+		roleRepo.save(impactLearner);
+		roleRepo.save(impactConsultant);
+		
 		Map<String, Object> request1 = new HashMap<>();
-		request1.put("id", null);
 		request1.put("firstName", "first");
 		request1.put("lastName", "last");
-		request1.put("username", "username");
+		request1.put("username", "username3");
 		request1.put("hashedPassword", "password");
-		request1.put("socialInit", null);
-		request1.put("role", null);
 		request1.put("age", 18);
-		request1.put("events", null);
-		request1.put("userType", "impact_learner");
+		request1.put("userType", "impact_learners");
+		request1.put("userSocialInit", null);
 		
 		Map<String, Object> request2 = new HashMap<>();
-		request2.put("id", null);
 		request2.put("firstName", "first");
 		request2.put("lastName", "last");
-		request2.put("username", "username");
+		request2.put("username", "username4");
 		request2.put("hashedPassword", "password");
-		request2.put("socialInit", null);
-		request2.put("role", null);
 		request2.put("age", 18);
-		request2.put("events", null);
-		request2.put("userType", "impact_learner");
+		request2.put("userType", "impact_consultant");
+		request2.put("userSocialInit", null);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String json1 = mapper.writeValueAsString(request1);
@@ -392,9 +316,9 @@ public class TestSignUpController {
 		
 		Assert.assertTrue(message.contains("Request is either improperly formatted or missing info"));
 		Assert.assertEquals(400, status);
-	}
+	}*/
 
-	@Test(expected = BadRequestException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void nullRequest() throws Exception {
 		controller.storeUser(null);
 	}

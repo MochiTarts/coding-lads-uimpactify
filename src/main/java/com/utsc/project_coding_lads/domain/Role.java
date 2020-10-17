@@ -34,6 +34,6 @@ public class Role extends BaseDataEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	
 }
