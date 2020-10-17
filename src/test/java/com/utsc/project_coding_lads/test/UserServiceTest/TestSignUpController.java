@@ -55,8 +55,10 @@ public class TestSignUpController {
 		Role impactLearner = new Role("impact_learner");
 		Role impactConsultant = new Role("impact_consultant");
 	
-		roleRepo.save(impactLearner);
-		roleRepo.save(impactConsultant);
+		if (roleRepo.findRoleIdByName("impact_learner") == null && roleRepo.findRoleIdByName("impact_consultant") == null) {
+			roleRepo.save(impactLearner);
+			roleRepo.save(impactConsultant);
+		}
 	}
 	
 	@Test
@@ -67,7 +69,7 @@ public class TestSignUpController {
 		request.put("username", "username");
 		request.put("hashedPassword", "password");
 		request.put("age", 18);
-		request.put("userType", "impact_consultant");
+		request.put("userType", "impact_learner");
 		request.put("userSocialInit", "Org A");
 		
 		ObjectMapper mapper = new ObjectMapper();
