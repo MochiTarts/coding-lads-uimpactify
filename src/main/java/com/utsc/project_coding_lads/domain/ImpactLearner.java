@@ -16,7 +16,7 @@ public class ImpactLearner extends BaseDataEntity {
 	
 	private User user;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id")
 	@MapsId
 	public User getUser() {

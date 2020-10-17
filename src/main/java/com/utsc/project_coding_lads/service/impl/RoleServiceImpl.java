@@ -16,6 +16,6 @@ public class RoleServiceImpl implements RoleService {
 	public Integer findRoleIdByName(String roleName) throws Exception {
 		return roleRepo.findRoleIdByName(roleName);
 	}
-	
-	
+
+
 }
