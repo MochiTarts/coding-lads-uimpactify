@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,12 +17,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.utsc.project_coding_lads.domain.ImpactConsultant;
-import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.MissingRequiredInfoException;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
@@ -53,7 +53,7 @@ public class UserController {
 	String userType;
 	String userSocialInit;
 	
-	@PostMapping(value="/signup")
+	@PostMapping(path="/signup")
 	public Integer storeUser(@RequestBody String request) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode node = mapper.readValue(request, ObjectNode.class);
@@ -72,25 +72,33 @@ public class UserController {
 		user.setHashedPassword(encoder.passwordEncoder(node.get("hashedPassword").textValue()));
 		user.setAge(node.get("age").asInt());
 		user.setEvents(null);
+
+		userRole = new Role(userType);
+		userRole.setId(roleService.findRoleIdByName(userType));
+		System.out.println(userRole.getName());
+		user.setRole(userRole);
+
+		socialInit = new SocialInitiative();
+		socialInit.setName(userSocialInit);
+		user.setSocialInit(socialInit);
 		
-		return userService.storeUser(user, userType, userSocialInit);
+		return userService.storeUser(user);
 	}
 	
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<Object> handleException(Exception e) {
-		System.out.println("Here");
+	@ExceptionHandler(EntityAlreadyExistsException.class)
+	public ResponseEntity<Object> handleException(EntityAlreadyExistsException e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "An unexpected error occurred");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
-		
+		e.printStackTrace();
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(ConstraintViolationException.class)
-	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
+	@ExceptionHandler(MissingRequiredInfoException.class)
+	public ResponseEntity<Object> handleMissingRequiredInfoException(MissingRequiredInfoException e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "Username must be unique");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 		

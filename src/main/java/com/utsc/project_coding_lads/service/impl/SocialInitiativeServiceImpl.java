@@ -21,8 +21,8 @@ public class SocialInitiativeServiceImpl implements SocialInitiativeService {
 	}
 
 	@Override
-	public Integer findSocialInitIdByName(String socialInitName) throws Exception {
-		return socialInitRepo.findSocialInitIdByName(socialInitName);
+	public SocialInitiative findSocialInitByName(String socialInitName) throws Exception {
+		return socialInitRepo.findSocialInitByName(socialInitName);
 	}
 
 }

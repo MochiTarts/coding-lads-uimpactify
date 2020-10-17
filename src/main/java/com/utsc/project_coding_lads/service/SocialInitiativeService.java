@@ -6,6 +6,6 @@ public interface SocialInitiativeService {
 
 	public Integer storeSocialInit(SocialInitiative socialInit) throws Exception;
 	
-	public Integer findSocialInitIdByName(String socialInitName) throws Exception;
+	public SocialInitiative findSocialInitByName(String socialInitName) throws Exception;
 	
 }

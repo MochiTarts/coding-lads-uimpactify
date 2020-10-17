@@ -10,7 +10,7 @@ import com.utsc.project_coding_lads.domain.SocialInitiative;
 @Repository
 public interface SocialInitiativeRepository extends JpaRepository<SocialInitiative, Integer> {
 	
-	@Query(value = "SELECT id FROM SocialInitiative WHERE name = :socialInitName")
-	public Integer findSocialInitIdByName(@Param("socialInitName")String socialInitName);
+	@Query(value = "SELECT s FROM SocialInitiative s WHERE s.name = :socialInitName")
+	public SocialInitiative findSocialInitByName(@Param("socialInitName")String socialInitName);
 	
 }
