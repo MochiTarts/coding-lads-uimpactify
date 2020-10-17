@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar, Nav, NavbarBrand, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "shards-react";
 import "../stylesheets/css/Sidebar.css";
 import  {UserContextConsumer} from "../components/UserContextProvider";
+import logo from "../img/uimpact_logo.png";
 
 class Sidebar extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Sidebar extends React.Component {
             <NavItem>
               <img
                 id="sidebar-logo"
-                src="https://wisxi.com/wp-content/uploads/2018/10/67226-1-e1539174955591.jpg"
+                src={logo}
               />
             </NavItem>
             {userContext.user && 

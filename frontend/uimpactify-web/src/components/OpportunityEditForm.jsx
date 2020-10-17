@@ -6,11 +6,15 @@ class OpportunityEditForm extends Component {
         super(props);
         if (props.new) {
             this.state = {
+                isNew: true,
+                type: props.type,
                 title: "",
                 description: ""
             }
         } else {
             this.state = {
+                isNew: false,
+                type: props.type,
                 title: props.title,
                 description: props.description
             }
@@ -22,11 +26,16 @@ class OpportunityEditForm extends Component {
         console.log("Clicked Save!");
     }
 
+    handleDelete() {
+        // TODO: make API call to delete this opportunity
+        console.log("Clicked Delete!");
+    }
+
     render() {
         return (
             <form action="/myopportunities">
                 <div className="form-group">
-                    <label for="title">Title</label>
+                    <label htmlFor="title">Title</label>
                     <input 
                         type="text" 
                         className="form-control"
@@ -35,7 +44,16 @@ class OpportunityEditForm extends Component {
                         onChange={(event) => this.setState({title: event.target.value})} />
                 </div>
                 <div className="form-group">
-                    <label for="description">Description</label>
+                    <label htmlFor="type">Type</label>
+                    <input 
+                        type="text" 
+                        className="form-control"
+                        id="type" 
+                        value={this.state.type}
+                        disabled />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="description">Description</label>
                     <textarea
                         type="text"
                         className="form-control"
@@ -44,7 +62,16 @@ class OpportunityEditForm extends Component {
                         value={this.state.description}
                         onChange={(event) => this.setState({description: event.target.value})}/>
                 </div>
-                <button type="submit" className="btn btn-primary" onClick={this.handleSave}>Save</button>
+                
+                <button type="submit" className="btn btn-primary formButtons" onClick={this.handleSave}>Save</button>
+                {this.state.isNew && 
+                    <a href="/myopportunities" className="btn btn-secondary formButtons">
+                        Cancel
+                    </a>}   
+                {!this.state.isNew && 
+                    <button type="submit" className="btn btn-secondary formButtons" onClick={this.handleDelete}>
+                        Remove
+                    </button>}        
             </form>
         );
     }

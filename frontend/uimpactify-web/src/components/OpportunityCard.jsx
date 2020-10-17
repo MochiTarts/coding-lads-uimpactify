@@ -21,9 +21,10 @@ function OpportunityCard(props) {
                 to={{
                     pathname: linkPath,
                     state: {
+                        isNew: false,
+                        type: props.type,
                         title: props.title,
                         description: props.description,
-                        type: props.type
                     }
                 }}>
                     {props.button} &rarr;

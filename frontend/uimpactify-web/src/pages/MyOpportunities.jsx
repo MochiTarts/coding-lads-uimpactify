@@ -42,8 +42,9 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/new",
+                        pathname: "/myopportunities/manage",
                         state: {
+                            isNew: true,
                             type: "volunteer"
                         }
                     }}
@@ -66,8 +67,9 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/new",
+                        pathname: "/myopportunities/manage",
                         state: {
+                            isNew: true,
                             type: "employment"
                         }
                     }}
@@ -90,8 +92,9 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/new",
+                        pathname: "/myopportunities/manage",
                         state: {
+                            isNew: true,
                             type: "consulting"
                         }
                     }}
