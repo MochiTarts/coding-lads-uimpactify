@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import UserModel from "../models/UserModel";
 const { Provider, Consumer } = React.createContext();
 
 class UserContextProvider extends Component {
@@ -14,9 +13,7 @@ class UserContextProvider extends Component {
     localStorage.removeItem('authenticatedUser');
     this.setState({user: null})
   }
-  signIn = () => {
-    // TODO: perform actual authentication
-    var authenticatedUser  = new UserModel("Alex")
+  signIn = (authenticatedUser) => {
     localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser));   
     this.setState({user:authenticatedUser})
   }
