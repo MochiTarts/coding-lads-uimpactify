@@ -67,12 +67,14 @@ public class UserServiceImpl implements UserService {
 				}
 			}
 			
-			if (userSocialInit.getName() != null && !userSocialInit.getName().trim().isEmpty()) {
-				Integer socialInitId = socialInitService.findSocialInitIdByName(userSocialInit.getName());
+			if (socialInit != null && !socialInit.trim().isEmpty()) {
+				Integer socialInitId = socialInitService.findSocialInitIdByName(socialInit);
 				
 				if (socialInitId != null) {
+					userSocialInit.setName(socialInit);
 					userSocialInit.setId(socialInitId);
 				} else {
+					userSocialInit.setName(socialInit);
 					socialInitService.storeSocialInit(userSocialInit);
 				}
 				
