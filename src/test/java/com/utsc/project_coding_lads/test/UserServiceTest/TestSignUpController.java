@@ -67,7 +67,7 @@ public class TestSignUpController {
 		request.put("username", "username");
 		request.put("hashedPassword", "password");
 		request.put("age", 18);
-		request.put("userType", "");
+		request.put("userType", "impact_consultant");
 		request.put("userSocialInit", "Org A");
 		
 		ObjectMapper mapper = new ObjectMapper();

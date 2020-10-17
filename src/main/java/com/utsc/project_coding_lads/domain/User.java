@@ -18,6 +18,8 @@ public class User extends BaseDataEntity {
 	
 	public static final String TABLE_NAME = "USERS";
 	
+	private boolean isAuthenticated;
+	
 	private String firstName;
 	private String lastName;
 	private String username;

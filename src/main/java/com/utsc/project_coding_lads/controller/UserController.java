@@ -23,6 +23,7 @@ import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.RoleService;
@@ -62,24 +63,17 @@ public class UserController {
 		node.remove("userType");
 		node.remove("userSocialInit");
 		
+		PasswordHash encoder = new PasswordHash();
+		
 		User user = new User();
 		user.setFirstName(node.get("firstName").textValue());
 		user.setLastName(node.get("lastName").textValue());
 		user.setUsername(node.get("username").textValue());
-		user.setHashedPassword(node.get("hashedPassword").textValue()); //Make password hashing method later
+		user.setHashedPassword(encoder.passwordEncoder(node.get("hashedPassword").textValue()));
 		user.setAge(node.get("age").asInt());
 		user.setEvents(null);
 		
-		userRole = new Role(userType);
-		userRole.setId(roleService.findRoleIdByName(userType));
-		System.out.println(userRole.getName());
-		user.setRole(userRole);
-		
-		socialInit = new SocialInitiative();
-		socialInit.setName(userSocialInit);
-		user.setSocialInit(socialInit);
-		
-		return userService.storeUser(user);
+		return userService.storeUser(user, userType, userSocialInit);
 	}
 	
 	@ExceptionHandler(Exception.class)
