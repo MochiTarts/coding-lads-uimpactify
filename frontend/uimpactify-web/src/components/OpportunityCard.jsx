@@ -23,6 +23,7 @@ function OpportunityCard(props) {
                     state: {
                         title: props.title,
                         description: props.description,
+                        type: props.type
                     }
                 }}>
                     {props.button} &rarr;

@@ -3,7 +3,7 @@ import OpportunityEditForm from '../components/OpportunityEditForm.jsx';
 import "../stylesheets/css/Opportunities.css";
 
 function OpportunityManage(props) {
-    const { title, description } = props.location.state
+    const { title, description, type } = props.location.state
 
     return (
         <div className="pageContainer">
@@ -11,7 +11,7 @@ function OpportunityManage(props) {
                 <h3 className="pageHeader">Managing Opportunity</h3>
             </div>
 
-            <OpportunityEditForm new={false} title={title} description={description}/>
+            <OpportunityEditForm new={false} type={type} title={title} description={description}/>
         </div>
     );
 }
