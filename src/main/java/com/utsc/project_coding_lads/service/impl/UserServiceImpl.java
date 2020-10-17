@@ -14,6 +14,7 @@ import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.enum_role.RolesEnum;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
 import com.utsc.project_coding_lads.exception.MissingRequiredInfoException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.repository.UserRepository;
@@ -67,7 +68,7 @@ public class UserServiceImpl implements UserService {
 				user.setRole(null);
 				user.setSocialInit(null);
 				
-				if (roleName != null && !roleName.trim().isEmpty()) {
+				if (roleName != null) {
 					if (roleName.equals(RolesEnum.impact_learner.toString())) {
 						ImpactLearner learner = new ImpactLearner();
 						learner.setUser(user);
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
 					}
 				}
 				
-				if (socialInitName != null && !socialInitName.trim().isEmpty()) {
+				if (socialInitName != null) {
 					SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
 					
 					if (userSocialInit != null) {
@@ -112,6 +113,8 @@ public class UserServiceImpl implements UserService {
 		} catch(DataIntegrityViolationException e) {
 			throw new EntityAlreadyExistsException("Username already exists");
 		} catch(UserTypeInvalidException e) {
+			throw e;
+		} catch(InvalidSocialInitNameException e) {
 			throw e;
 		}
 	}

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
 import com.utsc.project_coding_lads.repository.SocialInitiativeRepository;
 import com.utsc.project_coding_lads.service.SocialInitiativeService;
 
@@ -16,7 +17,11 @@ public class SocialInitiativeServiceImpl implements SocialInitiativeService {
 	
 	@Override
 	public Integer storeSocialInit(SocialInitiative socialInit) throws Exception {
-		return socialInitRepo.save(socialInit).getId();
+		if (socialInit.getName() != null && !socialInit.getName().trim().isEmpty()) {
+			return socialInitRepo.save(socialInit).getId();
+		} else {
+			throw new InvalidSocialInitNameException("Social Initiative name cannot be empty");
+		}
 		
 	}
 

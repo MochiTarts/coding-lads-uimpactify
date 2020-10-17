@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USER";
+	public static final String TABLE_NAME = "USERS";
 	
 	private boolean isAuthenticated;
 	

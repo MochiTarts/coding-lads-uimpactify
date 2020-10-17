@@ -22,6 +22,7 @@ import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
 import com.utsc.project_coding_lads.exception.MissingRequiredInfoException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.security.PasswordHash;
@@ -97,6 +98,16 @@ public class UserController {
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 		
+		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(InvalidSocialInitNameException.class)
+	public ResponseEntity<Object> handleInvalidSocialInitNameException(InvalidSocialInitNameException e) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", e.getMessage());
+		body.put("timestamp", LocalDate.now());
+		body.put("status", 400);
+
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 	}
 	
