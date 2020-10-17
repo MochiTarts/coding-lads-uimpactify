@@ -80,7 +80,7 @@ public class UserController {
 	public ResponseEntity<Object> handleException(Exception e) {
 		System.out.println("Here");
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", e.getMessage());
+		body.put("message", "An unexpected error occurred");
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 		

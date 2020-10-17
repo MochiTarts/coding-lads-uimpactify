@@ -6,6 +6,10 @@ public class PasswordHash {
 	public String passwordEncoder(String password) {
 		MessageDigest messageDigest;
 		
+		if (password == null || password.trim().isEmpty()) {
+			return null;
+		}
+		
 	    try {
 	    	messageDigest = MessageDigest.getInstance("SHA-256");
 	    	messageDigest.update(password.getBytes("UTF-8"));
