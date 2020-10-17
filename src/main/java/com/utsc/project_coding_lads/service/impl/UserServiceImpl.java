@@ -1,18 +1,28 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.Role;
+import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.enum_role.RolesEnum;
 import com.utsc.project_coding_lads.exception.BadRequestException;
-import com.utsc.project_coding_lads.repository.ImpactConsultantRepository;
-import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
-import com.utsc.project_coding_lads.repository.RoleRepository;
+import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.MissingRequiredInfoException;
+import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.repository.UserRepository;
+import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.RoleService;
+import com.utsc.project_coding_lads.service.SocialInitiativeService;
 import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.service.UserValidator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,25 +31,88 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepo;
 	
 	@Autowired
-	RoleRepository roleRepo;
+	RoleService roleService;
 	
 	@Autowired
-	ImpactConsultantRepository impactConsultantRepo;
+	ImpactConsultantService consultantService;
 	
 	@Autowired
-	ImpactLearnerRepository impactLearnerRepo;
-
+	ImpactLearnerService learnerService;
+	
+	@Autowired
+	SocialInitiativeService socialInitService;
+	
 	@Override
+	@Transactional(rollbackOn = Exception.class)
 	public Integer storeUser(User user) throws Exception {
-		// Check user object for all necessary fields and make sure is not null
-		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty()
-				&& user.getLastName() != null && !user.getLastName().trim().isEmpty()
-				&& user.getUsername() != null && !user.getUsername().trim().isEmpty()
-				&& user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty()
-				&& user.getAge() != null) {
-			return userRepo.save(user).getId();
-		} else {
-			throw new BadRequestException("Request is either improperly formatted or missing info");
+		try {
+			UserValidator validator = new UserValidator();
+			String roleName = null;
+			String socialInitName = null;
+			
+			if (validator.validate(user)) {
+				
+				if ((user.getRole() == null) && (user.getSocialInit() == null)) {
+					throw new BadRequestException("userType and userSocialInit cannot both be empty");
+				}
+
+				if (user.getRole() != null) {
+					roleName = user.getRole().getName();
+				}
+				
+				if (user.getSocialInit() != null) {
+					socialInitName = user.getSocialInit().getName();
+				}
+				
+				user.setRole(null);
+				user.setSocialInit(null);
+				
+				if (roleName != null && !roleName.trim().isEmpty()) {
+					if (roleName.equals(RolesEnum.impact_learner.toString())) {
+						ImpactLearner learner = new ImpactLearner();
+						learner.setUser(user);
+						learnerService.storeImpactLearner(learner);
+						
+						Role userRole = new Role(roleName);
+						userRole.setId(roleService.findRoleIdByName(roleName));
+						user.setRole(userRole);
+					} else if (roleName.equals(RolesEnum.impact_consultant.toString())) {
+						ImpactConsultant consultant = new ImpactConsultant();
+						consultant.setUser(user);
+						consultantService.storeImpactConsultantService(consultant);
+
+						Role userRole = new Role(roleName);
+						userRole.setId(roleService.findRoleIdByName(roleName));
+						user.setRole(userRole);
+					} else {
+						throw new UserTypeInvalidException("role name must be of impact_consultant or impact_learner");
+					}
+				}
+				
+				if (socialInitName != null && !socialInitName.trim().isEmpty()) {
+					SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
+					
+					if (userSocialInit != null) {
+						user.setSocialInit(userSocialInit);
+					} else {
+						userSocialInit = new SocialInitiative();
+						userSocialInit.setName(socialInitName);
+						userSocialInit.setId(socialInitService.storeSocialInit(userSocialInit));
+						
+						user.setSocialInit(userSocialInit);
+					}
+					
+				}
+
+				return userRepo.save(user).getId();
+			} else {
+				System.out.println("Got here");
+				throw new MissingRequiredInfoException("Request is missing required info");
+			}
+		} catch(DataIntegrityViolationException e) {
+			throw new EntityAlreadyExistsException("Username already exists");
+		} catch(UserTypeInvalidException e) {
+			throw e;
 		}
 	}
 
