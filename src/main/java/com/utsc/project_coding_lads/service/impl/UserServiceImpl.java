@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	SocialInitiativeService socialInitService;
 	
 	@Override
-	@Transactional
+	@Transactional(rollbackOn = Exception.class)
 	public Integer storeUser(User user) throws Exception {
 		try {
 			UserValidator validator = new UserValidator();
@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
 
 				return userRepo.save(user).getId();
 			} else {
+				System.out.println("Got here");
 				throw new MissingRequiredInfoException("Request is missing required info");
 			}
 		} catch(DataIntegrityViolationException e) {

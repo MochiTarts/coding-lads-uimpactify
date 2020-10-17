@@ -75,7 +75,6 @@ public class UserController {
 
 		userRole = new Role(userType);
 		userRole.setId(roleService.findRoleIdByName(userType));
-		System.out.println(userRole.getName());
 		user.setRole(userRole);
 
 		socialInit = new SocialInitiative();
@@ -91,7 +90,7 @@ public class UserController {
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
-		e.printStackTrace();
+
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 	}
 	
