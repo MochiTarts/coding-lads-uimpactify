@@ -20,7 +20,7 @@ public class ImpactConsultant extends BaseDataEntity {
 	private User user;
 	private List<Course> courses;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@MapsId
 	@JoinColumn(name = "id")
 	public User getUser() {

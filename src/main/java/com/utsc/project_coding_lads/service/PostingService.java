@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.service;
 
+import java.util.List;
+
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
@@ -14,4 +16,6 @@ public interface PostingService {
 	public void deletePostingById(Integer postingId) throws Exception;
 	
 	public Integer updatePosting(Posting posting) throws ValidationFailedException;
+	
+	public List<Posting> findAllPostingsByUserId(Integer userId) throws ValidationFailedException;
 }

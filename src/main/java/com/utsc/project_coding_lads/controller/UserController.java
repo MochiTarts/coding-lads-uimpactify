@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +35,11 @@ public class UserController extends BaseController {
 		try {
 			PasswordHash encoder = new PasswordHash();
 			user.setHashedPassword(encoder.passwordEncoder(user.getHashedPassword()));
-			
-			return userService.storeUser(user);
+			Integer id = userService.storeUser(user);
+			log.info("userid: " + id);
+			return id;
 		} catch(NullPointerException e) {
+			log.info("Could not store user: ", e);
 			throw new BadRequestException("Request cannot be null");
 		}
 	}
@@ -56,7 +60,7 @@ public class UserController extends BaseController {
 		return postingService.updatePosting(posting);
 	}
 	
-	@PostMapping(path = "/delete/{id}")
+	@PostMapping(path = "/deletePosting/{id}")
 	public Boolean deletePosting(@PathVariable("id") Integer id) {
 		Boolean ok = true;
 		try {
@@ -69,7 +73,7 @@ public class UserController extends BaseController {
 	}
 	
 	
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "/getPosting/{id}")
 	public Posting getPosting(@PathVariable("id") Integer id) {
 		Posting posting = null;
 		try {
@@ -78,6 +82,17 @@ public class UserController extends BaseController {
 			log.info("Could not get posting with id: " + id + ", ", e.getMessage());
 		}
 		return posting;
+	}
+	
+	@GetMapping(path = "/getPostings/{id}")
+	public List<Posting> getPostings(@PathVariable("id") Integer userId) {
+		List<Posting> postings = null;
+		try {
+			postings = postingService.findAllPostingsByUserId(userId);
+		} catch (Exception e) {
+			log.info("Could not get postings with id: " + userId + ", ", e.getMessage());
+		}
+		return postings;
 	}
 	
 }

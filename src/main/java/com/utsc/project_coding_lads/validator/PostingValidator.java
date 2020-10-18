@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
-import com.utsc.project_coding_lads.enums.PostingEnum;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UnauthenticatedException;

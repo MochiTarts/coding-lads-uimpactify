@@ -1,17 +1,19 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Posting;
-import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.PostingRepository;
-import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.PostingService;
+import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.PostingValidator;
 
 @Service
@@ -21,7 +23,7 @@ public class PostingServiceImpl implements PostingService {
 	@Autowired
 	PostingRepository postingRepo;
 	@Autowired
-	UserRepository userRepo;
+	UserService userService;
 
 	@Override
 	public Integer savePosting(Posting posting) throws ValidationFailedException {
@@ -59,6 +61,12 @@ public class PostingServiceImpl implements PostingService {
 	@Override
 	public Boolean existsById(Integer postingId) {
 		return postingRepo.existsById(postingId);
+	}
+
+	@Override
+	public List<Posting> findAllPostingsByUserId(Integer userId) throws ValidationFailedException {
+		User user = userService.findUserById(userId);
+		return user.getPostings();
 	}
 
 }

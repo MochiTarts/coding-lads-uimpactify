@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.service;
 
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 
 public interface UserService {
 
@@ -8,7 +9,7 @@ public interface UserService {
 	
 	public Integer storeUser(User user) throws Exception;
 	
-	public User findUserById(Integer id) throws Exception;
+	public User findUserById(Integer id) throws EntityNotExistException;
 	
-	public Boolean existsById(Integer id) throws Exception;
+	public Boolean existsById(Integer id);
 }

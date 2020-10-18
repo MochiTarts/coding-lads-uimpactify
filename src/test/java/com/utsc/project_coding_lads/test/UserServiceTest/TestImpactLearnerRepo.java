@@ -9,49 +9,50 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.utsc.project_coding_lads.Application;
-import com.utsc.project_coding_lads.domain.Role;
-import com.utsc.project_coding_lads.domain.SocialInitiative;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.User;
-import com.utsc.project_coding_lads.repository.RoleRepository;
+import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.UserRepository;
-import com.utsc.project_coding_lads.service.SocialInitService;
-import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-public class TestUserRepo {
+public class TestImpactLearnerRepo {
 
+	@Autowired
+	ImpactLearnerRepository impactLearnerRepo;
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
-	RoleRepository roleRepo;
-	@Autowired
-	UserService userService;
-	@Autowired
-	SocialInitService socialInitService;
+	ImpactLearnerService ilService;
 	
 	@Test
 	public void testCRUD() {
+		
+		ImpactLearner il = new ImpactLearner();
 		User user = new User();
 		user.setAge(90);
 		user.setFirstName("firstName");
 		user.setLastName("lastname");
 		user.setUsername("username");
 		user.setHashedPassword("pw");
+		
+		il.setUser(user);
 
 //		user.setRole(new Role("impact_learner"));
 //		user.setSocialInitiative(null);
 		
-		User savedUser = userRepo.save(user);
-		Assert.assertNotNull(savedUser.getId());
-		User getUser = userRepo.getOne(savedUser.getId());
-		Assert.assertNotNull(getUser.getId());
+		ImpactLearner savedIl = impactLearnerRepo.save(il);
+		Assert.assertNotNull(savedIl.getId());
+//		User getUser = userRepo.getOne(savedUser.getId());
+//		Assert.assertNotNull(getUser.getId());
 	}
-
+	
 	@Test
 	public void testCRUDService() throws Exception {
 		
+		ImpactLearner il = new ImpactLearner();
 		User user = new User();
 		user.setAge(90);
 		user.setFirstName("firstName");
@@ -59,16 +60,15 @@ public class TestUserRepo {
 		user.setUsername("username");
 		user.setHashedPassword("pw");
 		
-		Role role1 = new Role("IMPACT_LEARNER");
-		Role role_1 = roleRepo.save(role1);
+		il.setUser(user);
 
-		user.setRole(role_1);
-		SocialInitiative socialInit = new SocialInitiative();
-		socialInit.setName("org");
-		user.setSocialInit(socialInit);
+//		user.setRole(new Role("impact_learner"));
+//		user.setSocialInitiative(null);
 		
-		Integer id = userService.storeUser(user);
-		Assert.assertNotNull(id);
+		Integer savedIl = ilService.storeImpactLearner(il);
+		Assert.assertNotNull(savedIl);
+		User getUser = userRepo.getOne(savedIl);
+		Assert.assertNotNull(getUser.getId());
 	}
 
 }

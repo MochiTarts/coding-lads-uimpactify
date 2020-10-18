@@ -55,10 +55,10 @@ public class TestSignUpController {
 		Role impactLearner = new Role("impact_learner");
 		Role impactConsultant = new Role("impact_consultant");
 	
-		if (roleRepo.findRoleIdByName("impact_learner") == null && roleRepo.findRoleIdByName("impact_consultant") == null) {
-			roleRepo.save(impactLearner);
-			roleRepo.save(impactConsultant);
-		}
+//		if (roleRepo.findRoleIdByName("impact_learner") == null && roleRepo.findRoleIdByName("impact_consultant") == null) {
+//			roleRepo.save(impactLearner);
+//			roleRepo.save(impactConsultant);
+//		}
 	}
 	
 	@Test
