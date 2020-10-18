@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -18,6 +19,16 @@ import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public class BaseController {
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Object> generic(HttpMessageNotReadableException e) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", "Improper format of role or socialInit field values");
+		body.put("timestamp", LocalDate.now());
+		body.put("status", 400);
+
+		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
+	}
 
 	@ExceptionHandler(UserTypeInvalidException.class)
 	public ResponseEntity<Object> handleUserTypeInvalidException(UserTypeInvalidException e) {

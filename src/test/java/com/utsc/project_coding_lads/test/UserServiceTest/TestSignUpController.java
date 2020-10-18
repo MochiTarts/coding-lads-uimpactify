@@ -71,7 +71,7 @@ public class TestSignUpController {
 	public void addSocialOrgPublicUser() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 								.contentType(MediaType.APPLICATION_JSON).content("{\n"
 										+ "  \"firstName\" : \"first\",\n"
 										+ "  \"lastName\" : \"last\",\n"
@@ -119,7 +119,7 @@ public class TestSignUpController {
 	public void addImpactConsultantNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -142,7 +142,7 @@ public class TestSignUpController {
 	public void addImpactLearnerExistingSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -165,7 +165,7 @@ public class TestSignUpController {
 	public void addImpactConsultantExistingSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -188,7 +188,7 @@ public class TestSignUpController {
 	public void addImpactLearnerNewSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -211,7 +211,7 @@ public class TestSignUpController {
 	public void addImpactConsultantNewSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -234,7 +234,7 @@ public class TestSignUpController {
 	public void addImpactLearnerEmptySocialInit() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -257,7 +257,7 @@ public class TestSignUpController {
 	public void roleJsonInvalidField() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -279,7 +279,7 @@ public class TestSignUpController {
 	public void roleJsonAdditionalFields() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -301,7 +301,7 @@ public class TestSignUpController {
 	public void missingRequiredInfo() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"\",\n"
 						+ "  \"lastName\" : \"last\",\n"
