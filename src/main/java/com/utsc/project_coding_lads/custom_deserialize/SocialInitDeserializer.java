@@ -20,7 +20,7 @@ public class SocialInitDeserializer extends JsonDeserializer<SocialInitiative> {
 		JsonNode node = codec.readTree(p);
 
 		if (node.has("name") && node.size() == 1) {
-			System.out.println("Got here perfect");
+			//System.out.println("Got here perfect");
 			SocialInitiative socialInit = new SocialInitiative();
 			if (node.get("name").isNull()) {
 				socialInit.setName(null);
@@ -29,11 +29,11 @@ public class SocialInitDeserializer extends JsonDeserializer<SocialInitiative> {
 			}
 			return socialInit;
 		} else if (node.toPrettyString().equals("{ }")) {
-			System.out.println("Got empty social");
+			//System.out.println("Got empty social");
 			return null;
 		}
 		
-		System.out.println("Got exception");
+		//System.out.println("Got exception");
 		throw new JsonParseException();
 	}
 

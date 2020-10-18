@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
 
 				return userRepo.save(user).getId();
 			} else {
-				System.out.println("Got here");
+				//System.out.println("Got here");
 				throw new MissingInformationException("Request is missing required info");
 			}
 		} catch(DataIntegrityViolationException e) {

@@ -20,7 +20,7 @@ public class RoleDeserializer extends JsonDeserializer<Role> {
 		JsonNode node = codec.readTree(p);
 
 		if (node.has("name") && node.size() == 1) {
-			System.out.println("Got here perfect");
+			//System.out.println("Got here perfect");
 			Role role = new Role();
 			if (node.get("name").isNull()) {
 				role.setName(null);
@@ -29,10 +29,10 @@ public class RoleDeserializer extends JsonDeserializer<Role> {
 			}
 			return role;
 		} else if (node.toPrettyString().equals("{ }")) {
-			System.out.println("Got empty role");
+			//System.out.println("Got empty role");
 			return null;
 		}
-		System.out.println("Got throw exception");
+		//System.out.println("Got throw exception");
 		throw new JsonParseException();
 	}
 
