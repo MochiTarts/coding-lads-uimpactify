@@ -30,7 +30,7 @@ public class User extends BaseDataEntity {
 	
 	@JsonProperty("username")
 	private String username;
-	
+
 	@JsonProperty("password")
 	private String hashedPassword;
 	
