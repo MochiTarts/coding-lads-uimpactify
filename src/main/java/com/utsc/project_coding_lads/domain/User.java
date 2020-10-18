@@ -13,6 +13,9 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
+import com.utsc.project_coding_lads.custom_deserialize.SocialInitDeserializer;
 
 @Entity
 @Table(name = User.TABLE_NAME)
@@ -31,16 +34,18 @@ public class User extends BaseDataEntity {
 	
 	@JsonProperty("username")
 	private String username;
-	
+
 	@JsonProperty("password")
 	private String hashedPassword;
 	
 	@JsonProperty("age")
 	private Integer age;
 	
+	@JsonDeserialize(using = SocialInitDeserializer.class)
 	@JsonProperty("socialInit")
 	private SocialInitiative socialInit;
 	
+	@JsonDeserialize(using = RoleDeserializer.class)
 	@JsonProperty("role")
 	private Role role;
 //	private List<Application> application;
