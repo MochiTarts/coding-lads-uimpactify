@@ -1,4 +1,4 @@
-package com.utsc.project_coding_lads.service;
+package com.utsc.project_coding_lads.validator;
 
 import com.utsc.project_coding_lads.domain.User;
 

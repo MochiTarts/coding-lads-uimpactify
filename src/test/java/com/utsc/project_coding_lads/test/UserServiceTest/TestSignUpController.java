@@ -88,7 +88,7 @@ public class TestSignUpController {
 	public void addImpactLearnerNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -99,10 +99,12 @@ public class TestSignUpController {
 						+ "  \"socialInit\": null\n"
 						+ "}"))
 				.andReturn();
-
-		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		String id = mvc.getResponse().getContentAsString();
+		boolean found = false;
+		if (id != null && !id.isEmpty()) {
+			found = userRepo.existsById(Integer.parseInt(id));
+		}
 		int status = mvc.getResponse().getStatus();
-		
 		Assert.assertTrue(found);
 		Assert.assertEquals(200, status);
 	}

@@ -11,7 +11,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
-import com.utsc.project_coding_lads.enum_role.RolesEnum;
+import com.utsc.project_coding_lads.enums.RoleEnum;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
@@ -24,7 +24,7 @@ import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.RoleService;
 import com.utsc.project_coding_lads.service.SocialInitiativeService;
 import com.utsc.project_coding_lads.service.UserService;
-import com.utsc.project_coding_lads.service.UserValidator;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
 				user.setSocialInit(null);
 				
 				if (roleName != null) {
-					if (roleName.equals(RolesEnum.impact_learner.toString())) {
+					if (roleName.equals(RoleEnum.IMPACT_LEARNER.name())) {
 						ImpactLearner learner = new ImpactLearner();
 						learner.setUser(user);
 						learnerService.storeImpactLearner(learner);
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 						Role userRole = new Role(roleName);
 						userRole.setId(roleService.findRoleIdByName(roleName));
 						user.setRole(userRole);
-					} else if (roleName.equals(RolesEnum.impact_consultant.toString())) {
+					} else if (roleName.equals(RoleEnum.IMPACT_CONSULTANT.name())) {
 						ImpactConsultant consultant = new ImpactConsultant();
 						consultant.setUser(user);
 						consultantService.storeImpactConsultantService(consultant);
