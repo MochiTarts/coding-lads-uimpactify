@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.utsc.project_coding_lads.Application;
@@ -55,24 +56,29 @@ public class TestSignUpController {
 		Role impactLearner = new Role("impact_learner");
 		Role impactConsultant = new Role("impact_consultant");
 	
-		if (roleRepo.findRoleIdByName("impact_learner") == null && roleRepo.findRoleIdByName("impact_consultant") == null) {
-			roleRepo.save(impactLearner);
-			roleRepo.save(impactConsultant);
-		}
+//		if (roleRepo.findRoleIdByName("impact_learner") == null && roleRepo.findRoleIdByName("impact_consultant") == null) {
+//			roleRepo.save(impactLearner);
+//			roleRepo.save(impactConsultant);
+//		}
+	}
+	
+	@Test(expected = BadRequestException.class)
+	public void nullRequest() throws Exception {
+		controller.storeUser(null);
 	}
 	
 	@Test
-	public void addSocialOrgImpactLearner() throws Exception {
+	public void addSocialOrgPublicUser() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 								.contentType(MediaType.APPLICATION_JSON).content("{\n"
 										+ "  \"firstName\" : \"first\",\n"
 										+ "  \"lastName\" : \"last\",\n"
 										+ "  \"username\" : \"1\",\n"
 										+ "  \"password\" : \"asdf\",\n"
 										+ "  \"age\" : 18,\n"
-										+ "  \"role\": \"\",\n"
+										+ "  \"role\": null,\n"
 										+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
 										+ "}"))
 								.andReturn();
@@ -88,11 +94,151 @@ public class TestSignUpController {
 	public void addImpactLearnerNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
 						+ "  \"username\" : \"2\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
+				.andReturn();
+		String id = mvc.getResponse().getContentAsString();
+		boolean found = false;
+		if (id != null && !id.isEmpty()) {
+			found = userRepo.existsById(Integer.parseInt(id));
+		}
+		int status = mvc.getResponse().getStatus();
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactConsultantNoSocialOrg() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"3\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_consultant\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
+				.andReturn();
+
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactLearnerExistingSocialOrg() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"4\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
+						+ "}"))
+				.andReturn();
+
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactConsultantExistingSocialOrg() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"5\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_consultant\"},\n"
+						+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
+						+ "}"))
+				.andReturn();
+
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactLearnerNewSocialOrg() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"6\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": {\"name\": \"Org C\"}\n"
+						+ "}"))
+				.andReturn();
+
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactConsultantNewSocialOrg() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"7\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": {\"name\": \"Org D\"}\n"
+						+ "}"))
+				.andReturn();
+
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(found);
+		Assert.assertEquals(200, status);
+	}
+	
+	@Test
+	public void addImpactLearnerEmptySocialInit() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"8\",\n"
 						+ "  \"password\" : \"asdf\",\n"
 						+ "  \"age\" : 18,\n"
 						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
@@ -107,202 +253,70 @@ public class TestSignUpController {
 		Assert.assertEquals(200, status);
 	}
 	
-	/*@Test
-	public void addManyImpactLearners() throws Exception {
-		Role impactLearner = new Role("impact_learner");
-		Role impactConsultant = new Role("impact_consultant");
-	
-		roleRepo.save(impactLearner);
-		roleRepo.save(impactConsultant);
-		
-		Map<String, Object> request1 = new HashMap<>();
-		request1.put("firstName", "first");
-		request1.put("lastName", "last");
-		request1.put("username", "username3");
-		request1.put("hashedPassword", "password");
-		request1.put("age", 18);
-		request1.put("userType", "impact_learners");
-		request1.put("userSocialInit", null);
-		
-		Map<String, Object> request2 = new HashMap<>();
-		request2.put("firstName", "first");
-		request2.put("lastName", "last");
-		request2.put("username", "username4");
-		request2.put("hashedPassword", "password");
-		request2.put("age", 18);
-		request2.put("userType", "impact_consultant");
-		request2.put("userSocialInit", null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json1 = mapper.writeValueAsString(request1);
-		String json2 = mapper.writeValueAsString(request2);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc1 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json1))
-				.andReturn();
-		MvcResult mvc2 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json2))
-				.andReturn();
-		
-		boolean found1 = userRepo.existsById(Integer.parseInt(mvc1.getResponse().getContentAsString()));
-		int status1 = mvc1.getResponse().getStatus();
-		boolean found2 = userRepo.existsById(Integer.parseInt(mvc2.getResponse().getContentAsString()));
-		int status2 = mvc2.getResponse().getStatus();
-		
-		Assert.assertTrue(found1);
-		Assert.assertEquals(200, status1);
-		Assert.assertTrue(found2);
-		Assert.assertEquals(200, status2);
-	}
-	
 	@Test
-	public void addManyImpactConsultants() throws Exception {
-		Map<String, Object> request1 = new HashMap<>();
-		request1.put("id", null);
-		request1.put("firstName", "first");
-		request1.put("lastName", "last");
-		request1.put("username", "username");
-		request1.put("hashedPassword", "password");
-		request1.put("socialInit", null);
-		request1.put("role", null);
-		request1.put("age", 18);
-		request1.put("events", null);
-		request1.put("userType", "impact_consultant");
-		
-		Map<String, Object> request2 = new HashMap<>();
-		request2.put("id", null);
-		request2.put("firstName", "first");
-		request2.put("lastName", "last");
-		request2.put("username", "username");
-		request2.put("hashedPassword", "password");
-		request2.put("socialInit", null);
-		request2.put("role", null);
-		request2.put("age", 18);
-		request2.put("events", null);
-		request2.put("userType", "impact_consultant");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json1 = mapper.writeValueAsString(request1);
-		String json2 = mapper.writeValueAsString(request2);
-		
+	public void roleJsonInvalidField() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc1 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json1))
-				.andReturn();
-		MvcResult mvc2 = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json2))
-				.andReturn();
-		
-		boolean found1 = userRepo.existsById(Integer.parseInt(mvc1.getResponse().getContentAsString()));
-		int status1 = mvc1.getResponse().getStatus();
-		boolean found2 = userRepo.existsById(Integer.parseInt(mvc2.getResponse().getContentAsString()));
-		int status2 = mvc2.getResponse().getStatus();
-		
-		Assert.assertTrue(found1);
-		Assert.assertEquals(200, status1);
-		Assert.assertTrue(found2);
-		Assert.assertEquals(200, status2);
-	}
-	@Test
-	public void missingInfo() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
-		//request.put("firstName", "first");
-		request.put("lastName", "last");
-		request.put("username", "username");
-		request.put("hashedPassword", "password");
-		request.put("socialInit", null);
-		request.put("role", null);
-		request.put("age", 18);
-		request.put("events", null);
-		//request.put("userType", "impact_learner");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json))
-				.andReturn();
-		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getContentAsString();
-		Assert.assertTrue(message.contains("Request is either improperly formatted or missing info"));
-		Assert.assertEquals(400, status);
-	}
-	@Test
-	public void emptyJSONRequest() throws Exception {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-								.contentType(MediaType.APPLICATION_JSON).content("{}"))
-								.andReturn();
-		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getContentAsString();
-		Assert.assertTrue(message.contains("Request is either improperly formatted or missing info"));
-		Assert.assertEquals(400, status);
-	}
-	@Test
-	public void improperRequest() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
-		request.put("firstname", "first"); //misspelled firstName as firstname
-		request.put("lastName", "last");
-		request.put("username", "username");
-		request.put("hashedPassword", "password");
-		request.put("socialInit", null);
-		request.put("role", null);
-		request.put("age", 18);
-		request.put("events", null);
-		request.put("userType", "impact_learner");
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-				.contentType(MediaType.APPLICATION_JSON).content(json))
-				.andReturn();
-		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getContentAsString();
-		Assert.assertTrue(message.contains("Request is either improperly formatted or missing info"));
-		Assert.assertEquals(400, status);
-	}
-	@Test
-	public void nullFieldsRequest() throws Exception {
-		Map<String, Object> request = new HashMap<>();
-		request.put("id", null);
-		request.put("firstName", null);
-		request.put("lastName", null);
-		request.put("username", null);
-		request.put("hashedPassword", null);
-		request.put("socialInit", null);
-		request.put("role", null);
-		request.put("age", 18);
-		request.put("events", null);
-		request.put("userType", null);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(request);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("/signup")
-								.contentType(MediaType.APPLICATION_JSON).content(json))
-								.andReturn();
-		int status = mvc.getResponse().getStatus();
-		String message = mvc.getResponse().getContentAsString();
-		
-		Assert.assertTrue(message.contains("Request is either improperly formatted or missing info"));
-		Assert.assertEquals(400, status);
-	}*/
 
-	@Test(expected = BadRequestException.class)
-	public void nullRequest() throws Exception {
-		controller.storeUser(null);
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"9\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"abc\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
+				.andReturn();
+
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Improper format of role or socialInit field values"));
+		Assert.assertEquals(400, status);
+	}
+	
+	@Test
+	public void roleJsonAdditionalFields() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"first\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"10\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\", \"a\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
+				.andReturn();
+
+		int status = mvc.getResponse().getStatus();
+		
+		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Improper format of role or socialInit field values"));
+		Assert.assertEquals(400, status);
+	}
+	
+	@Test
+	public void missingRequiredInfo() throws Exception {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+				.contentType(MediaType.APPLICATION_JSON).content("{\n"
+						+ "  \"firstName\" : \"\",\n"
+						+ "  \"lastName\" : \"last\",\n"
+						+ "  \"username\" : \"\",\n"
+						+ "  \"password\" : \"asdf\",\n"
+						+ "  \"age\" : 18,\n"
+						+ "  \"role\": {\"name\": \"impact_learner\"},\n"
+						+ "  \"socialInit\": null\n"
+						+ "}"))
+				.andReturn();
+
+		int status = mvc.getResponse().getStatus();
+		System.out.println(mvc.getResponse().getContentAsString());
+		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Request is missing required info"));
+		Assert.assertEquals(400, status);
 	}
 
 }

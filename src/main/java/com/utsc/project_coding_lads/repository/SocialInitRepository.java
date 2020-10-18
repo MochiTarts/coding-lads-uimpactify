@@ -6,12 +6,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.utsc.project_coding_lads.domain.Role;
+import com.utsc.project_coding_lads.domain.SocialInitiative;
 
 @Repository
 @Transactional
-public interface RoleRepository extends JpaRepository<Role, Integer>{
+public interface SocialInitRepository extends JpaRepository<SocialInitiative, Integer>{
 
-	@Query(value = "SELECT r FROM Role r WHERE r.name = :roleName")
-	public Role findRoleByName(@Param("roleName") String roleName);
+	@Query(value = "SELECT s FROM SocialInitiative s WHERE s.name = :name")
+	public SocialInitiative findSocialInitByName(@Param("name") String name);
+	
 }

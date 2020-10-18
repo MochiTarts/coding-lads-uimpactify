@@ -11,14 +11,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
+import com.utsc.project_coding_lads.custom_deserialize.SocialInitDeserializer;
 
 @Entity
 @Table(name = User.TABLE_NAME)
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USERS";
+	public static final String TABLE_NAME = "UI_USER";
 	
 	private boolean isAuthenticated;
 	
@@ -30,20 +34,23 @@ public class User extends BaseDataEntity {
 	
 	@JsonProperty("username")
 	private String username;
-	
+
 	@JsonProperty("password")
 	private String hashedPassword;
 	
 	@JsonProperty("age")
 	private Integer age;
 	
+	@JsonDeserialize(using = SocialInitDeserializer.class)
 	@JsonProperty("socialInit")
 	private SocialInitiative socialInit;
 	
+	@JsonDeserialize(using = RoleDeserializer.class)
 	@JsonProperty("role")
 	private Role role;
 //	private List<Application> application;
 	private List<Event> events;
+	private List<Posting> postings;
 
 	
 	@ManyToOne(optional = true)
@@ -54,7 +61,7 @@ public class User extends BaseDataEntity {
 	public void setSocialInit(SocialInitiative socialInit) {
 		this.socialInit = socialInit;
 	}
-	@ManyToOne(optional = true, cascade = CascadeType.MERGE)
+	@ManyToOne(optional = true)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
 		return this.role;
@@ -105,13 +112,21 @@ public class User extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
-	@OneToMany
-	@JoinColumn(name = "event_id")
+	@OneToMany(mappedBy = "user")
 	public List<Event> getEvents() {
 		return events;
 	}
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "posting_id")
+	public List<Posting> getPostings() {
+		return postings;
+	}
+	public void setPostings(List<Posting> postings) {
+		this.postings = postings;
 	}
 	
 	

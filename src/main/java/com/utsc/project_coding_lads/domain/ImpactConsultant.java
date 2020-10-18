@@ -20,7 +20,7 @@ public class ImpactConsultant extends BaseDataEntity {
 	private User user;
 	private List<Course> courses;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@MapsId
 	@JoinColumn(name = "id")
 	public User getUser() {
@@ -29,8 +29,8 @@ public class ImpactConsultant extends BaseDataEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "course_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "instructor")
+//	@JoinColumn(name = "course_id")
 	public List<Course> getCourses() {
 		return courses;
 	}
