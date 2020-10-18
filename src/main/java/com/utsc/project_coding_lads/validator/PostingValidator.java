@@ -24,13 +24,13 @@ public class PostingValidator implements Validator {
 	private PostingEnum postingType;
 	private LocalDateTime date;
 	private Integer postingId;
-	
+
 	@Autowired
 	SocialInitService socialInitService;
-	
+
 	@Autowired
 	PostingService postingService;
-	
+
 	public PostingValidator(String name, String desc, User postingCreator, PostingEnum postingType,
 			LocalDateTime date) {
 		super();
@@ -40,9 +40,9 @@ public class PostingValidator implements Validator {
 		this.postingType = postingType;
 		this.date = date;
 	}
-	
-	public PostingValidator(String name, String desc, User postingCreator, PostingEnum postingType,
-			LocalDateTime date, Integer postingId) {
+
+	public PostingValidator(String name, String desc, User postingCreator, PostingEnum postingType, LocalDateTime date,
+			Integer postingId) {
 		super();
 		this.name = name;
 		this.desc = desc;
@@ -51,31 +51,29 @@ public class PostingValidator implements Validator {
 		this.date = date;
 		this.postingId = postingId;
 	}
-	
+
 	public PostingValidator() {
 		super();
 	}
 
 	@Override
 	public void validate() throws ValidationFailedException {
-		if (date == null || desc == null || name == null || postingType == null) 
+		if (date == null || desc == null || name == null || postingType == null)
 			throw new MissingInformationException("Required fields are missing.");
 		if (postingCreator == null)
 			throw new EntityNotExistException("The posting creator does not exist.");
-		
-		if (postingCreator.getSocialInit() == null) 
+
+		if (postingCreator.getSocialInit() == null)
 			throw new UnauthenticatedException("This user is not an employee.");
 		SocialInitiative socialInit = socialInitService.findSocialInitByName(postingCreator.getSocialInit().getName());
-		if (socialInit == null) 
+		if (socialInit == null)
 			throw new UnauthenticatedException("This user is not an employee.");
 	}
-	
-	public void validateExists() throws Exception {
-		validate();
-		if (postingService.existsById(postingId)) {
-			throw new EntityNotExistException("That posting does not exist.");
-		}
-	}
 
-	
+	public void validateExists() throws ValidationFailedException {
+		validate();
+		if (!postingService.existsById(postingId))
+			throw new EntityNotExistException("That posting does not exist.");
+	};
+
 }

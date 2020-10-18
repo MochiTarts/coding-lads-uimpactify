@@ -16,7 +16,7 @@ import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
-import com.utsc.project_coding_lads.exception.MissingRequiredInfoException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
@@ -27,6 +27,7 @@ import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
@@ -45,27 +46,21 @@ public class UserServiceImpl implements UserService {
 	SocialInitiativeService socialInitService;
 	
 	@Override
-	@Transactional(rollbackOn = Exception.class)
 	public Integer storeUser(User user) throws Exception {
 		try {
 			UserValidator validator = new UserValidator();
 			String roleName = null;
 			String socialInitName = null;
-			
 			if (validator.validate(user)) {
-				
 				if ((user.getRole() == null) && (user.getSocialInit() == null)) {
 					throw new BadRequestException("userType and userSocialInit cannot both be empty");
 				}
-
 				if (user.getRole() != null) {
 					roleName = user.getRole().getName();
 				}
-				
 				if (user.getSocialInit() != null) {
 					socialInitName = user.getSocialInit().getName();
 				}
-				
 				user.setRole(null);
 				user.setSocialInit(null);
 				
@@ -109,7 +104,7 @@ public class UserServiceImpl implements UserService {
 				return userRepo.save(user).getId();
 			} else {
 				System.out.println("Got here");
-				throw new MissingRequiredInfoException("Request is missing required info");
+				throw new MissingInformationException("Request is missing required info");
 			}
 		} catch(DataIntegrityViolationException e) {
 			throw new EntityAlreadyExistsException("Username already exists");

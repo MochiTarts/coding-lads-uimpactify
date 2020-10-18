@@ -34,8 +34,8 @@ public class PostingServiceImpl implements PostingService {
 	}
 
 	@Override
-	public Posting findPostingById(Integer postingId) throws Exception {
-		if (existsById(postingId)) {
+	public Posting findPostingById(Integer postingId) throws ValidationFailedException {
+		if (!existsById(postingId)) {
 			throw new EntityNotExistException("That posting does not exist.");
 		}
 		return postingRepo.getOne(postingId);
@@ -47,9 +47,9 @@ public class PostingServiceImpl implements PostingService {
 	}
 
 	@Override
-	public Integer updatePosting(Posting posting) throws Exception {
+	public Integer updatePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
-			throw new BadRequestException("Posting body is null");
+			throw new MissingInformationException("Posting body is null");
 		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getDate(), posting.getId());
 		postingValidator.validateExists();
@@ -57,7 +57,7 @@ public class PostingServiceImpl implements PostingService {
 	}
 
 	@Override
-	public Boolean existsById(Integer postingId) throws Exception {
+	public Boolean existsById(Integer postingId) {
 		return postingRepo.existsById(postingId);
 	}
 

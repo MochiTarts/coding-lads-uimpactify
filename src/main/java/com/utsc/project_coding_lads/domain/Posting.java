@@ -44,7 +44,7 @@ public class Posting extends BaseDataEntity {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	public User getPostingCreator() {
 		return postingCreator;
