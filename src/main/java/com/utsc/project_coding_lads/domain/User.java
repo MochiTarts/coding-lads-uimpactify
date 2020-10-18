@@ -27,6 +27,7 @@ public class User extends BaseDataEntity {
 	private Integer age;
 //	private List<Application> application;
 	private List<Event> events;
+	private List<Posting> postings;
 	
 	
 	@ManyToOne(optional = true)
@@ -96,6 +97,15 @@ public class User extends BaseDataEntity {
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "posting_id")
+	public List<Posting> getPostings() {
+		return postings;
+	}
+	public void setPostings(List<Posting> postings) {
+		this.postings = postings;
+	}
+	
 	
 	
 	

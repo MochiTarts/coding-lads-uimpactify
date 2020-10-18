@@ -16,7 +16,7 @@ public class Event extends BaseDataEntity {
 	private String eventDesc;
 	private User user;
 	
-	@Column(name = "event_name", length = 64)
+	@Column(name = "event_name", length = 32)
 	public String getEventName() {
 		return eventName;
 	}

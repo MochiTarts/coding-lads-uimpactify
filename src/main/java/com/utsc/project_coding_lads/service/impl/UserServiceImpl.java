@@ -3,11 +3,9 @@ package com.utsc.project_coding_lads.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.repository.ImpactConsultantRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
@@ -41,6 +39,18 @@ public class UserServiceImpl implements UserService {
 		} else {
 			throw new BadRequestException("Request is either improperly formatted or missing info");
 		}
+	}
+
+	@Override
+	public User findUserById(Integer id) throws Exception {
+		if (!existsById(id)) 
+			throw new EntityNotExistException("That user does not exist");
+		return userRepo.getOne(id);
+	}
+
+	@Override
+	public Boolean existsById(Integer id) throws Exception {
+		return userRepo.existsById(id);
 	}
 
 }
