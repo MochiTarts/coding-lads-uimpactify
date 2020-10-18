@@ -27,7 +27,11 @@ public class SocialInitiativeServiceImpl implements SocialInitiativeService {
 
 	@Override
 	public SocialInitiative findSocialInitByName(String socialInitName) throws Exception {
-		return socialInitRepo.findSocialInitByName(socialInitName);
+		if (socialInitName != null && !socialInitName.trim().isEmpty()) {
+			return socialInitRepo.findSocialInitByName(socialInitName);
+		} else {
+			return null;
+		}
 	}
 
 }

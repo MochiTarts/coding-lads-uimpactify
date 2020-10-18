@@ -5,13 +5,15 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
+import com.utsc.project_coding_lads.custom_deserialize.SocialInitDeserializer;
 
 @Entity
 @Table(name = User.TABLE_NAME)
@@ -37,9 +39,11 @@ public class User extends BaseDataEntity {
 	@JsonProperty("age")
 	private Integer age;
 	
+	@JsonDeserialize(using = SocialInitDeserializer.class)
 	@JsonProperty("socialInit")
 	private SocialInitiative socialInit;
 	
+	@JsonDeserialize(using = RoleDeserializer.class)
 	@JsonProperty("role")
 	private Role role;
 //	private List<Application> application;

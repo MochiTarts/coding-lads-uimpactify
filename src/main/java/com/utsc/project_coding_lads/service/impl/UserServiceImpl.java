@@ -51,48 +51,47 @@ public class UserServiceImpl implements UserService {
 			String roleName = null;
 			String socialInitName = null;
 			
+			Role roleChecker = user.getRole();
+			SocialInitiative socialInitChecker = user.getSocialInit();
+			user.setRole(null);
+			user.setSocialInit(null);
+			
 			if (validator.validate(user)) {
 				
-				if ((user.getRole() == null) && (user.getSocialInit() == null)) {
-					throw new BadRequestException("userType and userSocialInit cannot both be empty");
+				if ((roleChecker == null) && (socialInitChecker == null)) {
+					throw new BadRequestException("role and socialInit cannot both be empty");
 				}
 
-				if (user.getRole() != null) {
-					roleName = user.getRole().getName();
-				}
-				
-				if (user.getSocialInit() != null) {
-					socialInitName = user.getSocialInit().getName();
-				}
-				
-				user.setRole(null);
-				user.setSocialInit(null);
-				
-				if (roleName != null) {
-					if (roleName.equals(RolesEnum.impact_learner.toString())) {
-						ImpactLearner learner = new ImpactLearner();
-						learner.setUser(user);
-						learnerService.storeImpactLearner(learner);
-						
-						Role userRole = new Role(roleName);
-						userRole.setId(roleService.findRoleIdByName(roleName));
-						user.setRole(userRole);
-					} else if (roleName.equals(RolesEnum.impact_consultant.toString())) {
-						ImpactConsultant consultant = new ImpactConsultant();
-						consultant.setUser(user);
-						consultantService.storeImpactConsultantService(consultant);
+				if (roleChecker != null) {
+					roleName = roleChecker.getName();
+					
+					if (roleName != null) {
+						if (roleName.equals(RolesEnum.impact_learner.toString())) {
+							ImpactLearner learner = new ImpactLearner();
+							learner.setUser(user);
+							learnerService.storeImpactLearner(learner);
+							
+							Role userRole = new Role(roleName);
+							userRole.setId(roleService.findRoleIdByName(roleName));
+							user.setRole(userRole);
+						} else if (roleName.equals(RolesEnum.impact_consultant.toString())) {
+							ImpactConsultant consultant = new ImpactConsultant();
+							consultant.setUser(user);
+							consultantService.storeImpactConsultantService(consultant);
 
-						Role userRole = new Role(roleName);
-						userRole.setId(roleService.findRoleIdByName(roleName));
-						user.setRole(userRole);
-					} else {
-						throw new UserTypeInvalidException("role name must be of impact_consultant or impact_learner");
+							Role userRole = new Role(roleName);
+							userRole.setId(roleService.findRoleIdByName(roleName));
+							user.setRole(userRole);
+						} else {
+							throw new UserTypeInvalidException("role name must be of impact_consultant or impact_learner");
+						}
 					}
 				}
 				
-				if (socialInitName != null) {
-					SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
+				if (socialInitChecker != null) {
+					socialInitName = socialInitChecker.getName();
 					
+					SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
 					if (userSocialInit != null) {
 						user.setSocialInit(userSocialInit);
 					} else {
@@ -102,8 +101,8 @@ public class UserServiceImpl implements UserService {
 						
 						user.setSocialInit(userSocialInit);
 					}
-					
 				}
+					
 
 				return userRepo.save(user).getId();
 			} else {
