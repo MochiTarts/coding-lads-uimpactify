@@ -27,3 +27,7 @@
 .error {
     color: red;
 }
+
+#signup-card {
+    min-width: 500px;
+}
