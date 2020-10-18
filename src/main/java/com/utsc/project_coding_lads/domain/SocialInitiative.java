@@ -21,7 +21,7 @@ public class SocialInitiative extends BaseDataEntity {
 	private String name;
 	private List<Posting> postings;
 
-	@Column(name = "name")
+	@Column(name = "name", unique = true)
 	public String getName() {
 		return name;
 	}
