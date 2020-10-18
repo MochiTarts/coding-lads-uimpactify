@@ -27,8 +27,8 @@ public class PostingServiceImpl implements PostingService {
 	public Integer savePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
-		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getDesc(),
-				posting.getPostingCreator(), posting.getPostingType(), posting.getDate());
+		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
+				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate());
 		postingValidator.validate();
 		return postingRepo.save(posting).getId();
 	}
@@ -50,8 +50,8 @@ public class PostingServiceImpl implements PostingService {
 	public Integer updatePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
-		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getDesc(),
-				posting.getPostingCreator(), posting.getPostingType(), posting.getDate(), posting.getId());
+		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
+				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
 		postingValidator.validateExists();
 		return postingRepo.save(posting).getId();
 	}

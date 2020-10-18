@@ -21,8 +21,8 @@ public class PostingValidator implements Validator {
 	private String name;
 	private String desc;
 	private User postingCreator;
-	private PostingEnum postingType;
-	private LocalDateTime date;
+	private String postingType;
+	private LocalDateTime postingDate;
 	private Integer postingId;
 
 	@Autowired
@@ -31,24 +31,24 @@ public class PostingValidator implements Validator {
 	@Autowired
 	PostingService postingService;
 
-	public PostingValidator(String name, String desc, User postingCreator, PostingEnum postingType,
-			LocalDateTime date) {
+	public PostingValidator(String name, String desc, User postingCreator, String postingType,
+			LocalDateTime postingDate) {
 		super();
 		this.name = name;
 		this.desc = desc;
 		this.postingCreator = postingCreator;
 		this.postingType = postingType;
-		this.date = date;
+		this.postingDate = postingDate;
 	}
 
-	public PostingValidator(String name, String desc, User postingCreator, PostingEnum postingType, LocalDateTime date,
+	public PostingValidator(String name, String desc, User postingCreator, String postingType, LocalDateTime postingDate,
 			Integer postingId) {
 		super();
 		this.name = name;
 		this.desc = desc;
 		this.postingCreator = postingCreator;
 		this.postingType = postingType;
-		this.date = date;
+		this.postingDate = postingDate;
 		this.postingId = postingId;
 	}
 
@@ -58,7 +58,7 @@ public class PostingValidator implements Validator {
 
 	@Override
 	public void validate() throws ValidationFailedException {
-		if (date == null || desc == null || name == null || postingType == null)
+		if (postingDate == null || desc == null || name == null || postingType == null)
 			throw new MissingInformationException("Required fields are missing.");
 		if (postingCreator == null)
 			throw new EntityNotExistException("The posting creator does not exist.");

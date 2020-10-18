@@ -36,7 +36,11 @@ CREATE TABLE POSTING (
 	posting_creator_id INTEGER,
 	FOREIGN KEY (posting_creator_id) REFERENCES UI_USER(id),
 	social_init_id INTEGER,
-	FOREIGN KEY (social_init_id) REFERENCES SOCIAL_INITIATIVE(id)
+	FOREIGN KEY (social_init_id) REFERENCES SOCIAL_INITIATIVE(id),
+	posting_date TIMESTAMP NOT NULL, 
+	posting_desc VARCHAR(256),
+	name VARCHAR(32),
+	posting_type VARCHAR(32)
 );
 
 CREATE TABLE COURSE (
@@ -53,4 +57,12 @@ CREATE TABLE EVENT (
 	event_desc VARCHAR(256),
 	user_id INTEGER,
 	FOREIGN KEY (user_id) REFERENCES UI_USER(id)
+);
+
+CREATE TABLE CLASS_SESSION (
+	id INTEGER PRIMARY KEY NOT NULL,
+	course_id INTEGER,
+	FOREIGN KEY (course_id) REFERENCES COURSE(id),
+	start_date TIMESTAMP NOT NULL,
+	end_date TIMESTAMP NOT NULL
 );

@@ -25,10 +25,10 @@ public class TestPostingRepo {
 	public void testCRUD() {
 		Posting posting = new Posting();
 		
-		posting.setDate(LocalDateTime.now());
-		posting.setDesc("desc");
+		posting.setPostingDate(LocalDateTime.now());
+		posting.setPostingDesc("desc");
 		posting.setName("name");
-		posting.setPostingType(PostingEnum.EMPLOYMENT);
+		posting.setPostingType(PostingEnum.EMPLOYMENT.name());
 		
 		Posting savedPosting = postingRepo.save(posting);
 		Assert.assertNotNull(savedPosting.getId());

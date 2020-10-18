@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USERS";
+	public static final String TABLE_NAME = "UI_USER";
 	
 	private boolean isAuthenticated;
 	
@@ -107,8 +107,7 @@ public class User extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
-	@OneToMany
-	@JoinColumn(name = "event_id")
+	@OneToMany(mappedBy = "user")
 	public List<Event> getEvents() {
 		return events;
 	}
