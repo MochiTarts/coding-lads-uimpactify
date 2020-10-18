@@ -3,6 +3,7 @@ import '../stylesheets/css/SignUp.css';
 import {Container, Row, Col,
     Card,
     CardTitle,
+    CardSubtitle,
     CardBody,
     CardFooter,
     Button,
@@ -86,13 +87,14 @@ class SignUp extends React.Component {
                 <Card>
                 <CardBody>
                     <CardTitle>
-                      <h4>Sign up</h4>
-                      <h6>
-                        {!this.state.signedUp && this.state.signUpStep===1 && "Account Type"}
-                        {!this.state.signedUp && this.state.signUpStep===2 && "Account Information"}
-                        {this.state.signedUp && "Finish"}
-                      </h6>
+                      Sign up
                     </CardTitle>
+                    <CardSubtitle>
+                      {!this.state.signedUp && this.state.signUpStep===1 && "Account Type"}
+                      {!this.state.signedUp && this.state.signUpStep===2 && "Account Information"}
+                      {this.state.signedUp && "Finish"}
+                    </CardSubtitle>
+
                     {!this.state.signedUp && this.state.signUpStep ===1 && 
                     <Row >
                       <Col className = {this.state.accountType === "social-initiative" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"social-initiative"})}}>

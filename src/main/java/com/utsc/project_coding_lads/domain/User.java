@@ -11,24 +11,41 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = User.TABLE_NAME)
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USER";
+	public static final String TABLE_NAME = "USERS";
 	
+	private boolean isAuthenticated;
+	
+	@JsonProperty("firstName")
 	private String firstName;
+	
+	@JsonProperty("lastName")
 	private String lastName;
+	
+	@JsonProperty("username")
 	private String username;
+	
+	@JsonProperty("password")
 	private String hashedPassword;
-	private SocialInitiative socialInit;
-	private Role role;
+	
+	@JsonProperty("age")
 	private Integer age;
+	
+	@JsonProperty("socialInit")
+	private SocialInitiative socialInit;
+	
+	@JsonProperty("role")
+	private Role role;
 //	private List<Application> application;
 	private List<Event> events;
 	private List<Posting> postings;
-	
+
 	
 	@ManyToOne(optional = true)
 	@JoinColumn(name="socialinit_id")
@@ -67,7 +84,7 @@ public class User extends BaseDataEntity {
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
-	@Column(name="username", nullable = false, length = 32)
+	@Column(name="username", nullable = false, length = 32, unique = true)
 	public String getUsername() {
 		return username;
 	}
@@ -105,7 +122,6 @@ public class User extends BaseDataEntity {
 	public void setPostings(List<Posting> postings) {
 		this.postings = postings;
 	}
-	
 	
 	
 	

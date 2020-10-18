@@ -34,5 +34,4 @@ public class SocialInitiative extends BaseDataEntity {
 	}
 	
 	
-	
 }
