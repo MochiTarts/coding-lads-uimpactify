@@ -71,22 +71,21 @@ public class TestSignUpController {
 	public void addSocialOrgPublicUser() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 								.contentType(MediaType.APPLICATION_JSON).content("{\n"
 										+ "  \"firstName\" : \"first\",\n"
 										+ "  \"lastName\" : \"last\",\n"
 										+ "  \"username\" : \"1\",\n"
-										+ "  \"password\" : \"string\",\n"
+										+ "  \"password\" : \"asdf\",\n"
 										+ "  \"age\" : 18,\n"
-										+ "  \"role\": {\"name\": \"impact_learner\"},\n"
-										+ "  \"socialInit\": null\n"
+										+ "  \"role\": {},\n"
+										+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
 										+ "}"))
 								.andReturn();
 
-		//boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
 		int status = mvc.getResponse().getStatus();
-		//Assert.assertTrue(found);
-		System.out.println(mvc.getResponse().getContentAsString());
+		Assert.assertTrue(found);
 		Assert.assertEquals(200, status);
 	}
 	
@@ -94,7 +93,7 @@ public class TestSignUpController {
 	public void addImpactLearnerNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -119,7 +118,7 @@ public class TestSignUpController {
 	public void addImpactConsultantNoSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -142,7 +141,7 @@ public class TestSignUpController {
 	public void addImpactLearnerExistingSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -165,7 +164,7 @@ public class TestSignUpController {
 	public void addImpactConsultantExistingSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -188,7 +187,7 @@ public class TestSignUpController {
 	public void addImpactLearnerNewSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -211,7 +210,7 @@ public class TestSignUpController {
 	public void addImpactConsultantNewSocialOrg() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -234,7 +233,7 @@ public class TestSignUpController {
 	public void addImpactLearnerEmptySocialInit() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -257,7 +256,7 @@ public class TestSignUpController {
 	public void roleJsonInvalidField() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
@@ -283,7 +282,7 @@ public class TestSignUpController {
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"first\",\n"
 						+ "  \"lastName\" : \"last\",\n"
-						+ "  \"username\" : \"9\",\n"
+						+ "  \"username\" : \"10\",\n"
 						+ "  \"password\" : \"asdf\",\n"
 						+ "  \"age\" : 18,\n"
 						+ "  \"role\": {\"name\": \"impact_learner\", \"a\"},\n"
@@ -301,11 +300,11 @@ public class TestSignUpController {
 	public void missingRequiredInfo() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/signup")
+		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/uimpactify/users/signup")
 				.contentType(MediaType.APPLICATION_JSON).content("{\n"
 						+ "  \"firstName\" : \"\",\n"
 						+ "  \"lastName\" : \"last\",\n"
-						+ "  \"username\" : \"9\",\n"
+						+ "  \"username\" : \"\",\n"
 						+ "  \"password\" : \"asdf\",\n"
 						+ "  \"age\" : 18,\n"
 						+ "  \"role\": {\"name\": \"impact_learner\"},\n"

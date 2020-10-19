@@ -140,7 +140,6 @@ public class UserServiceImpl implements UserService {
 				}
 				//Public user case
 				if (user.getRole() == null) {
-					user.setRole(null);
 					id = userRepo.save(user).getId();
 					return id;
 				}

@@ -42,7 +42,7 @@ public class UserValidator implements Validator {
 	@Override
 	public void validate() throws ValidationFailedException {
 		if (firstName == null || lastName == null || userName == null || hashedPassword == null || age == null
-				|| firstName.trim().isEmpty() || lastName.trim().isEmpty() || userName.trim().isEmpty() || hashedPassword.trim().isEmpty() || age == 0) 
+				|| firstName.trim().isEmpty() || lastName.trim().isEmpty() || userName.trim().isEmpty() || hashedPassword.trim().isEmpty()) 
 			throw new MissingInformationException("Required information is missing");
 		if (role == null && socialInit == null) {
 			throw new ValidationFailedException("Role and Social Initiative cannot both be empty");
