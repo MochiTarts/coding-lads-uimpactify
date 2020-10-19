@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.controller;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
+
 
 @RestController
 @RequestMapping("/" + UserService.SERVICE_NAME)
@@ -24,9 +27,12 @@ public class UserController extends BaseController {
 
 	@Autowired
 	UserService userService;
+	@Autowired
+	UserRepository userRepo;
 	@Autowired 
 	PostingService postingService;
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
+	
 	
 	@PostMapping(path="/signup")
 	public Integer storeUser(@RequestBody User user) throws Exception {
@@ -38,6 +44,17 @@ public class UserController extends BaseController {
 		} catch(NullPointerException e) {
 			throw new BadRequestException("Request cannot be null");
 		}
+	}
+	
+	@PostMapping(path = "/login")
+	public Integer login(@RequestBody User user) {
+		User u = new User();
+		try {
+			u = userRepo.findUserByUsername(user.getUsername());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return u.getId();
 	}
 	
 	@PostMapping(path = "/createPosting")
