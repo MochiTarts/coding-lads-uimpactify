@@ -1,6 +1,5 @@
 package com.utsc.project_coding_lads.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -14,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
+import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -33,6 +34,8 @@ public class UserController extends BaseController {
 	UserService userService;
 	@Autowired 
 	PostingService postingService;
+	@Autowired
+	EventService eventService;
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 	
 	@PostMapping(path="/signup")
@@ -103,9 +106,65 @@ public class UserController extends BaseController {
 		try {
 			postings = postingService.findAllPostingsByUserId(userId);
 		} catch (Exception e) {
-			log.info("Could not get postings with id: " + userId + ", ", e.getMessage());
+			log.info("Could not get postings with userid: " + userId + ", ", e.getMessage());
 		}
 		return postings;
+	}
+	
+	@PostMapping(path = "/createEvent")
+	@ApiOperation(value = "create a new posting", response = Event.class)
+	public Event createEvent(@RequestBody Event event) {
+		Event savedEvent = null;
+		try {
+			savedEvent = eventService.saveEvent(event);
+		} catch (ValidationFailedException e) {
+			log.info("Could not create posting: ", e);
+		}
+		return savedEvent;
+	}
+	
+	@PostMapping(path = "/updateEvent")
+	@ApiOperation(value = "update a event", response = Event.class)
+	public Event updateEvent(@RequestBody Event event) throws Exception {
+		return eventService.updateEvent(event);
+	}
+	
+	@PostMapping(path = "/deleteEvent/{id}")
+	@ApiOperation(value = "Delete a event", response = Boolean.class)
+	public Boolean deleteEvent(@PathVariable("id") Integer id) {
+		Boolean ok = true;
+		try {
+			eventService.deleteEventById(id);
+		} catch (Exception e) {
+			ok = false;
+			log.info("Could not delete event: ", e.getMessage());
+		}
+		return ok;
+	}
+	
+	
+	@GetMapping(path = "/getEvent/{id}")
+	@ApiOperation(value = "find a event by id", response = Event.class)
+	public Event getEvent(@PathVariable("id") Integer id) {
+		Event event = null;
+		try {
+			event = eventService.findEventById(id);
+		} catch (Exception e) {
+			log.info("Could not get event with id: " + id + ", ", e.getMessage());
+		}
+		return event;
+	}
+	
+	@GetMapping(path = "/getEvents/{id}")
+	@ApiOperation(value = "find all events by userId", response = Event.class, responseContainer = "List")
+	public List<Event> getEvents(@PathVariable("id") Integer userId) {
+		List<Event> events = null;
+		try {
+			events = eventService.findAllEventsByUserId(userId);
+		} catch (Exception e) {
+			log.info("Could not get events with userid: " + userId + ", ", e.getMessage());
+		}
+		return events;
 	}
 	
 	
