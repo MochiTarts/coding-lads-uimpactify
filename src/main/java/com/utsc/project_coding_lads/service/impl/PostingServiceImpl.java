@@ -15,6 +15,7 @@ import com.utsc.project_coding_lads.repository.PostingRepository;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.PostingValidator;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
 @Transactional
@@ -24,14 +25,20 @@ public class PostingServiceImpl implements PostingService {
 	PostingRepository postingRepo;
 	@Autowired
 	UserService userService;
+	@Autowired
+	PostingValidator postingValidator;
+	@Autowired
+	UserValidator userValidator;
 
 	@Override
 	public Posting savePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
-		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
-				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate());
+		postingValidator.init(posting.getName(), posting.getPostingDesc(),
+				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getSocialInit());
 		postingValidator.validate();
+		User user = userService.findUserById(posting.getPostingCreator().getId());
+		posting.setPostingCreator(user);
 		return postingRepo.save(posting);
 	}
 
@@ -52,7 +59,7 @@ public class PostingServiceImpl implements PostingService {
 	public Posting updatePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
-		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
+		postingValidator.init(posting.getName(), posting.getPostingDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
 		postingValidator.validateExists();
 		return postingRepo.save(posting);
@@ -66,6 +73,8 @@ public class PostingServiceImpl implements PostingService {
 	@Override
 	public List<Posting> findAllPostingsByUserId(Integer userId) throws ValidationFailedException {
 		User user = userService.findUserById(userId);
+		userValidator.init(user);
+		userValidator.validateEmployee();
 		return user.getPostings();
 	}
 

@@ -28,8 +28,7 @@ public class SocialInitiative extends BaseDataEntity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@OneToMany
-	@JoinColumn(name="posting_id")
+	@OneToMany(mappedBy = "socialInit")
 	public List<Posting> getPostings() {
 		return postings;
 	}

@@ -1,11 +1,17 @@
 package com.utsc.project_coding_lads.validator;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.UnauthenticatedException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.service.SocialInitService;
 
+@Component
 public class UserValidator implements Validator {
 
 	private String firstName;
@@ -18,8 +24,10 @@ public class UserValidator implements Validator {
 	private Role role;
 	private SocialInitiative socialInit;
 	
-	public UserValidator(User user) {
-		super();
+	@Autowired
+	SocialInitService socialInitService;
+	
+	public void init(User user) {
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.userName = user.getUsername();
@@ -30,17 +38,7 @@ public class UserValidator implements Validator {
 		this.role = user.getRole(); //I can check if Role and SocialInitiative are both null here
 		this.socialInit = user.getSocialInit();
 	}
-//
-//	public boolean validate(User user) {
-//		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty()
-//				&& user.getLastName() != null && !user.getLastName().trim().isEmpty()
-//				&& user.getUsername() != null && !user.getUsername().trim().isEmpty()
-//				&& user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty() && user.getAge() != 0) {
-//			return true;
-//		}
-//		return false;
-//	}
-
+	
 	@Override
 	public void validate() throws ValidationFailedException {
 		if (firstName == null || lastName == null || userName == null || hashedPassword == null || age == null
@@ -49,7 +47,16 @@ public class UserValidator implements Validator {
 		if (role == null && socialInit == null) {
 			throw new ValidationFailedException("Role and Social Initiative cannot both be empty");
 		}
-		
 	}
+	
+	public void validateEmployee() throws ValidationFailedException {
+		validate();
+		if (socialInit != null) {
+			SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(socialInit.getName());
+			if (savedSocialInit == null) throw new UnauthenticatedException("This user is not an employee");
+		}
+	}
+	
+	
 	
 }
