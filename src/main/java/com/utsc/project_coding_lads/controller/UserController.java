@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/" + UserService.SERVICE_NAME)
 public class UserController extends BaseController {
@@ -33,12 +36,13 @@ public class UserController extends BaseController {
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 	
 	@PostMapping(path="/signup")
+	@ApiOperation(value = "create a new user", response = User.class)
 	public Integer storeUser(@RequestBody User user) throws Exception {
 		try {
 			PasswordHash encoder = new PasswordHash();
 			user.setHashedPassword(encoder.passwordEncoder(user.getHashedPassword()));
 			Integer id = userService.storeUser(user);
-			log.info("userid: " + id);
+//			log.info("userid: " + id);
 			return id;
 		} catch(NullPointerException e) {
 			log.info("Could not store user: ", e);
@@ -49,22 +53,25 @@ public class UserController extends BaseController {
 	}
 	
 	@PostMapping(path = "/createPosting")
-	public Integer createPosting(@RequestBody Posting posting) {
-		Integer id = null;
+	@ApiOperation(value = "create a new posting", response = Posting.class)
+	public Posting createPosting(@RequestBody Posting posting) {
+		Posting savedPosting = null;
 		try {
-			id = postingService.savePosting(posting);
+			savedPosting = postingService.savePosting(posting);
 		} catch (ValidationFailedException e) {
 			log.info("Could not create posting: ", e);
 		}
-		return id;
+		return savedPosting;
 	}
 	
 	@PostMapping(path = "/updatePosting")
-	public Integer updatePosting(@RequestBody Posting posting) throws Exception {
+	@ApiOperation(value = "update a posting", response = Posting.class)
+	public Posting updatePosting(@RequestBody Posting posting) throws Exception {
 		return postingService.updatePosting(posting);
 	}
 	
 	@PostMapping(path = "/deletePosting/{id}")
+	@ApiOperation(value = "Delete a posting", response = Boolean.class)
 	public Boolean deletePosting(@PathVariable("id") Integer id) {
 		Boolean ok = true;
 		try {
@@ -78,6 +85,7 @@ public class UserController extends BaseController {
 	
 	
 	@GetMapping(path = "/getPosting/{id}")
+	@ApiOperation(value = "find a posting by id", response = Posting.class)
 	public Posting getPosting(@PathVariable("id") Integer id) {
 		Posting posting = null;
 		try {
@@ -89,6 +97,7 @@ public class UserController extends BaseController {
 	}
 	
 	@GetMapping(path = "/getPostings/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Posting.class, responseContainer = "List")
 	public List<Posting> getPostings(@PathVariable("id") Integer userId) {
 		List<Posting> postings = null;
 		try {

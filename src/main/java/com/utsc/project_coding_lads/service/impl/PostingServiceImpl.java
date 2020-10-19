@@ -26,13 +26,13 @@ public class PostingServiceImpl implements PostingService {
 	UserService userService;
 
 	@Override
-	public Integer savePosting(Posting posting) throws ValidationFailedException {
+	public Posting savePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
 		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate());
 		postingValidator.validate();
-		return postingRepo.save(posting).getId();
+		return postingRepo.save(posting);
 	}
 
 	@Override
@@ -49,13 +49,13 @@ public class PostingServiceImpl implements PostingService {
 	}
 
 	@Override
-	public Integer updatePosting(Posting posting) throws ValidationFailedException {
+	public Posting updatePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
 		PostingValidator postingValidator = new PostingValidator(posting.getName(), posting.getPostingDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
 		postingValidator.validateExists();
-		return postingRepo.save(posting).getId();
+		return postingRepo.save(posting);
 	}
 
 	@Override
