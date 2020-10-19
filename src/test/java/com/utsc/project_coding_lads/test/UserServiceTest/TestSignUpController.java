@@ -62,10 +62,10 @@ public class TestSignUpController {
 //		}
 	}
 	
-	@Test(expected = BadRequestException.class)
+	/*@Test(expected = BadRequestException.class)
 	public void nullRequest() throws Exception {
 		controller.storeUser(null);
-	}
+	}*/
 	
 	@Test
 	public void addSocialOrgPublicUser() throws Exception {
@@ -78,14 +78,13 @@ public class TestSignUpController {
 										+ "  \"username\" : \"1\",\n"
 										+ "  \"password\" : \"asdf\",\n"
 										+ "  \"age\" : 18,\n"
-										+ "  \"role\": null,\n"
+										+ "  \"role\": {},\n"
 										+ "  \"socialInit\": {\"name\": \"Org B\"}\n"
 										+ "}"))
 								.andReturn();
 
 		boolean found = userRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
 		int status = mvc.getResponse().getStatus();
-
 		Assert.assertTrue(found);
 		Assert.assertEquals(200, status);
 	}
@@ -315,7 +314,7 @@ public class TestSignUpController {
 
 		int status = mvc.getResponse().getStatus();
 		System.out.println(mvc.getResponse().getContentAsString());
-		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Request is missing required info"));
+		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Required information is missing"));
 		Assert.assertEquals(400, status);
 	}
 

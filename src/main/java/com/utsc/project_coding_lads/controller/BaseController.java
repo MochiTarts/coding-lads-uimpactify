@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -93,7 +94,7 @@ public class BaseController {
 	@ExceptionHandler(ValidationFailedException.class)
 	public ResponseEntity<Object> handleValidationFailedException(ValidationFailedException e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "JSON request is improperly formatted");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 		

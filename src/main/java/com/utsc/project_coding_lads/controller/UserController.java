@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.service.PostingService;
@@ -41,6 +43,8 @@ public class UserController extends BaseController {
 		} catch(NullPointerException e) {
 			log.info("Could not store user: ", e);
 			throw new BadRequestException("Request cannot be null");
+		} catch(DataIntegrityViolationException e) {
+			throw new EntityAlreadyExistsException("Username already exists");
 		}
 	}
 	

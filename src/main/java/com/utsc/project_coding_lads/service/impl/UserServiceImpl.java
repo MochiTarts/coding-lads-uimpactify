@@ -123,8 +123,8 @@ public class UserServiceImpl implements UserService {
 		Integer id = null;
 		if (user == null)
 			throw new BadRequestException("User cannot be null");
-		if (user.getRole() == null)
-			throw new BadRequestException("Role cannot be null");
+		//if (user.getRole() == null)
+		//	throw new BadRequestException("Role cannot be null");
 		UserValidator validator = new UserValidator(user);
 		validator.validate();
 
@@ -140,6 +140,12 @@ public class UserServiceImpl implements UserService {
 					SocialInitiative savedSocialInit = socialInitService.storeSocialInit(userSocialInit);
 					user.setSocialInit(savedSocialInit);
 				}
+				//Public user case
+				if (user.getRole() == null) {
+					id = userRepo.save(user).getId();
+					return id;
+				}
+				
 			}
 		}
 
@@ -158,6 +164,8 @@ public class UserServiceImpl implements UserService {
 				ImpactConsultant consultant = new ImpactConsultant();
 				consultant.setUser(savedUser);
 				id = consultantService.storeImpactConsultantService(consultant);
+			} else {
+				throw new UserTypeInvalidException("Role must be impact_consultant or impact_learner");
 			}
 		}
 
