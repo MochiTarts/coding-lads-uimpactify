@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
@@ -15,6 +16,7 @@ import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.SocialInitService;
 
 @Component
+@Transactional
 public class PostingValidator implements Validator {
 
 	private String name;
@@ -23,26 +25,26 @@ public class PostingValidator implements Validator {
 	private String postingType;
 	private LocalDateTime postingDate;
 	private Integer postingId;
+	private SocialInitiative socialInit;
 
 	@Autowired
 	SocialInitService socialInitService;
 
 	@Autowired
 	PostingService postingService;
-
-	public PostingValidator(String name, String desc, User postingCreator, String postingType,
-			LocalDateTime postingDate) {
-		super();
+	
+	public void init(String name, String desc, User postingCreator, String postingType,
+			LocalDateTime postingDate, SocialInitiative socialInit) {
 		this.name = name;
 		this.desc = desc;
 		this.postingCreator = postingCreator;
 		this.postingType = postingType;
 		this.postingDate = postingDate;
+		this.socialInit = socialInit;
 	}
 
-	public PostingValidator(String name, String desc, User postingCreator, String postingType, LocalDateTime postingDate,
+	public void init(String name, String desc, User postingCreator, String postingType, LocalDateTime postingDate,
 			Integer postingId) {
-		super();
 		this.name = name;
 		this.desc = desc;
 		this.postingCreator = postingCreator;
@@ -51,21 +53,18 @@ public class PostingValidator implements Validator {
 		this.postingId = postingId;
 	}
 
-	public PostingValidator() {
-		super();
-	}
-
 	@Override
 	public void validate() throws ValidationFailedException {
 		if (postingDate == null || desc == null || name == null || postingType == null)
 			throw new MissingInformationException("Required fields are missing.");
 		if (postingCreator == null)
 			throw new EntityNotExistException("The posting creator does not exist.");
-
-		if (postingCreator.getSocialInit() == null)
-			throw new UnauthenticatedException("This user is not an employee.");
-		SocialInitiative socialInit = socialInitService.findSocialInitByName(postingCreator.getSocialInit().getName());
+		if (postingCreator.getId() == null)
+			throw new EntityNotExistException("The posting creator Id cannot be null");
 		if (socialInit == null)
+			throw new UnauthenticatedException("This user is not an employee.");
+		SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(socialInit.getName());
+		if (savedSocialInit == null)
 			throw new UnauthenticatedException("This user is not an employee.");
 	}
 

@@ -52,8 +52,7 @@ public class User extends BaseDataEntity {
 	private List<Event> events;
 	private List<Posting> postings;
 
-	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInit() {
 		return socialInit;
