@@ -6,10 +6,12 @@ import org.springframework.stereotype.Component;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UnauthenticatedException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.service.SocialInitService;
+import com.utsc.project_coding_lads.service.UserService;
 
 @Component
 public class UserValidator implements Validator {
@@ -23,9 +25,12 @@ public class UserValidator implements Validator {
 	//private String socialInitName;
 	private Role role;
 	private SocialInitiative socialInit;
+	private Integer userId;
 	
 	@Autowired
 	SocialInitService socialInitService;
+	@Autowired
+	UserService userService;
 	
 	public void init(User user) {
 		this.firstName = user.getFirstName();
@@ -37,6 +42,7 @@ public class UserValidator implements Validator {
 		//this.socialInitName = user.getSocialInit() != null ? user.getSocialInit().getName() : null;
 		this.role = user.getRole(); //I can check if Role and SocialInitiative are both null here
 		this.socialInit = user.getSocialInit();
+		this.userId = userId;
 	}
 	
 	@Override
@@ -57,6 +63,10 @@ public class UserValidator implements Validator {
 		}
 	}
 	
+	public void validateExists() throws ValidationFailedException {
+		if (!userService.existsById(userId))
+			throw new EntityNotExistException("That user does not exist in the db.");
+	}
 	
 	
 }
