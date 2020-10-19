@@ -22,15 +22,11 @@ public class RoleDeserializer extends JsonDeserializer<Role> {
 		if (node.has("name") && node.size() == 1) {
 			//System.out.println("Got here perfect");
 			Role role = new Role();
-			if (node.get("name").isNull()) {
-				role.setName(null);
-			} else {
-				role.setName(node.get("name").asText().toUpperCase());
-			}
+			if ((node.get("name").isNull() || node.get("name").asText().isEmpty()))
+				return null;
+			
+			role.setName(node.get("name").asText().toUpperCase());
 			return role;
-		} else if (node.toPrettyString().equals("{ }")) {
-			//System.out.println("Got empty role");
-			return null;
 		}
 		//System.out.println("Got throw exception");
 		throw new JsonParseException();

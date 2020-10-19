@@ -22,17 +22,12 @@ public class SocialInitDeserializer extends JsonDeserializer<SocialInitiative> {
 		if (node.has("name") && node.size() == 1) {
 			//System.out.println("Got here perfect");
 			SocialInitiative socialInit = new SocialInitiative();
-			if (node.get("name").isNull()) {
-				socialInit.setName(null);
-			} else {
-				socialInit.setName(node.get("name").asText());
-			}
+			if (node.get("name").isNull() || node.get("name").asText().isEmpty())
+				return null;
+
+			socialInit.setName(node.get("name").asText());
 			return socialInit;
-		} else if (node.toPrettyString().equals("{ }")) {
-			//System.out.println("Got empty social");
-			return null;
 		}
-		
 		//System.out.println("Got exception");
 		throw new JsonParseException();
 	}
