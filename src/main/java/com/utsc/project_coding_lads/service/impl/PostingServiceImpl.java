@@ -83,6 +83,7 @@ public class PostingServiceImpl implements PostingService {
 	@Override
 	public List<Posting> findAllPostingsByUserIdDate(Integer userId, LocalDateTime date)
 			throws ValidationFailedException {
+		if (date == null) throw new ValidationFailedException("Date cannot be null.");
 		List<Posting> postings = findAllPostingsByUserId(userId);
 		List<Posting> postingsByDate = new ArrayList<>();
 		for (Posting posting : postings) {

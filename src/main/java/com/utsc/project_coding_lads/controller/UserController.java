@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -111,6 +112,18 @@ public class UserController extends BaseController {
 		return postings;
 	}
 	
+	@GetMapping(path = "/getPostingsByDate/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Posting.class, responseContainer = "List")
+	public List<Posting> getPostingsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) {
+		List<Posting> postings = null;
+		try {
+			postings = postingService.findAllPostingsByUserIdDate(userId, date);
+		} catch (Exception e) {
+			log.info("Could not get postings with userid: " + userId + ", and date: " + date, e.getMessage());
+		}
+		return postings;
+	}
+	
 	@PostMapping(path = "/createEvent")
 	@ApiOperation(value = "create a new posting", response = Event.class)
 	public Event createEvent(@RequestBody Event event) {
@@ -166,6 +179,20 @@ public class UserController extends BaseController {
 		}
 		return events;
 	}
+	
+	@GetMapping(path = "/getEventsByDate/{id}")
+	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) {
+		List<Event> events = null;
+		try {
+			events = eventService.findAllEventsByUserIdDate(userId, date);
+		} catch (Exception e) {
+			log.info("Could not get events with userid: " + userId + ", and date: " + date, e.getMessage());
+		}
+		return events;
+	}
+	
+	
 	
 	
 	
