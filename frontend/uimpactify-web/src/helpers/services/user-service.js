@@ -1,5 +1,5 @@
 import axios from 'axios';
-const apiUrl = 'http://localhost:8080';
+const apiUrl = 'http://localhost:8080/uimpactify/users';
 
 export const signUp = (firstName, lastName, username, password, age, role, socialInit) => {
     var roleObj;

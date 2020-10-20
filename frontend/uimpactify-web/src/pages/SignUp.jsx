@@ -86,7 +86,7 @@ class SignUp extends React.Component {
   render() {
     const {firstName, lastName, username, age, password, confirmPassword} = this.state;
     const passwordsMatch = password === confirmPassword;
-    const isFormValid = firstName && lastName && username && age && password && confirmPassword && passwordsMatch;
+    const isFormValid = firstName && lastName && username && age && password && confirmPassword && passwordsMatch && (this.state.accountType !== "social_initiative" || this.state.socialInitOrg);
     return (
         <Container 
         className = "container" 
@@ -156,7 +156,7 @@ class SignUp extends React.Component {
                       <Row>
                         <Col>
                           <FormGroup>
-                            <label>Related Social Initiative (Optional)</label>
+                            <label>{"Related Social Initiative" + (this.state.accountType !== "social_initiative" ? "(Optional)" : "")}</label>
                             <FormInput placeholder="Org Name" onChange={this.handleChangeSocialInitOrg}/>    
                           </FormGroup>   
                         </Col>
