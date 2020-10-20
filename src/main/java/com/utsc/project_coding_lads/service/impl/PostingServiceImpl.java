@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +79,25 @@ public class PostingServiceImpl implements PostingService {
 		userValidator.validateEmployee();
 		return user.getPostings();
 	}
+
+	@Override
+	public List<Posting> findAllPostingsByUserIdDate(Integer userId, LocalDateTime date)
+			throws ValidationFailedException {
+		List<Posting> postings = findAllPostingsByUserId(userId);
+		List<Posting> postingsByDate = new ArrayList<>();
+		for (Posting posting : postings) {
+			if (posting.getPostingDate().isAfter(date)) {
+				postingsByDate.add(posting);
+			}
+		}
+		return postingsByDate;
+	}
+
+	@Override
+	public List<Posting> getAllPostings() {
+		return postingRepo.findAll();
+	}
+	
+	
 
 }
