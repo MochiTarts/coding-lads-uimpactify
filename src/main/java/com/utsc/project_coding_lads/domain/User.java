@@ -52,8 +52,7 @@ public class User extends BaseDataEntity {
 	private List<Event> events;
 	private List<Posting> postings;
 
-	
-	@ManyToOne(optional = true)
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInit() {
 		return socialInit;
@@ -112,7 +111,8 @@ public class User extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
-	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	@OneToMany(mappedBy = "eventCreator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<Event> getEvents() {
 		return events;
 	}

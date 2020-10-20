@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,7 +16,8 @@ public class Event extends BaseDataEntity {
 	
 	private String eventName;
 	private String eventDesc;
-	private User user;
+	private User eventCreator;
+	private LocalDateTime eventDate;
 	
 	@Column(name = "event_name", length = 32)
 	public String getEventName() {
@@ -30,14 +33,22 @@ public class Event extends BaseDataEntity {
 	public void setEventDesc(String eventDesc) {
 		this.eventDesc = eventDesc;
 	}
+	@Column(name = "event_date", length = 12)
+	public LocalDateTime getEventDate() {
+		return eventDate;
+	}
+	public void setEventDate(LocalDateTime eventDate) {
+		this.eventDate = eventDate;
+	}
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	public User getUser() {
-		return user;
+	public User getEventCreator() {
+		return eventCreator;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setEventCreator(User eventCreator) {
+		this.eventCreator = eventCreator;
 	}
+	
 	
 	
 	

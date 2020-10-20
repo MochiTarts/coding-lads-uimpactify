@@ -32,18 +32,16 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
-
 	@Autowired
 	RoleService roleService;
-
 	@Autowired
 	ImpactConsultantService consultantService;
-
 	@Autowired
 	ImpactLearnerService learnerService;
-
 	@Autowired
 	SocialInitService socialInitService;
+	@Autowired
+	UserValidator userValidator;
 
 //	@Override
 //	public Integer storeUser(User user) throws Exception {
@@ -125,8 +123,8 @@ public class UserServiceImpl implements UserService {
 			throw new BadRequestException("User cannot be null");
 		//if (user.getRole() == null)
 		//	throw new BadRequestException("Role cannot be null");
-		UserValidator validator = new UserValidator(user);
-		validator.validate();
+		userValidator.init(user);
+		userValidator.validate();
 
 		if (user.getSocialInit() != null) {
 			String socialInitName = user.getSocialInit().getName();

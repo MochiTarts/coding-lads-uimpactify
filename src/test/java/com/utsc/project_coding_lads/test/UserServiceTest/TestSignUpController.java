@@ -62,10 +62,10 @@ public class TestSignUpController {
 //		}
 	}
 	
-	/*@Test(expected = BadRequestException.class)
+	@Test(expected = BadRequestException.class)
 	public void nullRequest() throws Exception {
 		controller.storeUser(null);
-	}*/
+	}
 	
 	@Test
 	public void addSocialOrgPublicUser() throws Exception {

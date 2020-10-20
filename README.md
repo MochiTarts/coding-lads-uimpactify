@@ -18,6 +18,10 @@ After building the project, do the following to run the spring application
 2. Type "mvn spring-boot:run"
 3. Wait until you see the giant SPRING logo and it says that your server is up and running, hit ctrl+c to kill it.
 
+### To see API documentation
+1. Run the spring application
+2. Go to http://localhost:8080/uimpactify/swagger-ui.html
+
 ### Running the front-end
 Go to "project-coding-lads\frontend\uimpactify-web"
 With node installed (https://nodejs.org/en/), run:

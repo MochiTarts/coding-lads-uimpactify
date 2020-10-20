@@ -23,6 +23,7 @@ public class Posting extends BaseDataEntity {
 	private User postingCreator;
 	private String postingType;
 	private LocalDateTime postingDate;
+	private SocialInitiative socialInit;
 	
 //	public List<Application> getApplication() {
 //		return application;
@@ -66,6 +67,15 @@ public class Posting extends BaseDataEntity {
 	public void setPostingType(String postingType) {
 		this.postingType = postingType;
 	}
+	@ManyToOne
+	@JoinColumn(name="social_init_id")
+	public SocialInitiative getSocialInit() {
+		return socialInit;
+	}
+	public void setSocialInit(SocialInitiative socialInit) {
+		this.socialInit = socialInit;
+	}
+	
 	
 	
 	

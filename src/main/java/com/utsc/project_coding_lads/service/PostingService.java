@@ -7,7 +7,7 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public interface PostingService {
 
-	public Integer savePosting(Posting posting) throws ValidationFailedException;
+	public Posting savePosting(Posting posting) throws ValidationFailedException;
 	
 	public Posting findPostingById(Integer postingId) throws ValidationFailedException;
 	
@@ -15,7 +15,7 @@ public interface PostingService {
 	
 	public void deletePostingById(Integer postingId) throws Exception;
 	
-	public Integer updatePosting(Posting posting) throws ValidationFailedException;
+	public Posting updatePosting(Posting posting) throws ValidationFailedException;
 	
 	public List<Posting> findAllPostingsByUserId(Integer userId) throws ValidationFailedException;
 }
