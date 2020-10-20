@@ -125,13 +125,13 @@ public class UserController extends BaseController {
 	}
 	
 	@PostMapping(path = "/createEvent")
-	@ApiOperation(value = "create a new posting", response = Event.class)
+	@ApiOperation(value = "create a new event", response = Event.class)
 	public Event createEvent(@RequestBody Event event) {
 		Event savedEvent = null;
 		try {
 			savedEvent = eventService.saveEvent(event);
 		} catch (ValidationFailedException e) {
-			log.info("Could not create posting: ", e);
+			log.info("Could not create event: ", e);
 		}
 		return savedEvent;
 	}

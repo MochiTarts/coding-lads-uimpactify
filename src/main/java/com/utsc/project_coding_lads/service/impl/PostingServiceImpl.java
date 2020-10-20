@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Posting;
+import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.PostingRepository;
 import com.utsc.project_coding_lads.service.PostingService;
+import com.utsc.project_coding_lads.service.SocialInitService;
 import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.PostingValidator;
 import com.utsc.project_coding_lads.validator.UserValidator;
@@ -28,6 +30,8 @@ public class PostingServiceImpl implements PostingService {
 	@Autowired
 	UserService userService;
 	@Autowired
+	SocialInitService socialInitService;
+	@Autowired
 	PostingValidator postingValidator;
 	@Autowired
 	UserValidator userValidator;
@@ -39,6 +43,8 @@ public class PostingServiceImpl implements PostingService {
 		postingValidator.init(posting.getName(), posting.getPostingDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getSocialInit());
 		postingValidator.validate();
+		SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(posting.getSocialInit().getName());
+		posting.setSocialInit(savedSocialInit);
 		User user = userService.findUserById(posting.getPostingCreator().getId());
 		posting.setPostingCreator(user);
 		return postingRepo.save(posting);
@@ -64,6 +70,10 @@ public class PostingServiceImpl implements PostingService {
 		postingValidator.init(posting.getName(), posting.getPostingDesc(),
 				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
 		postingValidator.validateExists();
+		SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(posting.getSocialInit().getName());
+		posting.setSocialInit(savedSocialInit);
+		User user = userService.findUserById(posting.getPostingCreator().getId());
+		posting.setPostingCreator(user);
 		return postingRepo.save(posting);
 	}
 

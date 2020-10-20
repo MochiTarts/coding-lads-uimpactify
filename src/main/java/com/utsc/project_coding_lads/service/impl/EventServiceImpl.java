@@ -62,6 +62,8 @@ public class EventServiceImpl implements EventService {
 			throw new MissingInformationException("Event body is null");
 		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(), event.getEventDate(), event.getId());
 		eventValidator.validateExists();
+		User user = userService.findUserById(event.getEventCreator().getId());
+		event.setEventCreator(user);
 		return eventRepo.save(event);
 	}
 

@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.utsc.project_coding_lads.enums.PostingEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = Posting.TABLE_NAME)
@@ -45,6 +45,7 @@ public class Posting extends BaseDataEntity {
 	public void setPostingDesc(String postingDesc) {
 		this.postingDesc = postingDesc;
 	}
+//	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	public User getPostingCreator() {
