@@ -24,19 +24,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(myUserDetailsService);
 	}
 	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.authorizeRequests()
-				.antMatchers("/", "/signup").permitAll()
-				.anyRequest().authenticated()
-				.and()
-			.formLogin()
-				.permitAll()
-				.and()
-			.logout()
-				.permitAll();
-	}
+	/*
+	 * @Override protected void configure(HttpSecurity http) throws Exception { http
+	 * .authorizeRequests() .antMatchers("/signup").permitAll()
+	 * .anyRequest().authenticated() .and() .formLogin() .permitAll() .and()
+	 * .logout() .permitAll(); }
+	 */
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
