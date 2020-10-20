@@ -1,12 +1,15 @@
 package com.utsc.project_coding_lads.service;
 
-import org.springframework.validation.annotation.Validated;
-
-import com.sun.istack.NotNull;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 
-@Validated
 public interface UserService {
 
-	public Integer storeUser(@NotNull User user) throws Exception;
+	final static String SERVICE_NAME = "users";
+	
+	public Integer storeUser(User user) throws Exception;
+	
+	public User findUserById(Integer id) throws EntityNotExistException;
+	
+	public Boolean existsById(Integer id);
 }

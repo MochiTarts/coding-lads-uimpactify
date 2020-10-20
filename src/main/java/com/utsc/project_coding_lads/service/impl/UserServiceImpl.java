@@ -1,31 +1,185 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.Role;
+import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.enums.RoleEnum;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.repository.UserRepository;
+import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.RoleService;
+import com.utsc.project_coding_lads.service.SocialInitService;
 import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
+	@Autowired
+	RoleService roleService;
+	@Autowired
+	ImpactConsultantService consultantService;
+	@Autowired
+	ImpactLearnerService learnerService;
+	@Autowired
+	SocialInitService socialInitService;
+	@Autowired
+	UserValidator userValidator;
+
+//	@Override
+//	public Integer storeUser(User user) throws Exception {
+//		try {
+//			UserValidator validator = new UserValidator();
+//			String roleName = null;
+//			String socialInitName = null;
+//			
+//			Role roleChecker = user.getRole();
+//			SocialInitiative socialInitChecker = user.getSocialInit();
+//			user.setRole(null);
+//			user.setSocialInit(null);
+//			
+//			if (validator.validate(user)) {
+//				
+//				if ((roleChecker == null) && (socialInitChecker == null)) {
+//					throw new BadRequestException("role and socialInit cannot both be empty");
+//				}
+//
+//				if (roleChecker != null) {
+//					roleName = roleChecker.getName();
+//					
+//					if (roleName != null) {
+//						if (roleName.equals(RoleEnum.IMPACT_LEARNER.name())) {
+//							ImpactLearner learner = new ImpactLearner();
+//							learner.setUser(user);
+//							learnerService.storeImpactLearner(learner);
+//							
+//							Role userRole = new Role(roleName);
+//							userRole.setId(roleService.findRoleIdByName(roleName));
+//							user.setRole(userRole);
+//						} else if (roleName.equals(RoleEnum.IMPACT_CONSULTANT.name())) {
+//							ImpactConsultant consultant = new ImpactConsultant();
+//							consultant.setUser(user);
+//							consultantService.storeImpactConsultantService(consultant);
+//
+//							Role userRole = new Role(roleName);
+//							userRole.setId(roleService.findRoleIdByName(roleName));
+//							user.setRole(userRole);
+//						} else {
+//							throw new UserTypeInvalidException("role name must be of impact_consultant or impact_learner");
+//						}
+//					}
+//				}
+//				
+//				if (socialInitChecker != null) {
+//					socialInitName = socialInitChecker.getName();
+//					
+//					SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
+//					if (userSocialInit != null) {
+//						user.setSocialInit(userSocialInit);
+//					} else {
+//						userSocialInit = new SocialInitiative();
+//						userSocialInit.setName(socialInitName);
+//						userSocialInit.setId(socialInitService.storeSocialInit(userSocialInit));
+//						
+//						user.setSocialInit(userSocialInit);
+//					}
+//				}
+//
+//				return userRepo.save(user).getId();
+//			} else {
+//				//System.out.println("Got here");
+//				throw new MissingInformationException("Request is missing required info");
+//			}
+//		} catch(DataIntegrityViolationException e) {
+//			throw new EntityAlreadyExistsException("Username already exists");
+//		} catch(UserTypeInvalidException e) {
+//			throw e;
+//		} catch(InvalidSocialInitNameException e) {
+//			throw e;
+//		}
+//	}
 
 	@Override
 	public Integer storeUser(User user) throws Exception {
-		// Check user object for all necessary fields and make sure is not null
-		if (user != null && user.getFirstName() != null && !user.getFirstName().trim().isEmpty()
-				&& user.getLastName() != null && !user.getLastName().trim().isEmpty()
-				&& user.getUsername() != null && !user.getUsername().trim().isEmpty()
-				&& user.getHashedPassword() != null && !user.getHashedPassword().trim().isEmpty()
-				&& user.getAge() != null) {
-			return userRepo.save(user).getId();
-		} else {
-			throw new BadRequestException("Request is either improperly formatted or missing info");
+		Integer id = null;
+		if (user == null)
+			throw new BadRequestException("User cannot be null");
+		//if (user.getRole() == null)
+		//	throw new BadRequestException("Role cannot be null");
+		userValidator.init(user);
+		userValidator.validate();
+
+		if (user.getSocialInit() != null) {
+			String socialInitName = user.getSocialInit().getName();
+			if (socialInitName != null) {
+				SocialInitiative userSocialInit = socialInitService.findSocialInitByName(socialInitName);
+				if (userSocialInit != null) {
+					user.setSocialInit(userSocialInit);
+				} else {
+					userSocialInit = new SocialInitiative();
+					userSocialInit.setName(socialInitName);
+					SocialInitiative savedSocialInit = socialInitService.storeSocialInit(userSocialInit);
+					user.setSocialInit(savedSocialInit);
+				}
+				//Public user case
+				if (user.getRole() == null) {
+					id = userRepo.save(user).getId();
+					return id;
+				}
+				
+			}
 		}
+
+		if (user.getRole() != null) {
+			String roleName = user.getRole().getName();
+//			Role role = roleService.saveRole(user.getRole());
+//			log.info("role: " + role.getName());
+			Role userRole = roleService.findRoleByName(roleName);
+			user.setRole(userRole);
+			User savedUser = userRepo.save(user);
+			if (roleName.equals(RoleEnum.IMPACT_LEARNER.name())) {
+				ImpactLearner learner = new ImpactLearner();
+				learner.setUser(savedUser);
+				id = learnerService.storeImpactLearner(learner);
+			} else if (roleName.equals(RoleEnum.IMPACT_CONSULTANT.name())) {
+				ImpactConsultant consultant = new ImpactConsultant();
+				consultant.setUser(savedUser);
+				id = consultantService.storeImpactConsultantService(consultant);
+			} else {
+				throw new UserTypeInvalidException("Role must be impact_consultant or impact_learner");
+			}
+		}
+
+		return id;
+	}
+
+	@Override
+	public User findUserById(Integer id) throws EntityNotExistException {
+		if (!existsById(id))
+			throw new EntityNotExistException("That user does not exist");
+		return userRepo.getOne(id);
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return userRepo.existsById(id);
 	}
 
 }

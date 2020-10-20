@@ -9,8 +9,9 @@ import javax.persistence.Table;
 public class Role extends BaseDataEntity {
 
 	public static final String TABLE_NAME = "ROLE";
-	
 	private String name;
+	
+	public Role() {}
 	
 	public Role(String name) {
 		super();
@@ -26,5 +27,7 @@ public class Role extends BaseDataEntity {
 		this.name = name;
 	}
 	
+	
+
 	
 }

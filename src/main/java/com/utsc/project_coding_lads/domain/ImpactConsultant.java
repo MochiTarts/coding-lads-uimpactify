@@ -2,7 +2,9 @@ package com.utsc.project_coding_lads.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
@@ -27,8 +29,8 @@ public class ImpactConsultant extends BaseDataEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@OneToMany
-	@JoinColumn(name = "course_id")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "instructor")
+//	@JoinColumn(name = "course_id")
 	public List<Course> getCourses() {
 		return courses;
 	}
@@ -36,6 +38,6 @@ public class ImpactConsultant extends BaseDataEntity {
 		this.courses = courses;
 	}
 	
-	
+
 	
 }

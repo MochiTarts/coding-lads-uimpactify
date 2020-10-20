@@ -58,7 +58,7 @@ class Sidebar extends React.Component {
                 <NavLink href="/aboutus">About Us</NavLink>
               </NavItem>,
               <NavItem>
-                <NavLink href="/dashboard" onClick=  {()=>{userContext.signIn()}}>Sign In</NavLink>
+                <NavLink href="/signin">Sign In</NavLink>
               </NavItem >,
               <NavItem>
                 <NavLink href="/signup">Sign Up</NavLink>

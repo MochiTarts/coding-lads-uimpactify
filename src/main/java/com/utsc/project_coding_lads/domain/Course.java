@@ -42,8 +42,8 @@ public class Course extends BaseDataEntity {
 	public void setInstructor(ImpactConsultant instructor) {
 		this.instructor = instructor;
 	}
-	@OneToMany
-	@JoinColumn(name = "class_session_id")
+	@OneToMany(mappedBy = "course")
+//	@JoinColumn(name = "class_session_id")
 	public List<ClassSession> getSessions() {
 		return sessions;
 	}

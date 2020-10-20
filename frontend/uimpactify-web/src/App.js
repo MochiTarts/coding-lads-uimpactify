@@ -11,6 +11,7 @@ import "./App.css";
 import Sidebar from "./components/Sidebar";
 import Landing from "./pages/Landing.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import SignIn from "./pages/SignIn.jsx";
 import  {UserContextProvider} from "./components/UserContextProvider";
 import  PrivateRoute from "./components/PrivateRoute";
 
@@ -31,6 +32,7 @@ function App() {
           <Switch>
             <Route path="/" exact component={Landing} />
             <Route path="/signup" exact component={SignUp} />
+            <Route path="/signin" exact component={SignIn} />
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/explore-opportunities" component={ExploreOpportunities} />

@@ -3,6 +3,7 @@ import '../stylesheets/css/SignUp.css';
 import {Container, Row, Col,
     Card,
     CardTitle,
+    CardSubtitle,
     CardBody,
     CardFooter,
     Button,
@@ -27,7 +28,8 @@ class SignUp extends React.Component {
       age: "",
       username: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      socialInitOrg: ""
     }
   }
 
@@ -40,8 +42,11 @@ class SignUp extends React.Component {
   }
 
   finishSignUp = () => {
-    signUp().then(
-      () => {
+    const {firstName, lastName, username, age, confirmPassword, socialInitOrg, accountType} = this.state;
+
+    signUp(firstName, lastName, username, confirmPassword, age, accountType, socialInitOrg).then(
+      (resp) => {
+        console.log(resp);
         this.setState({signedUp: true});
       },
       (error) => {
@@ -68,6 +73,9 @@ class SignUp extends React.Component {
       this.setState({age: enteredAge});
     }
   }
+  handleChangeSocialInitOrg = (event) => {
+    this.setState({socialInitOrg: event.target.value});
+  }
   handleChangePassword = (event) => {
     this.setState({password: event.target.value});
   }
@@ -83,34 +91,35 @@ class SignUp extends React.Component {
         <Container 
         className = "container" 
         >
-                <Card>
+                <Card id="signup-card">
                 <CardBody>
                     <CardTitle>
-                      <h4>Sign up</h4>
-                      <h6>
-                        {!this.state.signedUp && this.state.signUpStep===1 && "Account Type"}
-                        {!this.state.signedUp && this.state.signUpStep===2 && "Account Information"}
-                        {this.state.signedUp && "Finish"}
-                      </h6>
+                      Sign up
                     </CardTitle>
+                    <CardSubtitle>
+                      {!this.state.signedUp && this.state.signUpStep===1 && "Account Type"}
+                      {!this.state.signedUp && this.state.signUpStep===2 && "Account Information"}
+                      {this.state.signedUp && "Finish"}
+                    </CardSubtitle>
+
                     {!this.state.signedUp && this.state.signUpStep ===1 && 
                     <Row >
-                      <Col className = {this.state.accountType === "social-initiative" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"social-initiative"})}}>
+                      <Col className = {this.state.accountType === "social_initiative" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"social_initiative"})}}>
                         <a href="#social-initiative">
                           <img src={accountTypeSocialInit} className="accountTypeImg" alt="social-initiative"></img>
                           <p>Social Initiative</p>
                         </a>
                       </Col>
-                      <Col className = {this.state.accountType === "student" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"student"})}}>
+                      <Col className = {this.state.accountType === "impact_learner" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"impact_learner"})}}>
                         <a href="#student">
                           <img src={accountTypeStudent} className="accountTypeImg" alt="student"></img>
-                          <p>Student</p>
+                          <p>Impact Learner</p>
                         </a>
                       </Col>          
-                      <Col className = {this.state.accountType === "instructor" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"instructor"})}}>
+                      <Col className = {this.state.accountType === "impact_consultant" ? "accountTypeColSelected" : "accountTypeCol" } onClick={()=>{this.setState({accountType:"impact_consultant"})}}>
                         <a href="#instructor">
                           <img src={accountTypeInstructor} className="accountTypeImg" alt="instructor"></img>
-                          <p>Instructor</p>
+                          <p>Impact Consultant</p>
                         </a>
                       </Col>
                     </Row>}
@@ -141,6 +150,14 @@ class SignUp extends React.Component {
                           <FormGroup>
                             <label>Age</label>
                             <FormInput type="number"  min="1" step="1" placeholder="Age" onChange={this.handleChangeAge} value={this.state.age}/>    
+                          </FormGroup>   
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <label>Related Social Initiative (Optional)</label>
+                            <FormInput placeholder="Org Name" onChange={this.handleChangeSocialInitOrg}/>    
                           </FormGroup>   
                         </Col>
                       </Row>

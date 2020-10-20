@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.repository.RoleRepository;
+import com.utsc.project_coding_lads.service.RoleService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
@@ -17,11 +18,13 @@ public class TestRoleRepo {
 
 	@Autowired
 	RoleRepository roleRepo;
+	@Autowired
+	RoleService roleService;
 	
 	@Test
-	public void test() {
-		Role role1 = new Role("impact_learner");
-		Role role2 = new Role("impact_consultant");
+	public void test() throws Exception {
+		Role role1 = new Role("IMPACT_LEARNER");
+		Role role2 = new Role("IMPACT_CONSULTANT");
 		
 		Role role_1 = roleRepo.save(role1);
 		Role role_2 = roleRepo.save(role2);
@@ -29,11 +32,11 @@ public class TestRoleRepo {
 		Assert.assertNotNull(role_1.getId());
 		Assert.assertNotNull(role_2.getId());
 		
-		Integer impactLearnerId = roleRepo.findRoleIdByName("impact_learner");
-		Integer impactConsultantId = roleRepo.findRoleIdByName("impact_consultant");
-		
-		Assert.assertEquals(role_1.getId(), impactLearnerId);
-		Assert.assertEquals(role_2.getId(), impactConsultantId);
+		Role impactLearnerId = roleService.findRoleByName("IMPACT_LEARNER");
+		Role impactConsultantId = roleService.findRoleByName("IMPACT_CONSULTANT");
+
+		Assert.assertEquals(role_1.getId(), impactLearnerId.getId());
+		Assert.assertEquals(role_2.getId(), impactConsultantId.getId());
 	}
 
 }

@@ -2,32 +2,57 @@ package com.utsc.project_coding_lads.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
+import com.utsc.project_coding_lads.custom_deserialize.SocialInitDeserializer;
 
 @Entity
 @Table(name = User.TABLE_NAME)
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class User extends BaseDataEntity {
 	
-	public static final String TABLE_NAME = "USER";
+	public static final String TABLE_NAME = "UI_USER";
 	
+	private boolean isAuthenticated;
+	
+	@JsonProperty("firstName")
 	private String firstName;
+	
+	@JsonProperty("lastName")
 	private String lastName;
+	
+	@JsonProperty("username")
 	private String username;
+
+	@JsonProperty("password")
 	private String hashedPassword;
-	private SocialInitiative socialInit;
-	private Role role;
+	
+	@JsonProperty("age")
 	private Integer age;
+	
+	@JsonDeserialize(using = SocialInitDeserializer.class)
+	@JsonProperty("socialInit")
+	private SocialInitiative socialInit;
+	
+	@JsonDeserialize(using = RoleDeserializer.class)
+	@JsonProperty("role")
+	private Role role;
 //	private List<Application> application;
 	private List<Event> events;
-	
-	
-	@ManyToOne(optional = true)
+	private List<Posting> postings;
+
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInit() {
 		return socialInit;
@@ -38,7 +63,7 @@ public class User extends BaseDataEntity {
 	@ManyToOne(optional = true)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
-		return role;
+		return this.role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
@@ -64,7 +89,7 @@ public class User extends BaseDataEntity {
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
 	}
-	@Column(name="username", nullable = false, length = 32)
+	@Column(name="username", nullable = false, length = 32, unique = true)
 	public String getUsername() {
 		return username;
 	}
@@ -86,13 +111,22 @@ public class User extends BaseDataEntity {
 //	public void setApplication(List<Application> application) {
 //		this.application = application;
 //	}
-	@OneToMany
-	@JoinColumn(name = "event_id")
+	@JsonIgnore
+	@OneToMany(mappedBy = "eventCreator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<Event> getEvents() {
 		return events;
 	}
 	public void setEvents(List<Event> events) {
 		this.events = events;
+	}
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "posting_id")
+	public List<Posting> getPostings() {
+		return postings;
+	}
+	public void setPostings(List<Posting> postings) {
+		this.postings = postings;
 	}
 	
 	
