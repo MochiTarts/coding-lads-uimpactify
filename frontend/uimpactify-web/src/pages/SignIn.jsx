@@ -19,35 +19,28 @@ class SignIn extends React.Component {
     this.state = {
       username: "",
       password: "",
+      isError: false
     }
-  }
-
-  movePrevPage = () => {
-    this.setState({signUpStep: this.state.signUpStep-1});
-  }
-
-  moveNextPage = () => {
-    this.setState({signUpStep: this.state.signUpStep+1});
   }
 
   finishSignIn = (signInCallBack) => {
     const {username, password} = this.state;
     signIn(username, password).then(
-      () => {
-        signInCallBack({username});
+      (resp) => {
+        signInCallBack(resp.data);
         this.props.history.push('/dashboard');
       },
       (error) => {
-
+        this.setState({isError: true});
       }
     )
   }
 
   handleChangeUsername = (event) => {
-    this.setState({username: event.target.value});
+    this.setState({username: event.target.value, isError: false});
   }
   handleChangePassword = (event) => {
-    this.setState({password: event.target.value});
+    this.setState({password: event.target.value, isError: false});
   }
 
   render() {
@@ -81,6 +74,9 @@ class SignIn extends React.Component {
                                     </FormGroup>   
                                 </Col>
                                 </Row>
+                              {this.state.isError && <Row>
+                               <p className="error">An error occured while signing in, please check your username and password</p>
+                               </Row>}
                             </Col>
                         </CardBody>
                         <CardFooter>

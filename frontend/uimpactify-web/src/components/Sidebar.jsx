@@ -33,7 +33,7 @@ class Sidebar extends React.Component {
                 src={logo}
               />
             </NavItem>
-            {userContext.user && 
+            {userContext.userId && 
             <div>
               <NavItem>
                 <NavLink href="/dashboard">Dashboard</NavLink>
@@ -52,7 +52,7 @@ class Sidebar extends React.Component {
                 <NavLink href="#" onClick= {()=>{userContext.signOut()}}>Sign Out</NavLink>
               </NavItem>
             </div>}
-            {!userContext.user && 
+            {!userContext.userId && 
             <div>
               <NavItem>
                 <NavLink href="/aboutus">About Us</NavLink>
