@@ -15,7 +15,7 @@ class Sidebar extends React.Component {
                 src="https://wisxi.com/wp-content/uploads/2018/10/67226-1-e1539174955591.jpg"
               />
             </NavItem>
-            {userContext.user && 
+            {userContext.userId && 
             <div>
               <NavItem>
                 <NavLink href="/dashboard">Dashboard</NavLink>
@@ -30,7 +30,7 @@ class Sidebar extends React.Component {
                 <NavLink href="#" onClick= {()=>{userContext.signOut()}}>Sign Out</NavLink>
               </NavItem>
             </div>}
-            {!userContext.user && 
+            {!userContext.userId && 
             <div>
               <NavItem>
                 <NavLink href="/aboutus">About Us</NavLink>

@@ -4,21 +4,21 @@ const { Provider, Consumer } = React.createContext();
 class UserContextProvider extends Component {
   constructor(props) {
     super(props)
-    const storedAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
+    const storedAuthenticatedUserId = localStorage.getItem('authenticatedUserId');
     this.state = {
-      user: storedAuthenticatedUser
+      userId: storedAuthenticatedUserId
     };
   }
   signOut = () => {
-    localStorage.removeItem('authenticatedUser');
-    this.setState({user: null})
+    localStorage.removeItem('authenticatedUserId');
+    this.setState({userId: null})
   }
-  signIn = (authenticatedUser) => {
-    localStorage.setItem('authenticatedUser', JSON.stringify(authenticatedUser));   
-    this.setState({user:authenticatedUser})
+  signIn = (authenticatedUserId) => {
+    localStorage.setItem('authenticatedUserId', authenticatedUserId);   
+    this.setState({userId:authenticatedUserId})
   }
   render() {
-    return <Provider value={{user: this.state.user, signOut: this.signOut, signIn: this.signIn}}>{this.props.children}</Provider>;
+    return <Provider value={{userId: this.state.userId, signOut: this.signOut, signIn: this.signIn}}>{this.props.children}</Provider>;
   }
 }
 
