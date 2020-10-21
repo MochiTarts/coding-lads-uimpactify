@@ -1,11 +1,11 @@
 package com.utsc.project_coding_lads.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.WrongPasswordException;
 import com.utsc.project_coding_lads.repository.UserRepository;
 
@@ -13,24 +13,32 @@ import com.utsc.project_coding_lads.repository.UserRepository;
 public class SecurityConfig {
 	@Autowired
 	UserRepository userRepo;
-	public Integer authentication(User entrant) throws WrongPasswordException{
+
+	public Integer authentication(User entrant) throws WrongPasswordException, MissingInformationException {
 		String eUsername = entrant.getUsername();
 		String hashedPassword = entrant.getHashedPassword();
-		
+
+		// check if inputed username is null
+		if (eUsername == "") {
+			throw new MissingInformationException("No username inputed");
+		}
+		// check if inputed password is null
+		if (hashedPassword == "") {
+			throw new MissingInformationException("No password inputed");
+		}
+
 		User confirmation = new User();
 		confirmation = loadUserByUsername(eUsername);
-		
-		
-		
+
 		if (hashedPassword != confirmation.getHashedPassword()) {
 			throw new WrongPasswordException("Password is incorrect");
 		}
-		
+
 		return confirmation.getId();
 	}
-	
-	public User loadUserByUsername(String username) throws UsernameNotFoundException {	
-			return userRepo.findUserByUsername(username);
+
+	public User loadUserByUsername(String username) throws UsernameNotFoundException {
+		return userRepo.findUserByUsername(username);
 	}
-	
+
 }
