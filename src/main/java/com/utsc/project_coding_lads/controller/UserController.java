@@ -21,6 +21,7 @@ import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
+import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
@@ -31,6 +32,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/" + UserService.SERVICE_NAME)
 public class UserController extends BaseController {
 
+	@Autowired
+	SecurityConfig security;
 	@Autowired
 	UserService userService;
 	@Autowired 
@@ -192,7 +195,19 @@ public class UserController extends BaseController {
 		return events;
 	}
 	
+	@PostMapping(path="/login")
+	@ApiOperation(value = "login user", response = User.class)
+	public Integer login(@RequestBody User user) throws Exception {
+		try {
+			PasswordHash encoder = new PasswordHash();
+			user.setHashedPassword(encoder.passwordEncoder(user.getHashedPassword()));
+			
 	
+		} catch(Exception e) {
+			log.info("Could not load user: ", e);	
+		}
+		return security.authentication(user);
+	}
 	
 	
 	
