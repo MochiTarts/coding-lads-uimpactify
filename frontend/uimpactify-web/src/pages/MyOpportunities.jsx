@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OpportunityCard from '../components/OpportunityCard.jsx';
 import "../stylesheets/css/Opportunities.css";
+import { mountMyOpportunities } from "../helpers/services/user-service";
 
 class MyOpportunities extends Component {
     constructor(props) {
@@ -26,7 +27,29 @@ class MyOpportunities extends Component {
 
     componentDidMount() {
         // TODO: fetch opportunities from DB and update state
-        console.log("mounted");
+        var curr;
+        var volOpp = [];
+        var empOpp = [];
+        var conOpp = [];
+        mountMyOpportunities().then(
+            (r) => {
+                const response = JSON.parse(r);
+                for (var i = 0; i < response.length; i++) {
+                    curr = response[i];
+                    if (curr.postingType === "VOLUNTEER") {
+                        volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    } else if (curr.postingType === "EMPLOYMENT") {
+                        empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    } else if (curr.postingType === "CONSULTING") {
+                        conOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    }
+                }
+                this.setState({ volOpp: volOpp });
+                this.setState({ empOpp: empOpp });
+                this.setState({ conOpp: conOpp });
+            },
+            (e) => {}
+        );
     }
 
     render() { 
@@ -45,6 +68,8 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
+                            uid: null,
+                            socialInit: null,
                             type: "volunteer"
                         }
                     }}
@@ -55,6 +80,8 @@ class MyOpportunities extends Component {
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            uid={null}
+                            socialInit={null}
                             title={opp.title}
                             description={opp.description}
                             type="volunteer"
@@ -63,6 +90,7 @@ class MyOpportunities extends Component {
                     ))}
                 </div>
 
+
                 <h3 className="pageSubheader">Employment Opportunities</h3>
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
@@ -70,6 +98,8 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
+                            uid: null,
+                            socialInit: null,
                             type: "employment"
                         }
                     }}
@@ -80,6 +110,8 @@ class MyOpportunities extends Component {
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            uid={null}
+                            socialInit={null}
                             title={opp.title}
                             description={opp.description}
                             type="employment"
@@ -88,6 +120,7 @@ class MyOpportunities extends Component {
                     ))}
                 </div>
 
+
                 <h3 className="pageSubheader">Consulting Opportunities</h3>
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
@@ -95,6 +128,8 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
+                            uid: null,
+                            socialInit: null,
                             type: "consulting"
                         }
                     }}
@@ -105,6 +140,8 @@ class MyOpportunities extends Component {
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            uid={null}
+                            socialInit={null}
                             title={opp.title}
                             description={opp.description}
                             type="consulting"

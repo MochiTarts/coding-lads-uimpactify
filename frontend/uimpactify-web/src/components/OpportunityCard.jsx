@@ -22,7 +22,10 @@ function OpportunityCard(props) {
                     pathname: linkPath,
                     state: {
                         isNew: false,
+                        uid: props.uid,
+                        socialInit: props.socialInit,
                         type: props.type,
+                        pid: props.key,
                         title: props.title,
                         description: props.description,
                     }

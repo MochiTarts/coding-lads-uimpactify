@@ -3,7 +3,7 @@ import OpportunityEditForm from '../components/OpportunityEditForm.jsx';
 import "../stylesheets/css/Opportunities.css";
 
 function EditOpportunity(props) {
-    const { isNew, type, title, description } = props.location.state
+    const { isNew, uid, socialInit, type, pid, title, description } = props.location.state
     var headerText;
     if (isNew) {
         headerText = "Creating New Opportunity";
@@ -17,7 +17,14 @@ function EditOpportunity(props) {
                 <h3 className="pageHeader">{headerText}</h3>
             </div>
 
-            <OpportunityEditForm new={isNew} type={type} title={title} description={description}/>
+            <OpportunityEditForm 
+                new={isNew} 
+                uid={uid}
+                socialInit={socialInit}
+                type={type} 
+                pid={pid}
+                title={title} 
+                description={description}/>
         </div>
     );
 }

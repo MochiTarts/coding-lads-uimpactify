@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/OpportunityEditForm.css";
+import { createPosting, updatePosting, deletePosting } from "../helpers/services/user-service";
 
 class OpportunityEditForm extends Component {
     constructor(props) {
@@ -7,28 +8,49 @@ class OpportunityEditForm extends Component {
         if (props.new) {
             this.state = {
                 isNew: true,
+                uid: props.uid,
+                socialInit: props.socialInit,
                 type: props.type,
+                pid: "",
                 title: "",
                 description: ""
             }
         } else {
             this.state = {
                 isNew: false,
+                uid: props.uid,
+                socialInit: props.socialInit,
                 type: props.type,
+                pid: props.pid,
                 title: props.title,
                 description: props.description
             }
         }
     }
 
-    handleSave() {
-        // TODO: make API call to write to DB
-        console.log("Clicked Save!");
+    handleSave = () => {
+        const { isNew, pid, title, description, uid, type, socialInit } = this.state;
+
+        if (isNew) {
+            createPosting(title, description, uid, type, socialInit).then(
+                (r) => {},
+                (e) => {}
+            );
+        } else {
+            updatePosting(pid, title, description, uid, type, socialInit).then(
+                (r) => {},
+                (e) => {}
+            );
+        }
     }
 
-    handleDelete() {
-        // TODO: make API call to delete this opportunity
-        console.log("Clicked Delete!");
+    handleDelete = () => {
+        const { pid } = this.state;
+
+        deletePosting(pid).then(
+            (r) => {},
+            (e) => {}
+        );
     }
 
     render() {
@@ -63,7 +85,11 @@ class OpportunityEditForm extends Component {
                         onChange={(event) => this.setState({description: event.target.value})}/>
                 </div>
                 
-                <button type="submit" className="btn btn-primary formButtons" onClick={this.handleSave}>Save</button>
+                <button type="submit" 
+                        className="btn btn-primary formButtons" 
+                        onClick={this.handleSave}>
+                    Save
+                </button>
                 {this.state.isNew && 
                     <a href="/myopportunities" className="btn btn-secondary formButtons">
                         Cancel
