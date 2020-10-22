@@ -22,42 +22,46 @@ export const signIn = (username, password) => {
 }
 
 export const mountMyOpportunities = (uid) => {
-    return axios.get(`${apiUrl}/users/getPostings/${uid}`);
+    return axios.get(`${apiUrl}/getPostings/${uid}`);
 }
 
 export const createPosting = (title, description, uid, type, socialInit) => {
     var date = new Date;
     var serializedDate = JSON.stringify(date);
+    var creatorObj = {id: uid};
+    var socialInitObj = {name: socialInit};
     
-    return axios.post(`${apiUrl}/users/createPosting`, {
+    return axios.post(`${apiUrl}/createPosting`, {
         name: title,
         postingDesc: description,
-        postingCreator: {id: uid},
+        postingCreator: creatorObj,
         postingType: type,
         postingDate: serializedDate,
-        socialInit: {name: socialInit}
+        socialInit: socialInitObj
     });
 }
 
 export const updatePosting = (pid, title, description, uid, type, socialInit) => {
     var date = new Date;
     var serializedDate = JSON.stringify(date);
+    var creatorObj = {id: uid};
+    var socialInitObj = {name: socialInit};
 
-    return axios.post(`${apiUrl}/users/updatePosting`, {
+    return axios.post(`${apiUrl}/updatePosting`, {
         id: pid,
         name: title,
         postingDesc: description,
-        postingCreator: {id: uid},
+        postingCreator: creatorObj,
         postingType: type,
         postingDate: serializedDate,
-        socialInit: {name: socialInit}
+        socialInit: socialInitObj
     });
 }
 
 export const getPosting = (pid) => {
-    return axios.post(`${apiUrl}/users/getPosting/${pid}`);
+    return axios.post(`${apiUrl}/getPosting/${pid}`);
 }
 
 export const deletePosting = (pid) => {
-    return axios.post(`${apiUrl}/users/deletePosting/${pid}`);
+    return axios.post(`${apiUrl}/deletePosting/${pid}`);
 }

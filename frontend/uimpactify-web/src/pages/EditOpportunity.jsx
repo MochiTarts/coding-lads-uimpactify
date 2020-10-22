@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import OpportunityEditForm from '../components/OpportunityEditForm.jsx';
 import "../stylesheets/css/Opportunities.css";
 

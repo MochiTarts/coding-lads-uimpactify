@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import "../stylesheets/css/OpportunityCard.css";
 
 function OpportunityCard(props) {
     var linkPath = "/";
-    if (props.button == "Manage") {
+    if (props.button === "Manage") {
         linkPath = "/myopportunities/manage";
-    } else if (props.button == "Apply") {
+    } else if (props.button === "Apply") {
         linkPath = "/myopportunities";
     }
 

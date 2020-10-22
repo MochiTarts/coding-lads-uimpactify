@@ -7,33 +7,32 @@ import { mountMyOpportunities } from "../helpers/services/user-service";
 class MyOpportunities extends Component {
     constructor(props) {
         super(props);
-        // TODO: hard coded opportunities, remove this
-        const volOpp = [
-            {id: '10256', title: "Environmental Hike", description: "Want to join us on a hike to protect the environment? Apply now for a experience of a life time where we hike onto Mt. Richard while picking up litter."},
-        ];
-        const empOpp = [
-            {id: '71935', title: "Software Developer", description: "Bulletin Corp. is looking for passionate developers to work on our latest project, Lunatic. Join a team of creatively minded individuals like yourself to bring our product to life."},
-            {id: '75035', title: "UI Designer", description: "Bulletin Corp. is looking for passionate designers to create a post-modern design of our products. Join a team of creatively minded individuals like yourself to bring our product to life."}
-        ];
-        const conOpp = [
-            {id: '87671', title: "Leading Psychologist", description: "Looking for a professional psychologist who have experience leading a team of indivduals into a successful mindset."},
-        ];
+        // const volOpp = [
+        //     {id: '10256', title: "Environmental Hike", description: "Want to join us on a hike to protect the environment? Apply now for a experience of a life time where we hike onto Mt. Richard while picking up litter."},
+        // ];
+        // const empOpp = [
+        //     {id: '71935', title: "Software Developer", description: "Bulletin Corp. is looking for passionate developers to work on our latest project, Lunatic. Join a team of creatively minded individuals like yourself to bring our product to life."},
+        //     {id: '75035', title: "UI Designer", description: "Bulletin Corp. is looking for passionate designers to create a post-modern design of our products. Join a team of creatively minded individuals like yourself to bring our product to life."}
+        // ];
+        // const conOpp = [
+        //     {id: '87671', title: "Leading Psychologist", description: "Looking for a professional psychologist who have experience leading a team of indivduals into a successful mindset."},
+        // ];
         this.state = {
-            volOpp: volOpp,
-            empOpp: empOpp,
-            conOpp: conOpp
+            uid: props.uid,
+            volOpp: [],
+            empOpp: [],
+            conOpp: []
         }
     }
 
     componentDidMount() {
-        // TODO: fetch opportunities from DB and update state
         var curr;
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
-        mountMyOpportunities().then(
+        mountMyOpportunities(this.state.uid).then(
             (r) => {
-                const response = JSON.parse(r);
+                const response = r.data;
                 for (var i = 0; i < response.length; i++) {
                     curr = response[i];
                     if (curr.postingType === "VOLUNTEER") {
@@ -53,7 +52,7 @@ class MyOpportunities extends Component {
     }
 
     render() { 
-        const { volOpp, empOpp, conOpp } = this.state;
+        const { uid, volOpp, empOpp, conOpp } = this.state;
 
         return (
             <div className="pageContainer">
@@ -68,9 +67,9 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
-                            uid: null,
-                            socialInit: null,
-                            type: "volunteer"
+                            uid: uid,
+                            socialInit: "",
+                            type: "VOLUNTEER"
                         }
                     }}
                 >
@@ -80,11 +79,11 @@ class MyOpportunities extends Component {
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
-                            uid={null}
-                            socialInit={null}
+                            uid={uid}
+                            socialInit=""
                             title={opp.title}
                             description={opp.description}
-                            type="volunteer"
+                            type="VOLUNTEER"
                             button="Manage"
                         />
                     ))}
@@ -98,9 +97,9 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
-                            uid: null,
-                            socialInit: null,
-                            type: "employment"
+                            uid: uid,
+                            socialInit: "",
+                            type: "EMPLOYMENT"
                         }
                     }}
                 >
@@ -110,11 +109,11 @@ class MyOpportunities extends Component {
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
-                            uid={null}
-                            socialInit={null}
+                            uid={uid}
+                            socialInit=""
                             title={opp.title}
                             description={opp.description}
-                            type="employment"
+                            type="EMPLOYMENT"
                             button="Manage"
                         />
                     ))}
@@ -128,9 +127,9 @@ class MyOpportunities extends Component {
                         pathname: "/myopportunities/manage",
                         state: {
                             isNew: true,
-                            uid: null,
-                            socialInit: null,
-                            type: "consulting"
+                            uid: uid,
+                            socialInit: "",
+                            type: "CONSULTING"
                         }
                     }}
                 >
@@ -140,11 +139,11 @@ class MyOpportunities extends Component {
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
-                            uid={null}
-                            socialInit={null}
+                            uid={uid}
+                            socialInit=""
                             title={opp.title}
                             description={opp.description}
-                            type="consulting"
+                            type="CONSULTING"
                             button="Manage"
                         />
                     ))}
