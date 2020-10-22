@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 
 @Repository
-@Transactional
 public interface SocialInitRepository extends JpaRepository<SocialInitiative, Integer>{
 
 	@Query(value = "SELECT s FROM SocialInitiative s WHERE s.name = :name")

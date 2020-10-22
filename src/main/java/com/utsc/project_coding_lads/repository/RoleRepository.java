@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.utsc.project_coding_lads.domain.Role;
 
 @Repository
-@Transactional
 public interface RoleRepository extends JpaRepository<Role, Integer>{
 
 	@Query(value = "SELECT r FROM Role r WHERE r.name = :roleName")
