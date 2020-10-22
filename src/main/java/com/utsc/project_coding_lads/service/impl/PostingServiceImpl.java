@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Posting;
@@ -47,7 +50,9 @@ public class PostingServiceImpl implements PostingService {
 		posting.setSocialInit(savedSocialInit);
 		User user = userService.findUserById(posting.getPostingCreator().getId());
 		posting.setPostingCreator(user);
-		return postingRepo.save(posting);
+		user.getPostings().add(posting);
+		User savedUser = userService.updateUser(user);
+		return savedUser.getPostings().get(savedUser.getPostings().size()-1);
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public class PostingServiceImpl implements PostingService {
 		if (!existsById(postingId)) {
 			throw new EntityNotExistException("That posting does not exist.");
 		}
-		return postingRepo.getOne(postingId);
+		return postingRepo.findById(postingId).get();
 	}
 
 	@Override
@@ -87,7 +92,9 @@ public class PostingServiceImpl implements PostingService {
 		User user = userService.findUserById(userId);
 		userValidator.init(user);
 		userValidator.validateEmployee();
-		return user.getPostings();
+		user.getPostings().size();
+		List<Posting> postings = user.getPostings();
+		return postings;
 	}
 
 	@Override

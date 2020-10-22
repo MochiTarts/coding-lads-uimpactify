@@ -2,6 +2,7 @@ package com.utsc.project_coding_lads.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
@@ -14,6 +15,7 @@ import com.utsc.project_coding_lads.service.SocialInitService;
 import com.utsc.project_coding_lads.service.UserService;
 
 @Component
+@Transactional
 public class UserValidator implements Validator {
 
 	private String firstName;

@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.PostingTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Posting;
@@ -70,6 +72,10 @@ public class TestPostingService {
 		savedPosting.setName("new name");
 		savedPosting = postingService.updatePosting(savedPosting);
 		Assert.assertEquals("new name", savedPosting.getName());
+		
+		List<Posting> postings = postingService.findAllPostingsByUserId(savedUser.getId());
+		Assert.assertFalse(postings.isEmpty());
+		
 		postingService.deletePostingById(savedPosting.getId());
 		
 		Boolean exist = postingService.existsById(id);

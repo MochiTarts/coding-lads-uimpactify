@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
@@ -50,8 +50,8 @@ public class User extends BaseDataEntity {
 	@JsonProperty("role")
 	private Role role;
 //	private List<Application> application;
-	private List<Event> events;
-	private List<Posting> postings;
+	private List<Event> events = new ArrayList<>();
+	private List<Posting> postings = new ArrayList<>();
 
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
@@ -64,7 +64,7 @@ public class User extends BaseDataEntity {
 	@ManyToOne(optional = true)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
-		return this.role;
+		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
@@ -120,9 +120,8 @@ public class User extends BaseDataEntity {
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "posting_id")
+	@JsonIgnore 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "postingCreator")
 	public List<Posting> getPostings() {
 		return postings;
 	}
