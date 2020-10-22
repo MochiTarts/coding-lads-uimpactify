@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,8 @@ public class EventServiceImpl implements EventService {
 			throw new MissingInformationException("Event body is null");
 		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(), event.getEventDate(), event.getId());
 		eventValidator.validateExists();
+		User user = userService.findUserById(event.getEventCreator().getId());
+		event.setEventCreator(user);
 		return eventRepo.save(event);
 	}
 
@@ -74,6 +78,19 @@ public class EventServiceImpl implements EventService {
 		userValidator.init(user);
 		userValidator.validateExists();
 		return user.getEvents();
+	}
+
+	@Override
+	public List<Event> findAllEventsByUserIdDate(Integer userId, LocalDateTime date) throws ValidationFailedException {
+		if (date == null) throw new ValidationFailedException("Date cannot be null.");
+		List<Event> eventsByDate = new ArrayList<>();
+		List<Event> events = findAllEventsByUserId(userId);
+		for (Event event : events) {
+			if (event.getEventDate().isAfter(date)) {
+				eventsByDate.add(event);
+			}
+		}
+		return eventsByDate;
 	}
 
 }

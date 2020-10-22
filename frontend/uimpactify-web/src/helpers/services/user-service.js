@@ -1,5 +1,5 @@
 import axios from 'axios';
-const apiUrl = 'http://localhost:8080';
+const apiUrl = 'http://localhost:8080/uimpactify/users';
 
 export const signUp = (firstName, lastName, username, password, age, role, socialInit) => {
     var roleObj;
@@ -17,8 +17,6 @@ export const signUp = (firstName, lastName, username, password, age, role, socia
 }
 
 export const signIn = (username, password) => {
-    // return axios.post(`${apiUrl}/signin`,
-    // {username, password});
-    // MOCKING API CALL FOR NOW
-    return Promise.resolve({});
+    return axios.post(`${apiUrl}/login`,
+    {username, password});
 }

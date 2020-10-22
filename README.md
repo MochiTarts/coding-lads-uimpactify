@@ -11,6 +11,16 @@
 8. In the checkboxes below, click "Skip Tests" to be true
 9. Left click the project at the root level, then click your new run config to do a clean install
 
+### Setting up the database
+1. Go to https://www.postgresql.org/download/ and install the latest version for your OS
+2. Make sure to download the pgAdmin 4 - console extension
+3. Go to installation location/bin run pgAdmin 4 executable
+4. Set master password to "pgAdmin"
+5. Right click servers on the left side and create a new one
+6. Name the server c01
+7. Under the connection tab, specify the host as "localhost"
+8. Under the same tab, put password as "postgres" and click save password
+9. Click save and run the spring application
 
 ### Run the spring application
 After building the project, do the following to run the spring application

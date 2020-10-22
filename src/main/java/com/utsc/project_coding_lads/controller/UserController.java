@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
+import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
@@ -30,6 +32,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/" + UserService.SERVICE_NAME)
 public class UserController extends BaseController {
 
+	@Autowired
+	SecurityConfig security;
 	@Autowired
 	UserService userService;
 	@Autowired 
@@ -65,6 +69,18 @@ public class UserController extends BaseController {
 			log.info("Could not create posting: ", e);
 		}
 		return savedPosting;
+	}
+	
+	@GetMapping(path = "/getUser/{id}")
+	@ApiOperation(value = "find a user by id", response = User.class)
+	public User getUser(@PathVariable("id") Integer id) {
+		User user = null;
+		try {
+			user = userService.findUserById(id);
+		} catch (Exception e) {
+			log.info("Could not get posting with id: " + id + ", ", e.getMessage());
+		}
+		return user;
 	}
 	
 	@PostMapping(path = "/updatePosting")
@@ -111,14 +127,26 @@ public class UserController extends BaseController {
 		return postings;
 	}
 	
+	@GetMapping(path = "/getPostingsByDate/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Posting.class, responseContainer = "List")
+	public List<Posting> getPostingsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) {
+		List<Posting> postings = null;
+		try {
+			postings = postingService.findAllPostingsByUserIdDate(userId, date);
+		} catch (Exception e) {
+			log.info("Could not get postings with userid: " + userId + ", and date: " + date, e.getMessage());
+		}
+		return postings;
+	}
+	
 	@PostMapping(path = "/createEvent")
-	@ApiOperation(value = "create a new posting", response = Event.class)
+	@ApiOperation(value = "create a new event", response = Event.class)
 	public Event createEvent(@RequestBody Event event) {
 		Event savedEvent = null;
 		try {
 			savedEvent = eventService.saveEvent(event);
 		} catch (ValidationFailedException e) {
-			log.info("Could not create posting: ", e);
+			log.info("Could not create event: ", e);
 		}
 		return savedEvent;
 	}
@@ -165,6 +193,32 @@ public class UserController extends BaseController {
 			log.info("Could not get events with userid: " + userId + ", ", e.getMessage());
 		}
 		return events;
+	}
+	
+	@GetMapping(path = "/getEventsByDate/{id}")
+	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) {
+		List<Event> events = null;
+		try {
+			events = eventService.findAllEventsByUserIdDate(userId, date);
+		} catch (Exception e) {
+			log.info("Could not get events with userid: " + userId + ", and date: " + date, e.getMessage());
+		}
+		return events;
+	}
+	
+	@PostMapping(path="/login")
+	@ApiOperation(value = "login user", response = User.class)
+	public Integer login(@RequestBody User user) throws Exception {
+		try {
+			PasswordHash encoder = new PasswordHash();
+			user.setHashedPassword(encoder.passwordEncoder(user.getHashedPassword()));
+			
+	
+		} catch(Exception e) {
+			log.info("Could not load user: ", e);	
+		}
+		return security.authentication(user);
 	}
 	
 	
