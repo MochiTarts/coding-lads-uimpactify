@@ -71,6 +71,18 @@ public class UserController extends BaseController {
 		return savedPosting;
 	}
 	
+	@GetMapping(path = "/getUser/{id}")
+	@ApiOperation(value = "find a user by id", response = User.class)
+	public User getUser(@PathVariable("id") Integer id) {
+		User user = null;
+		try {
+			user = userService.findUserById(id);
+		} catch (Exception e) {
+			log.info("Could not get posting with id: " + id + ", ", e.getMessage());
+		}
+		return user;
+	}
+	
 	@PostMapping(path = "/updatePosting")
 	@ApiOperation(value = "update a posting", response = Posting.class)
 	public Posting updatePosting(@RequestBody Posting posting) throws Exception {
