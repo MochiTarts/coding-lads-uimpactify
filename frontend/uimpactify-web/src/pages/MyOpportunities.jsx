@@ -32,9 +32,8 @@ class MyOpportunities extends Component {
         var conOpp = [];
         mountMyOpportunities(this.state.uid).then(
             (r) => {
-                const response = r.data;
-                for (var i = 0; i < response.length; i++) {
-                    curr = response[i];
+                for (var i = 0; i < r.data.length; i++) {
+                    curr = r.data[i];
                     if (curr.postingType === "VOLUNTEER") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {
@@ -64,11 +63,10 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/manage",
+                        pathname: "/myopportunities/create",
                         state: {
                             isNew: true,
                             uid: uid,
-                            socialInit: "",
                             type: "VOLUNTEER"
                         }
                     }}
@@ -80,7 +78,6 @@ class MyOpportunities extends Component {
                         <OpportunityCard
                             key={opp.id}
                             uid={uid}
-                            socialInit=""
                             title={opp.title}
                             description={opp.description}
                             type="VOLUNTEER"
@@ -94,11 +91,10 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/manage",
+                        pathname: "/myopportunities/create",
                         state: {
                             isNew: true,
                             uid: uid,
-                            socialInit: "",
                             type: "EMPLOYMENT"
                         }
                     }}
@@ -110,7 +106,6 @@ class MyOpportunities extends Component {
                         <OpportunityCard
                             key={opp.id}
                             uid={uid}
-                            socialInit=""
                             title={opp.title}
                             description={opp.description}
                             type="EMPLOYMENT"
@@ -124,11 +119,10 @@ class MyOpportunities extends Component {
                 <Link
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
-                        pathname: "/myopportunities/manage",
+                        pathname: "/myopportunities/create",
                         state: {
                             isNew: true,
                             uid: uid,
-                            socialInit: "",
                             type: "CONSULTING"
                         }
                     }}
@@ -140,7 +134,6 @@ class MyOpportunities extends Component {
                         <OpportunityCard
                             key={opp.id}
                             uid={uid}
-                            socialInit=""
                             title={opp.title}
                             description={opp.description}
                             type="CONSULTING"

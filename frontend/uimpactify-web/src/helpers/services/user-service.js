@@ -10,7 +10,7 @@ export const signUp = (firstName, lastName, username, password, age, role, socia
     if(socialInit) {
         socialInitObj = {name: socialInit};
     }
-    return axios.post(`${apiUrl}/users/signup`,
+    return axios.post(`${apiUrl}/signup`,
     {firstName, lastName, username, password, age, role: roleObj, socialInit: socialInitObj});
     // MOCKING API CALL FOR NOW
     return Promise.resolve({});
@@ -25,9 +25,9 @@ export const mountMyOpportunities = (uid) => {
     return axios.get(`${apiUrl}/getPostings/${uid}`);
 }
 
-export const createPosting = (title, description, uid, type, socialInit) => {
+ export const createPosting = (title, description, uid, type, socialInit) => {
     var date = new Date;
-    var serializedDate = JSON.stringify(date);
+    var serializedDate = date;
     var creatorObj = {id: uid};
     var socialInitObj = {name: socialInit};
     
@@ -43,7 +43,7 @@ export const createPosting = (title, description, uid, type, socialInit) => {
 
 export const updatePosting = (pid, title, description, uid, type, socialInit) => {
     var date = new Date;
-    var serializedDate = JSON.stringify(date);
+    var serializedDate = date;
     var creatorObj = {id: uid};
     var socialInitObj = {name: socialInit};
 
@@ -58,10 +58,14 @@ export const updatePosting = (pid, title, description, uid, type, socialInit) =>
     });
 }
 
+export const deletePosting = (pid) => {
+    return axios.post(`${apiUrl}/deletePosting/${pid}`);
+}
+
 export const getPosting = (pid) => {
     return axios.post(`${apiUrl}/getPosting/${pid}`);
 }
 
-export const deletePosting = (pid) => {
-    return axios.post(`${apiUrl}/deletePosting/${pid}`);
+export const getUser = (uid) => {
+    return axios.get(`${apiUrl}/getUser/${uid}`);
 }

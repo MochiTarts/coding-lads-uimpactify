@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from "./pages/Dashboard.jsx";
 import MyOpportunities from "./pages/MyOpportunities.jsx";
 import ExploreOpportunities from "./pages/ExploreOpportunities.jsx";
-import EditOpportunity from "./pages/EditOpportunity.jsx";
+import ManageOpportunity from "./pages/ManageOpportunity.jsx";
+import CreateOpportunity from "./pages/CreateOpportunity.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "shards-ui/dist/css/shards.min.css";
 import bubbleBackground from "./img/double-bubble-outline.png";
@@ -37,7 +38,8 @@ function App() {
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/explore-opportunities" component={ExploreOpportunities} />
               <PrivateRoute path="/myopportunities" exact component={MyOpportunities} />
-              <PrivateRoute path="/myopportunities/manage" component={EditOpportunity} />
+              <PrivateRoute path="/myopportunities/manage" component={ManageOpportunity} />
+              <PrivateRoute path="/myopportunities/create" component={CreateOpportunity} />
             </Fragment>
           </Switch>
         </BrowserRouter>
