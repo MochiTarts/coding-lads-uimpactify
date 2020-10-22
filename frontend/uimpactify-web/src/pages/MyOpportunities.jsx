@@ -2,21 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import OpportunityCard from '../components/OpportunityCard.jsx';
 import "../stylesheets/css/Opportunities.css";
-import { mountMyOpportunities } from "../helpers/services/user-service";
+import { getMyOpportunities } from "../helpers/services/user-service";
 
 class MyOpportunities extends Component {
     constructor(props) {
         super(props);
-        // const volOpp = [
-        //     {id: '10256', title: "Environmental Hike", description: "Want to join us on a hike to protect the environment? Apply now for a experience of a life time where we hike onto Mt. Richard while picking up litter."},
-        // ];
-        // const empOpp = [
-        //     {id: '71935', title: "Software Developer", description: "Bulletin Corp. is looking for passionate developers to work on our latest project, Lunatic. Join a team of creatively minded individuals like yourself to bring our product to life."},
-        //     {id: '75035', title: "UI Designer", description: "Bulletin Corp. is looking for passionate designers to create a post-modern design of our products. Join a team of creatively minded individuals like yourself to bring our product to life."}
-        // ];
-        // const conOpp = [
-        //     {id: '87671', title: "Leading Psychologist", description: "Looking for a professional psychologist who have experience leading a team of indivduals into a successful mindset."},
-        // ];
         this.state = {
             uid: props.uid,
             volOpp: [],
@@ -30,7 +20,7 @@ class MyOpportunities extends Component {
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
-        mountMyOpportunities(this.state.uid).then(
+        getMyOpportunities(this.state.uid).then(
             (r) => {
                 for (var i = 0; i < r.data.length; i++) {
                     curr = r.data[i];
@@ -45,8 +35,7 @@ class MyOpportunities extends Component {
                 this.setState({ volOpp: volOpp });
                 this.setState({ empOpp: empOpp });
                 this.setState({ conOpp: conOpp });
-            },
-            (e) => {}
+            }
         );
     }
 
@@ -64,11 +53,7 @@ class MyOpportunities extends Component {
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
                         pathname: "/myopportunities/create",
-                        state: {
-                            isNew: true,
-                            uid: uid,
-                            type: "VOLUNTEER"
-                        }
+                        state: {uid: uid, type: "VOLUNTEER"}
                     }}
                 >
                     New
@@ -77,6 +62,7 @@ class MyOpportunities extends Component {
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             uid={uid}
                             title={opp.title}
                             description={opp.description}
@@ -92,11 +78,7 @@ class MyOpportunities extends Component {
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
                         pathname: "/myopportunities/create",
-                        state: {
-                            isNew: true,
-                            uid: uid,
-                            type: "EMPLOYMENT"
-                        }
+                        state: {uid: uid, type: "EMPLOYMENT"}
                     }}
                 >
                     New
@@ -105,6 +87,7 @@ class MyOpportunities extends Component {
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             uid={uid}
                             title={opp.title}
                             description={opp.description}
@@ -120,11 +103,7 @@ class MyOpportunities extends Component {
                     className="btn btn-sm btn-outline-dark newButton"
                     to={{
                         pathname: "/myopportunities/create",
-                        state: {
-                            isNew: true,
-                            uid: uid,
-                            type: "CONSULTING"
-                        }
+                        state: {uid: uid, type: "CONSULTING"}
                     }}
                 >
                     New
@@ -133,6 +112,7 @@ class MyOpportunities extends Component {
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             uid={uid}
                             title={opp.title}
                             description={opp.description}

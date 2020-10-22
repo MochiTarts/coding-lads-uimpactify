@@ -5,7 +5,7 @@ import "../stylesheets/css/Opportunities.css";
 class ManageOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type, pid, title, description } = props.location;
+        const { uid, type, pid, title, description } = props.location.state;
         this.state = {
                 uid: uid,
                 type: type,
@@ -19,18 +19,24 @@ class ManageOpportunity extends Component {
         event.preventDefault();
         const { pid, title, description, uid, type } = this.state;
         getUser(uid).then(
-            (r) => {
-                const socialInit = r.data.socialInit;
-                updatePosting(pid, title, description, uid, type, socialInit.name);
+            (r1) => {
+                const socialInit = r1.data.socialInit;
+                updatePosting(pid, title, description, uid, type, socialInit.name).then(
+                    (r2) => {
+                        this.props.history.push("/myopportunities");
+                    }
+                );
             }
         );
-        this.props.history.push("/myopportunities");
     }
 
     handleDelete = (event) => {
         event.preventDefault();
-        deletePosting(this.state.pid);
-        this.props.history.push("/myopportunities");
+        deletePosting(this.state.pid).then(
+            (r) => {
+                this.props.history.push("/myopportunities");
+            }
+        );
     }
 
     render() {

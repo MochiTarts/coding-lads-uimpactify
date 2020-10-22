@@ -21,7 +21,7 @@ export const signIn = (username, password) => {
     {username, password});
 }
 
-export const mountMyOpportunities = (uid) => {
+export const getMyOpportunities = (uid) => {
     return axios.get(`${apiUrl}/getPostings/${uid}`);
 }
 

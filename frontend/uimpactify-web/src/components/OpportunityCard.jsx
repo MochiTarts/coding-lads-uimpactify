@@ -21,10 +21,9 @@ function OpportunityCard(props) {
                 to={{
                     pathname: linkPath,
                     state: {
-                        isNew: false,
                         uid: props.uid,
                         type: props.type,
-                        pid: props.key,
+                        pid: props.pid,
                         title: props.title,
                         description: props.description,
                     }

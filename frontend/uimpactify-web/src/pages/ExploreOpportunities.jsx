@@ -1,31 +1,40 @@
 import React, { Component } from 'react';
 import OpportunityCard from "../components/OpportunityCard";
 import "../stylesheets/css/Opportunities.css";
+import { getAllPosting } from "../helpers/services/posting-service";
 
 class ExploreOpportunities extends Component {
     constructor(props) {
         super(props);
-        // TODO: hard coded opportunities, remove this
-        const volOpp = [
-            {id: '10256', title: "Environmental Hike", description: "Want to join us on a hike to protect the environment? Apply now for a experience of a life time where we hike onto Mt. Richard while picking up litter."},
-        ];
-        const empOpp = [
-            {id: '71935', title: "Software Developer", description: "Bulletin Corp. is looking for passionate developers to work on our latest project, Lunatic. Join a team of creatively minded individuals like yourself to bring our product to life."},
-            {id: '75035', title: "UI Designer", description: "Bulletin Corp. is looking for passionate designers to create a post-modern design of our products. Join a team of creatively minded individuals like yourself to bring our product to life."}
-        ];
-        const conOpp = [
-            {id: '87671', title: "Leading Psychologist", description: "Looking for a professional psychologist who have experience leading a team of indivduals into a successful mindset."},
-        ];
         this.state = {
-            volOpp: volOpp,
-            empOpp: empOpp,
-            conOpp: conOpp
+            volOpp: [],
+            empOpp: [],
+            conOpp: []
         }
     }
 
     componentDidMount() {
-        // TODO: fetch opportunities from DB and update state
-        console.log("mounted");
+        var curr;
+        var volOpp = [];
+        var empOpp = [];
+        var conOpp = [];
+        getAllPosting(this.state.uid).then(
+            (r) => {
+                for (var i = 0; i < r.data.length; i++) {
+                    curr = r.data[i];
+                    if (curr.postingType === "VOLUNTEER") {
+                        volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    } else if (curr.postingType === "EMPLOYMENT") {
+                        empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    } else if (curr.postingType === "CONSULTING") {
+                        conOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
+                    }
+                }
+                this.setState({ volOpp: volOpp });
+                this.setState({ empOpp: empOpp });
+                this.setState({ conOpp: conOpp });
+            }
+        );
     }
 
     handleTabSwitch(tab) {

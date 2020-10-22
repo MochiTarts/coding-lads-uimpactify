@@ -18,12 +18,15 @@ class CreateOpportunity extends Component {
         event.preventDefault();
         const { title, description, uid, type } = this.state;
         getUser(uid).then(
-            (r) => {
-                const socialInit = r.data.socialInit;
-                createPosting(title, description, uid, type, socialInit.name);
+            (r1) => {
+                const socialInit = r1.data.socialInit;
+                createPosting(title, description, uid, type, socialInit.name).then(
+                    (r2) => {
+                        this.props.history.push("/myopportunities");
+                    }
+                );
             }
         );
-        this.props.history.push("/myopportunities");
     }
 
     render() {
