@@ -2,6 +2,7 @@ package com.utsc.project_coding_lads.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,7 +47,7 @@ public class Posting extends BaseDataEntity {
 		this.postingDesc = postingDesc;
 	}
 //	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	public User getPostingCreator() {
 		return postingCreator;
