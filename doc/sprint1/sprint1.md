@@ -32,4 +32,4 @@ Focus Factor and Team Capacity:
 
 
 Participants:
-Alex Wong, Han-Shin (Henson) Chen, Hung Jen Lin, Timofey Smetanin, Jenny Yu, Simon Ha, Kuan-Te Lu, Gabrian Mak
+Alex Wong, Han-Shin Chen, Hung Jen Lin, Timofey Smetanin, Zining Yu, Simon Ha, Kuan-Te Lu, Gabrian Mak
