@@ -40,7 +40,10 @@ public class EventServiceImpl implements EventService {
 		eventValidator.validate();
 		User user = userService.findUserById(event.getEventCreator().getId());
 		event.setEventCreator(user);
-		return eventRepo.save(event);
+		user.getEvents().add(event);
+		User savedUser = userService.updateUser(user);
+		Event saved = savedUser.getEvents().get(user.getEvents().size()-1);
+		return saved;
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class EventServiceImpl implements EventService {
 		if (!existsById(eventId)) {
 			throw new EntityNotExistException("That Event does not exist.");
 		}
-		return eventRepo.getOne(eventId);
+		return eventRepo.findById(eventId).get();
 	}
 
 	@Override
@@ -77,7 +80,9 @@ public class EventServiceImpl implements EventService {
 		User user = userService.findUserById(userId);
 		userValidator.init(user);
 		userValidator.validateExists();
-		return user.getEvents();
+		user.getEvents().size();
+		List<Event> events = user.getEvents();
+		return events;
 	}
 
 	@Override

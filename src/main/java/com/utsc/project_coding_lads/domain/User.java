@@ -113,7 +113,7 @@ public class User extends BaseDataEntity {
 //		this.application = application;
 //	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "eventCreator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventCreator")
 	public List<Event> getEvents() {
 		return events;
 	}

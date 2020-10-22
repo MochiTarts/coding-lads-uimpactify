@@ -44,7 +44,7 @@ public class UserValidator implements Validator {
 		//this.socialInitName = user.getSocialInit() != null ? user.getSocialInit().getName() : null;
 		this.role = user.getRole(); //I can check if Role and SocialInitiative are both null here
 		this.socialInit = user.getSocialInit();
-		this.userId = userId;
+		this.userId = user.getId();
 	}
 	
 	@Override

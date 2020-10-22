@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.EventTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,12 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Event;
-import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
-import com.utsc.project_coding_lads.enums.PostingEnum;
-import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.SocialInitService;
@@ -67,9 +65,19 @@ public class TestEventService {
 		Assert.assertNotNull(getEvent);
 		Assert.assertEquals(savedEvent.getId(), getEvent.getId());
 		
+		List<Event> events0 = eventService.findAllEventsByUserId(savedUser.getId());
+		Assert.assertFalse(events0.isEmpty());
+		Event event0 = events0.get(0);
+		Assert.assertEquals(getEvent.getEventName(), event0.getEventName());
+		
 		savedEvent.setEventName("new name");
 		savedEvent = eventService.updateEvent(savedEvent);
 		Assert.assertEquals("new name", savedEvent.getEventName());
+		
+		List<Event> events1 = eventService.findAllEventsByUserId(savedUser.getId());
+		Event event1 = events1.get(0);
+		Assert.assertEquals("new name", event1.getEventName());
+		
 		eventService.deleteEventById(savedEvent.getId());
 		
 		Boolean exist = eventService.existsById(id);

@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Posting;
@@ -69,12 +68,19 @@ public class TestPostingService {
 		Assert.assertNotNull(getPosting);
 		Assert.assertEquals(savedPosting.getId(), getPosting.getId());
 		
+		List<Posting> postingsOld = postingService.findAllPostingsByUserId(savedUser.getId());
+		Assert.assertFalse(postingsOld.isEmpty());
+		Posting posting0 = postingsOld.get(0);
+		Assert.assertEquals(getPosting.getName(), posting0.getName());
+		
 		savedPosting.setName("new name");
 		savedPosting = postingService.updatePosting(savedPosting);
 		Assert.assertEquals("new name", savedPosting.getName());
 		
 		List<Posting> postings = postingService.findAllPostingsByUserId(savedUser.getId());
 		Assert.assertFalse(postings.isEmpty());
+		Posting posting1 = postings.get(0);
+		Assert.assertEquals("new name", posting1.getName());
 		
 		postingService.deletePostingById(savedPosting.getId());
 		
