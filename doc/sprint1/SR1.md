@@ -4,7 +4,10 @@ Participants:
 Alex Wong, Han-Shin Chen, Hung Jen Lin, Timofey Smetanin, Zining Yu, Simon Ha, Kuan-Te Lu, Gabrian Mak
 
 Unfinished Tasks:
-- [COL-]
+- [COL-11]: Not finish hooking up API to the web page
+> COL-11 was recreated as '[COL-37] Hook up API for events and courses to Dashboard page' for sprint 2
+- [COL-12]: Not finish creating API for courses & class sessions for impact learner and consultant
+> COL-12 was moved directly from sprint 1 to sprint 2.
 
 
 Below are the questions discussed during the sprint retrospective meeting
