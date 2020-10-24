@@ -60,6 +60,19 @@ public class TestImpactLearnerApply {
 		posting.setSocialInit(saved);
 		Posting savedPosting = postingService.savePosting(posting);
 		Assert.assertNotNull(savedPosting.getId());
+		
+		User learner = new User();
+		learner.setAge(90);
+		learner.setFirstName("firstName");
+		learner.setLastName("lastname");
+		learner.setUsername("usernameLearner1");
+		learner.setHashedPassword("pw");
+		Role role = new Role("IMPACT_LEARNER");
+		Role savedRole = roleRepo.save(role);
+		learner.setRole(savedRole);
+		
+		Integer learnerId = userService.storeUser(learner);
+		User savedLearner = userService.findUserById(id);
 	}
 	
 	@Test
