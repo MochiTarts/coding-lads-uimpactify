@@ -7,7 +7,7 @@ function OpportunityCard(props) {
     if (props.button === "Manage") {
         linkPath = "/myopportunities/manage";
     } else if (props.button === "Apply") {
-        linkPath = "/myopportunities";
+        linkPath = "/explore-opportunities/apply";
     }
 
     return (

@@ -93,7 +93,7 @@ class ExploreOpportunities extends Component {
                             key={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="volunteer"
+                            type="VOLUNTEER"
                             button="Apply"
                         />
                     ))}
@@ -104,7 +104,7 @@ class ExploreOpportunities extends Component {
                             key={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="employment"
+                            type="EMPLOYMENT"
                             button="Apply"
                         />
                     ))}
@@ -115,7 +115,7 @@ class ExploreOpportunities extends Component {
                             key={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="consulting"
+                            type="CONSULIING"
                             button="Apply"
                         />
                     ))}
