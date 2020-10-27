@@ -50,7 +50,7 @@ class ManageOpportunity extends Component {
                 </div>
 
                 <form>
-                    <div className="form-group">
+                    <div className="formGroup">
                         <label htmlFor="title">Title</label>
                         <input 
                             type="text" 
@@ -59,7 +59,7 @@ class ManageOpportunity extends Component {
                             value={this.state.title}
                             onChange={(event) => this.setState({title: event.target.value})} />
                     </div>
-                    <div className="form-group">
+                    <div className="formGroup">
                         <label htmlFor="type">Type</label>
                         <input 
                             type="text" 
@@ -68,7 +68,7 @@ class ManageOpportunity extends Component {
                             value={this.state.type}
                             disabled />
                     </div>
-                    <div className="form-group">
+                    <div className="formGroup">
                         <label htmlFor="description">Description</label>
                         <textarea
                             type="text"

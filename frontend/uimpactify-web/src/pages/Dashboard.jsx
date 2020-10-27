@@ -10,7 +10,7 @@ import News from "../components/dashboard/News";
 class Dashboard extends React.Component {
   render() {
     return (
-      <Container className="content-container">
+      <Container id="content-container" className="content-container">
         <Col>
           <Row>
             <h4>Upcoming Events</h4>
