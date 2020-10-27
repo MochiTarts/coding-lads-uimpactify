@@ -6,4 +6,8 @@ public interface ApplicationService {
 
 	public Application storeApplication(Application app) throws Exception;
 	
+	public Application findApplicationById(Integer appId) throws Exception;
+	
+	public Boolean existsById(Integer appId) throws Exception;
+	
 }

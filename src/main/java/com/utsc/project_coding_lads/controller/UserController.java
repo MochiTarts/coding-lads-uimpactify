@@ -165,13 +165,8 @@ public class UserController extends BaseController {
 	@PostMapping(path = "/apply")
 	@ApiOperation(value = "user apply posting", response = Application.class)
 	public Application apply(@RequestBody Application app) throws Exception {
-		try {
-			Application savedApp = appService.storeApplication(app);
-			return savedApp;
-		} catch(Exception e) {
-			log.info("Could not save application", e);
-			throw e;
-		}
+		Application savedApp = appService.storeApplication(app);
+		return savedApp;
 	}
 
 }

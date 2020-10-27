@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
