@@ -33,7 +33,6 @@ public class BaseController {
 
 	@ExceptionHandler(UserTypeInvalidException.class)
 	public ResponseEntity<Object> handleUserTypeInvalidException(UserTypeInvalidException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
@@ -44,7 +43,6 @@ public class BaseController {
 	
 	@ExceptionHandler(EntityAlreadyExistsException.class)
 	public ResponseEntity<Object> handleEntityAlreadyExistsException(EntityAlreadyExistsException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
@@ -55,7 +53,6 @@ public class BaseController {
 	
 	@ExceptionHandler(MissingInformationException.class)
 	public ResponseEntity<Object> handleMissingInformationException(MissingInformationException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
@@ -66,7 +63,6 @@ public class BaseController {
 	
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<Object> handleBadRequestException(BadRequestException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
@@ -87,7 +83,6 @@ public class BaseController {
 	
 	@ExceptionHandler(InvalidSocialInitNameException.class)
 	public ResponseEntity<Object> handleInvalidSocialInitNameException(InvalidSocialInitNameException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
@@ -98,7 +93,6 @@ public class BaseController {
 	
 	@ExceptionHandler(ValidationFailedException.class)
 	public ResponseEntity<Object> handleValidationFailedException(ValidationFailedException e) {
-		e.printStackTrace();
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
