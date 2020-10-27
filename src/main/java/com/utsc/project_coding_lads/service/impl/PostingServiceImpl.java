@@ -72,8 +72,10 @@ public class PostingServiceImpl implements PostingService {
 	public Posting updatePosting(Posting posting) throws ValidationFailedException {
 		if (posting == null)
 			throw new MissingInformationException("Posting body is null");
+//		postingValidator.init(posting.getName(), posting.getPostingDesc(),
+//				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
 		postingValidator.init(posting.getName(), posting.getPostingDesc(),
-				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getId());
+				posting.getPostingCreator(), posting.getPostingType(), posting.getPostingDate(), posting.getSocialInit(), posting.getId());
 		postingValidator.validateExists();
 		SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(posting.getSocialInit().getName());
 		posting.setSocialInit(savedSocialInit);

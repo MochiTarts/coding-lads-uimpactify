@@ -47,6 +47,8 @@ public class ApplicationServiceImpl implements ApplicationService {
 		if (((postingType.equals(PostingEnum.EMPLOYMENT.name()) || postingType.equals(PostingEnum.VOLUNTEERING.name())) && userType.equals(RoleEnum.IMPACT_LEARNER.name()))
 				|| (postingType.equals(PostingEnum.CONSULTING.name()) && userType.equals(RoleEnum.IMPACT_CONSULTANT.name()))) {
 			Posting posting = postingService.findPostingById(app.getPosting().getId());
+			System.out.println(posting.getPostingCreator().getSocialInit().getId());
+			System.out.println(posting.getSocialInit().getId());
 			app.setPosting(posting);
 			posting.getApplications().add(app);
 			Posting savedPosting = postingService.updatePosting(posting);
