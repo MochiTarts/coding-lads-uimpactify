@@ -9,6 +9,8 @@ class MyOpportunities extends Component {
         super(props);
         this.state = {
             uid: props.uid,
+            role: props.uinfo.role,
+            socialInit: props.uinfo.socialInit,
             volOpp: [],
             empOpp: [],
             conOpp: []
@@ -40,7 +42,20 @@ class MyOpportunities extends Component {
     }
 
     render() { 
-        const { uid, volOpp, empOpp, conOpp } = this.state;
+        const { uid, volOpp, empOpp, conOpp, role, socialInit } = this.state;
+        const type = role ? role.name : null;
+        var isConsultant;
+        if (type === "IMPACT_CONSULTANT") {
+            isConsultant = true;
+        } else {
+            isConsultant = false;
+        }
+        var buttonText;
+        if (socialInit) {
+            buttonText = "Manage";
+        } else {
+            buttonText = "Details";
+        }
 
         return (
             <div className="opportunity-page-container">
@@ -49,15 +64,15 @@ class MyOpportunities extends Component {
                 </div>
 
                 <h3 className="opportunity-page-subheader">Volunteer Opportunities</h3>
+                {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
+                        pathname: "/opportunity/create",
                         state: {uid: uid, type: "VOLUNTEER"}
-                    }}
-                >
+                    }}>
                     New
-                </Link>
+                </Link>}
                 <div className="row opportunityList">
                     {volOpp.map((opp) => (
                         <OpportunityCard
@@ -67,22 +82,22 @@ class MyOpportunities extends Component {
                             title={opp.title}
                             description={opp.description}
                             type="VOLUNTEER"
-                            button="Manage"
+                            button={buttonText}
                         />
                     ))}
                 </div>
 
 
                 <h3 className="opportunity-page-subheader">Employment Opportunities</h3>
+                {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
+                        pathname: "/opportunity/create",
                         state: {uid: uid, type: "EMPLOYMENT"}
-                    }}
-                >
+                    }}>
                     New
-                </Link>
+                </Link>}
                 <div className="row opportunityList">
                     {empOpp.map((opp) => (
                         <OpportunityCard
@@ -92,7 +107,7 @@ class MyOpportunities extends Component {
                             title={opp.title}
                             description={opp.description}
                             type="EMPLOYMENT"
-                            button="Manage"
+                            button={buttonText}
                         />
                     ))}
                 </div>
@@ -100,15 +115,15 @@ class MyOpportunities extends Component {
 
                 <h3 className="opportunity-page-subheader
                 ">Consulting Opportunities</h3>
+                {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
+                        pathname: "/opportunity/create",
                         state: {uid: uid, type: "CONSULTING"}
-                    }}
-                >
+                    }}>
                     New
-                </Link>
+                </Link>}
                 <div className="row opportunityList">
                     {conOpp.map((opp) => (
                         <OpportunityCard
@@ -118,7 +133,7 @@ class MyOpportunities extends Component {
                             title={opp.title}
                             description={opp.description}
                             type="CONSULTING"
-                            button="Manage"
+                            button={buttonText}
                         />
                     ))}
                 </div>

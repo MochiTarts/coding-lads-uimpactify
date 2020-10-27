@@ -78,7 +78,7 @@ class ApplyOpportunity extends Component {
                             onClick={(event) => this.handleApply(event)}>
                         Apply
                     </button>
-                    <a href="/explore-opportunities" 
+                    <a href="javascript:history.back()"
                        className="btn btn-secondary opportunity-formButtons">
                         Cancel
                     </a>

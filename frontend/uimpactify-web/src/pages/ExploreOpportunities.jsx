@@ -7,6 +7,8 @@ class ExploreOpportunities extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            role: props.uinfo.role,
+            socialInit: props.uinfo.socialInit,
             volOpp: [],
             empOpp: [],
             conOpp: []
@@ -55,7 +57,20 @@ class ExploreOpportunities extends Component {
     }
 
     render() {
-        const { volOpp, empOpp, conOpp } = this.state;
+        const { volOpp, empOpp, conOpp, role, socialInit } = this.state;
+        const type = role ? role.name : null;
+        var isConsultant;
+        if (type === "IMPACT_CONSULTANT") {
+            isConsultant = true;
+        } else {
+            isConsultant = false;
+        }
+        var buttonText;
+        if (socialInit) {
+            buttonText = "Details";
+        } else {
+            buttonText = "Apply";
+        }
 
         return(
             <div className="opportunity-page-container">
@@ -78,13 +93,14 @@ class ExploreOpportunities extends Component {
                             Employment
                         </button>
                     </li>
+                    {(socialInit || isConsultant) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Consulting"
                                 onClick={() => this.handleTabSwitch("Consulting")}>
                             Consulting
                         </button>
-                    </li>
+                    </li>}
                 </ul>
 
                 <div className="tabcontent row" id="VolunteerContent">
@@ -94,7 +110,7 @@ class ExploreOpportunities extends Component {
                             title={opp.title}
                             description={opp.description}
                             type="VOLUNTEER"
-                            button="Apply"
+                            button={buttonText}
                         />
                     ))}
                 </div>
@@ -105,7 +121,7 @@ class ExploreOpportunities extends Component {
                             title={opp.title}
                             description={opp.description}
                             type="EMPLOYMENT"
-                            button="Apply"
+                            button={buttonText}
                         />
                     ))}
                 </div>
@@ -115,8 +131,8 @@ class ExploreOpportunities extends Component {
                             key={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="CONSULIING"
-                            button="Apply"
+                            type="CONSULTING"
+                            button={buttonText}
                         />
                     ))}
                 </div>

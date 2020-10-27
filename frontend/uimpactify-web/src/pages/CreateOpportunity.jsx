@@ -6,8 +6,10 @@ class CreateOpportunity extends Component {
     constructor(props) {
         super(props);
         const { uid, type } = props.location.state;
+        const socialInit = props.uinfo.socialInit;
         this.state = {
                 uid: uid,
+                socialInit: socialInit,
                 type: type,
                 title: "",
                 description: ""
@@ -16,15 +18,10 @@ class CreateOpportunity extends Component {
 
     handleSave = (event) => {
         event.preventDefault();
-        const { title, description, uid, type } = this.state;
-        getUser(uid).then(
-            (r1) => {
-                const socialInit = r1.data.socialInit;
-                createPosting(title, description, uid, type, socialInit.name).then(
-                    (r2) => {
-                        this.props.history.push("/myopportunities");
-                    }
-                );
+        const { title, description, uid, type, socialInit } = this.state;
+        createPosting(title, description, uid, type, socialInit.name).then(
+            (r) => {
+                this.props.history.push("/opportunity/myopportunities");
             }
         );
     }
@@ -75,9 +72,9 @@ class CreateOpportunity extends Component {
                             onClick={(event) => this.handleSave(event)}>
                         Save
                     </button>
-                    <a href="/myopportunities"
+                    <a href="javascript:history.back()"
                        className="btn btn-secondary opportunity-formButtons">
-                            Cancel
+                        Cancel
                     </a>
                 </form>
             </div>

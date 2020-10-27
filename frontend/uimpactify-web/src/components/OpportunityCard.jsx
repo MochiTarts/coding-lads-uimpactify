@@ -5,9 +5,11 @@ import "../stylesheets/css/OpportunityCard.css";
 function OpportunityCard(props) {
     var linkPath = "/";
     if (props.button === "Manage") {
-        linkPath = "/myopportunities/manage";
+        linkPath = "/opportunity/manage";
     } else if (props.button === "Apply") {
-        linkPath = "/explore-opportunities/apply";
+        linkPath = "/opportunity/apply";
+    } else if (props.button === "Details") {
+        linkPath = "/opportunity/details";
     }
 
     return (

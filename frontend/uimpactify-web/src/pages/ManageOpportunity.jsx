@@ -6,8 +6,10 @@ class ManageOpportunity extends Component {
     constructor(props) {
         super(props);
         const { uid, type, pid, title, description } = props.location.state;
+        const socialInit = props.uinfo.socialInit;
         this.state = {
                 uid: uid,
+                socialInit: socialInit,
                 type: type,
                 pid: pid,
                 title: title,
@@ -17,15 +19,10 @@ class ManageOpportunity extends Component {
 
     handleSave = (event) => {
         event.preventDefault();
-        const { pid, title, description, uid, type } = this.state;
-        getUser(uid).then(
-            (r1) => {
-                const socialInit = r1.data.socialInit;
-                updatePosting(pid, title, description, uid, type, socialInit.name).then(
-                    (r2) => {
-                        this.props.history.push("/myopportunities");
-                    }
-                );
+        const { pid, title, description, uid, type, socialInit } = this.state;
+        updatePosting(pid, title, description, uid, type, socialInit.name).then(
+            (r) => {
+                this.props.history.push("/opportunity/myopportunities");
             }
         );
     }
@@ -34,7 +31,7 @@ class ManageOpportunity extends Component {
         event.preventDefault();
         deletePosting(this.state.pid).then(
             (r) => {
-                this.props.history.push("/myopportunities");
+                this.props.history.push("/opportunity/myopportunities");
             }
         );
     }

@@ -41,8 +41,8 @@ class Sidebar extends React.Component {
               <Dropdown open={this.state.dropdownOpen} toggle={this.toggleDropdown} direction="right">
                 <DropdownToggle nav caret>Opportunities</DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem href="/myopportunities">My Opportunities</DropdownItem>
-                  <DropdownItem href="/explore-opportunities">Explore</DropdownItem>
+                  <DropdownItem href="/opportunity/myopportunities">My Opportunities</DropdownItem>
+                  <DropdownItem href="/opportunity/explore">Explore</DropdownItem>
                 </DropdownMenu>
               </Dropdown>,
               <NavItem>
