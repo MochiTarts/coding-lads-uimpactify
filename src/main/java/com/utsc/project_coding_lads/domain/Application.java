@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,7 +15,7 @@ public class Application extends BaseDataEntity {
 	private User applicant;
 	private Posting posting;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "applicant_id")
 	public User getApplicant() {
 		return applicant;
@@ -22,7 +23,7 @@ public class Application extends BaseDataEntity {
 	public void setApplicant(User applicant) {
 		this.applicant = applicant;
 	}
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="posting_id")
 	public Posting getPosting() {
 		return posting;

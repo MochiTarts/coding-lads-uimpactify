@@ -50,7 +50,7 @@ public class Posting extends BaseDataEntity {
 		this.postingDesc = postingDesc;
 	}
 //	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	public User getPostingCreator() {
 		return postingCreator;

@@ -29,25 +29,22 @@ import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.repository.UserRepository;
+import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @WebAppConfiguration
 @AutoConfigureMockMvc
 public class TestSignUpController {
-
-	@Autowired
-	UserRepository userRepo;
 	
 	@Autowired
+	UserRepository userRepo;
+	@Autowired
 	RoleRepository roleRepo;
-
 	@Autowired
 	UserController controller;
-
 	@Autowired
 	MockMvc mockMvc;
-
 	@Autowired
 	WebApplicationContext webApplicationContext;
 	

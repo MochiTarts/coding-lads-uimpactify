@@ -1,23 +1,25 @@
 package com.utsc.project_coding_lads.test.UserServiceTest;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.utsc.project_coding_lads.domain.Application;
+import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
@@ -32,8 +34,10 @@ import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-public class TestImpactLearnerApply {
-	
+@WebAppConfiguration
+@AutoConfigureMockMvc
+class TestImpactLearnerApply2 {
+
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -55,7 +59,7 @@ public class TestImpactLearnerApply {
 	public void applyToVolunteering() throws Exception {
 		User user = new User();
 		user.setAge(90);
-		user.setFirstName("firstName");
+		user.setFirstName("firstNameCreator");
 		user.setLastName("lastname");
 		user.setUsername("username1");
 		user.setHashedPassword("pw");
@@ -104,10 +108,10 @@ public class TestImpactLearnerApply {
 										+ "  }\n"
 										+ "}"))
 								.andReturn();
-
-		boolean found = appRepo.existsById(Integer.parseInt(mvc.getResponse().getContentAsString()));
+		
+		System.out.println(mvc.getResponse().getContentAsString());
+		System.out.println("Here");
 		int status = mvc.getResponse().getStatus();
-		Assert.assertTrue(found);
 		Assert.assertEquals(200, status);
 	}
 	

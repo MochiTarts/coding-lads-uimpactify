@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.utsc.project_coding_lads.domain.Application;
 import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
@@ -23,6 +24,7 @@ import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.security.SecurityConfig;
+import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
@@ -41,6 +43,8 @@ public class UserController extends BaseController {
 	PostingService postingService;
 	@Autowired
 	EventService eventService;
+	@Autowired
+	ApplicationService appService;
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping(path = "/signup")
@@ -156,6 +160,18 @@ public class UserController extends BaseController {
 			log.info("Could not load user: ", e);
 		}
 		return security.authentication(user);
+	}
+	
+	@PostMapping(path = "/apply")
+	@ApiOperation(value = "user apply posting", response = Application.class)
+	public Application apply(@RequestBody Application app) throws Exception {
+		try {
+			Application savedApp = appService.storeApplication(app);
+			return savedApp;
+		} catch(Exception e) {
+			log.info("Could not save application", e);
+			throw e;
+		}
 	}
 
 }
