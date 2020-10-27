@@ -58,9 +58,9 @@ class ExploreOpportunities extends Component {
         const { volOpp, empOpp, conOpp } = this.state;
 
         return(
-            <div className="pageContainer">
+            <div className="opportunity-page-container">
                 <div className="shadow p-3 mb-5 bg-white rounded">
-                    <h3 className="pageHeader">Explore Opportunities</h3>
+                    <h3 className="opportunity-page-header">Explore Opportunities</h3>
                 </div>
 
                 <ul className="nav nav-tabs">

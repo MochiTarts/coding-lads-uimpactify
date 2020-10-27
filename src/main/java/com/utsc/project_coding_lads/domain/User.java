@@ -29,30 +29,26 @@ public class User extends BaseDataEntity {
 	
 	@JsonProperty("firstName")
 	private String firstName;
-	
 	@JsonProperty("lastName")
 	private String lastName;
-	
 	@JsonProperty("username")
 	private String username;
-
 	@JsonProperty("password")
 	private String hashedPassword;
-	
 	@JsonProperty("age")
 	private Integer age;
-	
 	@JsonDeserialize(using = SocialInitDeserializer.class)
 	@JsonProperty("socialInit")
 	private SocialInitiative socialInit;
-	
 	@JsonDeserialize(using = RoleDeserializer.class)
 	@JsonProperty("role")
 	private Role role;
-//	private List<Application> application;
+	private List<Application> application;
 	private List<Event> events = new ArrayList<>();
 	private List<Posting> postings = new ArrayList<>();
-
+	private List<Invoice> invoices;
+	
+	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInit() {
@@ -104,14 +100,6 @@ public class User extends BaseDataEntity {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-//	@OneToMany
-//	@JoinColumn(name="application_id")
-//	public List<Application> getApplication() {
-//		return application;
-//	}
-//	public void setApplication(List<Application> application) {
-//		this.application = application;
-//	}
 	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventCreator")
 	public List<Event> getEvents() {
@@ -128,6 +116,23 @@ public class User extends BaseDataEntity {
 	public void setPostings(List<Posting> postings) {
 		this.postings = postings;
 	}
+	@JsonIgnore 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "applicant")
+	public List<Application> getApplication() {
+		return application;
+	}
+	public void setApplication(List<Application> application) {
+		this.application = application;
+	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+	
 	
 	
 	

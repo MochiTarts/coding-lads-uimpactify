@@ -14,6 +14,7 @@ import Sidebar from "./components/Sidebar";
 import Landing from "./pages/Landing.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignIn from "./pages/SignIn.jsx";
+import Billing from './pages/Billing.jsx'
 import  {UserContextProvider} from "./components/UserContextProvider";
 import  PrivateRoute from "./components/PrivateRoute";
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/" exact component={Landing} />
             <Route path="/signup" exact component={SignUp} />
             <Route path="/signin" exact component={SignIn} />
+            <Route path="/billing" exact component={Billing} />
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/explore-opportunities" exact component={ExploreOpportunities} />

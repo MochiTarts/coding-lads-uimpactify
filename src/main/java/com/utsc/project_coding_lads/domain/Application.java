@@ -1,28 +1,30 @@
 package com.utsc.project_coding_lads.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = Application.TABLE_NAME)
+@Entity
+@Table(name = Application.TABLE_NAME)
 public class Application extends BaseDataEntity {
 
 	public static final String TABLE_NAME = "APPLICATION";
 	
-	private User user;
+	private User applicant;
 	private Posting posting;
 	
-	
-	public User getUser() {
-		return user;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "applicant_id")
+	public User getApplicant() {
+		return applicant;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setApplicant(User applicant) {
+		this.applicant = applicant;
 	}
-//	@OneToMany
-//	@JoinColumn(name="application_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="posting_id")
 	public Posting getPosting() {
 		return posting;
 	}

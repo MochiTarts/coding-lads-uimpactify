@@ -11,11 +11,11 @@ function OpportunityCard(props) {
     }
 
     return (
-        <div className="col-sm-3 border rounded cardContainer">
+        <div className="col-sm-3 border rounded opportunity-card-container">
             <div className="card" />
             <div className="card-body">
                 <h4 className="card-title">{props.title}</h4>
-                <p className="card-text cardDescription">{props.description}</p>
+                <p className="card-text opportunity-card-description">{props.description}</p>
                 <Link 
                 className="btn btn-primary"
                 to={{

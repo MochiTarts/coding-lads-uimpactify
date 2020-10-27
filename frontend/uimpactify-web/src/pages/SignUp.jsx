@@ -89,7 +89,7 @@ class SignUp extends React.Component {
     const isFormValid = firstName && lastName && username && age && password && confirmPassword && passwordsMatch && (this.state.accountType !== "social_initiative" || this.state.socialInitOrg);
     return (
         <Container 
-        className = "container" 
+        className = "signup-container" 
         >
                 <Card id="signup-card">
                 <CardBody>

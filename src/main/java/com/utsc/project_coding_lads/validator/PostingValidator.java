@@ -52,6 +52,17 @@ public class PostingValidator implements Validator {
 		this.postingDate = postingDate;
 		this.postingId = postingId;
 	}
+	
+	public void init(String name, String desc, User postingCreator, String postingType, LocalDateTime postingDate,
+			SocialInitiative socialInit, Integer postingId) {
+		this.name = name;
+		this.desc = desc;
+		this.postingCreator = postingCreator;
+		this.postingType = postingType;
+		this.postingDate = postingDate;
+		this.socialInit = socialInit;
+		this.postingId = postingId;
+	}
 
 	@Override
 	public void validate() throws ValidationFailedException {
