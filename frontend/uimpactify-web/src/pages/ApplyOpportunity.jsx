@@ -29,13 +29,13 @@ class ApplyOpportunity extends Component {
     render() { 
         var isValid = this.state.resume;
         return (
-            <div className="pageContainer">
+            <div className="opportunity-page-container">
                 <div className="shadow p-3 mb-5 bg-white rounded">
-                    <h3 className="pageHeader">Applying for Opportunity</h3>
+                    <h3 className="opportunity-page-header">Applying for Opportunity</h3>
                 </div>
 
                 <form>
-                    <div className="form-group">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="title">Title</label>
                         <input 
                             type="text" 
@@ -44,7 +44,7 @@ class ApplyOpportunity extends Component {
                             value={this.state.title} 
                             disabled />
                     </div>
-                    <div className="form-group">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="type">Type</label>
                         <input 
                             type="text" 
@@ -53,7 +53,7 @@ class ApplyOpportunity extends Component {
                             value={this.state.type}
                             disabled />
                     </div>
-                    <div className="form-group">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="description">Description</label>
                         <textarea
                             type="text"
@@ -63,7 +63,7 @@ class ApplyOpportunity extends Component {
                             value={this.state.description}
                             disabled/>
                     </div>
-                    <div className="form-group files">
+                    <div className="opportunity-formGroup files">
                         <label htmlFor="resume">Upload Resume Here</label>
                         <input type="file"
                                id="resume"
@@ -73,12 +73,13 @@ class ApplyOpportunity extends Component {
                     
                     
                     <button type="submit" 
-                            className="btn btn-primary formButtons" 
+                            className="btn btn-primary opportunity-formButtons" 
                             disabled={!isValid}
                             onClick={(event) => this.handleApply(event)}>
                         Apply
                     </button>
-                    <a href="/explore-opportunities" className="btn btn-secondary formButtons">
+                    <a href="/explore-opportunities" 
+                       className="btn btn-secondary opportunity-formButtons">
                         Cancel
                     </a>
                 </form>

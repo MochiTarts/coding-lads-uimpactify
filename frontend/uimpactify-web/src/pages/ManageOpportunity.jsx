@@ -88,7 +88,7 @@ class ManageOpportunity extends Component {
                     <button type="submit" 
                             className="btn btn-secondary opportunity-formButtons" 
                             onClick={(event) => this.handleDelete(event)}>
-                        Remove
+                        Delete
                     </button>
                 </form>
             </div>

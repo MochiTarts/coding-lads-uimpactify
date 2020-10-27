@@ -29,7 +29,7 @@ function OpportunityCard(props) {
                     }
                 }}>
                     {props.button} &rarr;
-                </Link>;
+                </Link>
             </div>
         </div>
     )
