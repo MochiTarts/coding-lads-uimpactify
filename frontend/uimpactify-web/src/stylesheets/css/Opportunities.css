@@ -1,15 +1,15 @@
-.pageContainer {
+.opportunity-page-container {
     margin-right: 25px;
     margin-left: 25px;
     margin-top: 25px;
 }
 
-.pageHeader {
+.opportunity-page-header {
     color: rgb(172, 119, 206);
     width: 80vw;
 }
 
-.pageSubheader {
+.opportunity-page-subheader {
     color: rgb(79, 79, 79);
     display: inline;
     margin-right: 10px;
@@ -19,16 +19,17 @@
     margin-bottom: 40px;
 }
 
-.newButton {
+.opportunity-newButton {
     margin-bottom: 10px;
 }
 
-.formGroup {
+.opportunity-formGroup {
     width: 50%;
 }
 
-.formButtons {
+.opportunity-formButtons {
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
