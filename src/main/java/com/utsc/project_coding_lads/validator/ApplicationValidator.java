@@ -1,5 +1,7 @@
 package com.utsc.project_coding_lads.validator;
 
+import java.util.regex.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,14 @@ public class ApplicationValidator implements Validator {
 			throw new EntityNotExistException("The posting does not exist in the database.");
 		if (email == null)
 			throw new EntityNotExistException("The email cannot be null.");
+		if (!emailValidate(email))
+			throw new EntityNotExistException("The email is not a valid email.");
+	}
+	
+	public Boolean emailValidate(String email) {
+		String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+		Pattern pattern = Pattern.compile(regex);
+		return pattern.matcher(email).matches();
 	}
 	
 }
