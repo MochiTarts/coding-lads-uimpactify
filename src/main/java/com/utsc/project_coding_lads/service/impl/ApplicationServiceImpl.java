@@ -37,7 +37,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		Application savedApp = null;
 		if (app == null)
 			throw new MissingInformationException("Request cannot be null");
-		appValidator.init(app.getApplicant(), app.getPosting());
+		appValidator.init(app.getApplicant(), app.getPosting(), app.getEmail());
 		appValidator.validate();
 		if (userService.findUserById(app.getApplicant().getId()).getRole() == null)
 			throw new UserTypeInvalidException("The user must be an impact learner or an impact consultant to apply to postings.");
@@ -47,18 +47,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 		if (((postingType.equals(PostingEnum.EMPLOYMENT.name()) || postingType.equals(PostingEnum.VOLUNTEERING.name())) && userType.equals(RoleEnum.IMPACT_LEARNER.name()))
 				|| (postingType.equals(PostingEnum.CONSULTING.name()) && userType.equals(RoleEnum.IMPACT_CONSULTANT.name()))) {
 			Posting posting = postingService.findPostingById(app.getPosting().getId());
-//			System.out.println(posting.getPostingCreator().getSocialInit().getId());
-//			System.out.println(posting.getSocialInit().getId());
 			app.setPosting(posting);
 			posting.getApplications().add(app);
-			Posting savedPosting = postingService.updatePosting(posting);
-			
 			User applicant = userService.findUserById(app.getApplicant().getId());
 			app.setApplicant(applicant);
 			applicant.getApplication().add(app);
+			
+			Posting savedPosting = postingService.updatePosting(posting);
 			User savedApplicant = userService.updateUser(applicant);
 			
-			savedApp = savedApplicant.getApplication().get(applicant.getApplication().size() - 1);
+			savedApp = savedApplicant.getApplication().get(applicant.getApplication().size() - 1);			
+//			System.out.println(savedPosting.getApplications().get(posting.getApplications().size() - 1).getEmail());
 		} else {
 			throw new UserTypeInvalidException("Impact learners can only apply to employment and/or volunteering opportunities. "
 					+ "Impact consultants can only apply to consultant opportunities");
