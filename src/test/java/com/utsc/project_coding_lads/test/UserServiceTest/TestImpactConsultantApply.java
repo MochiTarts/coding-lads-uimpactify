@@ -112,6 +112,20 @@ public class TestImpactConsultantApply {
 		
 		Boolean exists = appService.existsById(savedApp.getId());
 		Assert.assertTrue(exists);
+		
+		savedConsultant.setFirstName("newFirstName");
+		User newSavedLearner = userService.updateUser(savedConsultant);
+		
+		savedPosting.setName("newPostingName");
+		Posting newSavedPosting = postingService.updatePosting(savedPosting);
+		
+		savedApp.setApplicant(newSavedLearner);
+		savedApp.setPosting(savedPosting);
+		com.utsc.project_coding_lads.domain.Application newSavedApp = appService.updateApplication(savedApp);
+		
+		Assert.assertNotNull(newSavedApp);
+		Assert.assertEquals("newFirstName", newSavedApp.getApplicant().getFirstName());
+		Assert.assertEquals("newPostingName", newSavedApp.getPosting().getName());
 	}
 
 }
