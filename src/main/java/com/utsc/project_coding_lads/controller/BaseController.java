@@ -24,7 +24,7 @@ public class BaseController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Object> generic(HttpMessageNotReadableException e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "Improper format of role or socialInit field values");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 

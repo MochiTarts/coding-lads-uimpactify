@@ -18,15 +18,17 @@ public class ApplicationValidator implements Validator {
 
 	private User applicant;
 	private Posting posting;
+	private String email;
 	
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private PostingService postingService;
 	
-	public void init(User applicant, Posting posting) {
+	public void init(User applicant, Posting posting, String email) {
 		this.applicant = applicant;
 		this.posting = posting;
+		this.email = email;
 	}
 
 	@Override
@@ -43,6 +45,8 @@ public class ApplicationValidator implements Validator {
 			throw new EntityNotExistException("The posting id cannot be null.");
 		if (!postingService.existsById(posting.getId()))
 			throw new EntityNotExistException("The posting does not exist in the database.");
+		if (email == null)
+			throw new EntityNotExistException("The email cannot be null.");
 	}
 	
 }
