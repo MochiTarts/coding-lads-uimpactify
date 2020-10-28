@@ -34,13 +34,13 @@ class CreateOpportunity extends Component {
         var isValid = title && description;
 
         return (
-            <div className="pageContainer">
+            <div className="opportunity-page-container">
                 <div className="shadow p-3 mb-5 bg-white rounded">
-                    <h3 className="pageHeader">Creating New Opportunity</h3>
+                    <h3 className="opportunity-page-header">Creating New Opportunity</h3>
                 </div>
 
                 <form>
-                    <div className="formGroup">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="title">Title</label>
                         <input 
                             type="text" 
@@ -49,7 +49,7 @@ class CreateOpportunity extends Component {
                             value={this.state.title}
                             onChange={(event) => this.setState({title: event.target.value})} />
                     </div>
-                    <div className="formGroup">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="type">Type</label>
                         <input 
                             type="text" 
@@ -58,7 +58,7 @@ class CreateOpportunity extends Component {
                             value={this.state.type}
                             disabled />
                     </div>
-                    <div className="formGroup">
+                    <div className="opportunity-formGroup">
                         <label htmlFor="description">Description</label>
                         <textarea
                             type="text"
@@ -70,12 +70,13 @@ class CreateOpportunity extends Component {
                     </div>
                     
                     <button type="submit" 
-                            className="btn btn-primary formButtons" 
+                            className="btn btn-primary opportunity-formButtons" 
                             disabled={!isValid}
                             onClick={(event) => this.handleSave(event)}>
                         Save
                     </button>
-                    <a href="/myopportunities" className="btn btn-secondary formButtons">
+                    <a href="/myopportunities"
+                       className="btn btn-secondary opportunity-formButtons">
                             Cancel
                     </a>
                 </form>

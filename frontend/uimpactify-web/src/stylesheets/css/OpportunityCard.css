@@ -1,4 +1,4 @@
-.cardContainer {
+.opportunity-card-container {
     background-color: rgb(239, 239, 242);
     margin-left: 5px;
     margin-right: 5px;
@@ -6,11 +6,11 @@
     margin-top: 5px;
 }
 
-.cardContainer:hover {
+.opportunity-card-container:hover {
     background-color: rgb(255, 255, 255);
 }
 
-.cardDescription {
+.opportunity-card-description {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;

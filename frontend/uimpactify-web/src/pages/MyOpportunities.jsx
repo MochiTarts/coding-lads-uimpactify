@@ -43,14 +43,14 @@ class MyOpportunities extends Component {
         const { uid, volOpp, empOpp, conOpp } = this.state;
 
         return (
-            <div className="pageContainer">
+            <div className="opportunity-page-container">
                 <div className="shadow p-3 mb-5 bg-white rounded">
-                    <h3 className="pageHeader">My Opportunities</h3>
+                    <h3 className="opportunity-page-header">My Opportunities</h3>
                 </div>
 
-                <h3 className="pageSubheader">Volunteer Opportunities</h3>
+                <h3 className="opportunity-page-subheader">Volunteer Opportunities</h3>
                 <Link
-                    className="btn btn-sm btn-outline-dark newButton"
+                    className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
                         pathname: "/myopportunities/create",
                         state: {uid: uid, type: "VOLUNTEER"}
@@ -73,9 +73,9 @@ class MyOpportunities extends Component {
                 </div>
 
 
-                <h3 className="pageSubheader">Employment Opportunities</h3>
+                <h3 className="opportunity-page-subheader">Employment Opportunities</h3>
                 <Link
-                    className="btn btn-sm btn-outline-dark newButton"
+                    className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
                         pathname: "/myopportunities/create",
                         state: {uid: uid, type: "EMPLOYMENT"}
@@ -98,9 +98,10 @@ class MyOpportunities extends Component {
                 </div>
 
 
-                <h3 className="pageSubheader">Consulting Opportunities</h3>
+                <h3 className="opportunity-page-subheader
+                ">Consulting Opportunities</h3>
                 <Link
-                    className="btn btn-sm btn-outline-dark newButton"
+                    className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
                         pathname: "/myopportunities/create",
                         state: {uid: uid, type: "CONSULTING"}
