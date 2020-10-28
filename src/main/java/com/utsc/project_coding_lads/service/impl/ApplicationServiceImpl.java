@@ -1,9 +1,13 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.sql.Blob;
+
+import javax.sql.rowset.serial.SerialBlob;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.utsc.project_coding_lads.domain.Application;
 import com.utsc.project_coding_lads.domain.Posting;
@@ -37,7 +41,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		Application savedApp = null;
 		if (app == null)
 			throw new MissingInformationException("Request cannot be null");
-		appValidator.init(app.getApplicant(), app.getPosting());
+		appValidator.init(app.getApplicant(), app.getPosting(), app.getResume());
 		appValidator.validate();
 		if (userService.findUserById(app.getApplicant().getId()).getRole() == null)
 			throw new UserTypeInvalidException("The user must be an impact learner or an impact consultant to apply to postings.");
@@ -46,18 +50,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 		
 		if (((postingType.equals(PostingEnum.EMPLOYMENT.name()) || postingType.equals(PostingEnum.VOLUNTEERING.name())) && userType.equals(RoleEnum.IMPACT_LEARNER.name()))
 				|| (postingType.equals(PostingEnum.CONSULTING.name()) && userType.equals(RoleEnum.IMPACT_CONSULTANT.name()))) {
+			app.setResume(app.getResume());
 			Posting posting = postingService.findPostingById(app.getPosting().getId());
 //			System.out.println(posting.getPostingCreator().getSocialInit().getId());
 //			System.out.println(posting.getSocialInit().getId());
 			app.setPosting(posting);
 			posting.getApplications().add(app);
 			Posting savedPosting = postingService.updatePosting(posting);
-			
+
 			User applicant = userService.findUserById(app.getApplicant().getId());
 			app.setApplicant(applicant);
 			applicant.getApplication().add(app);
 			User savedApplicant = userService.updateUser(applicant);
-			
+
 			savedApp = savedApplicant.getApplication().get(applicant.getApplication().size() - 1);
 		} else {
 			throw new UserTypeInvalidException("Impact learners can only apply to employment and/or volunteering opportunities. "

@@ -3,6 +3,7 @@ package com.utsc.project_coding_lads.validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
@@ -18,15 +19,17 @@ public class ApplicationValidator implements Validator {
 
 	private User applicant;
 	private Posting posting;
+	private byte[] resume;
 	
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private PostingService postingService;
 	
-	public void init(User applicant, Posting posting) {
+	public void init(User applicant, Posting posting, byte[] resume) {
 		this.applicant = applicant;
 		this.posting = posting;
+		this.resume = resume;
 	}
 
 	@Override
@@ -43,6 +46,8 @@ public class ApplicationValidator implements Validator {
 			throw new EntityNotExistException("The posting id cannot be null.");
 		if (!postingService.existsById(posting.getId()))
 			throw new EntityNotExistException("The posting does not exist in the database.");
+		if (resume == null)
+			throw new EntityNotExistException("The resume cannot be null.");
 	}
 	
 }

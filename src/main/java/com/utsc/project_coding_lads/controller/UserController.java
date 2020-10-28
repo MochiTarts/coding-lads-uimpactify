@@ -1,19 +1,29 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.google.common.net.HttpHeaders;
 import com.utsc.project_coding_lads.domain.Application;
 import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.Posting;
@@ -164,9 +174,29 @@ public class UserController extends BaseController {
 	
 	@PostMapping(path = "/apply")
 	@ApiOperation(value = "user apply posting", response = Application.class)
-	public Application apply(@RequestBody Application app) throws Exception {
+	public Application apply(@RequestPart(value="application") Application app, @RequestPart(value="resume") MultipartFile resume) throws Exception {
+		app.setResume(resume.getBytes());
 		Application savedApp = appService.storeApplication(app);
 		return savedApp;
+	}
+	
+	@GetMapping(path = "/apply/{id}")
+	@ApiOperation(value = "get user application", response = Application.class)
+	public ResponseEntity<Object> getApplication(@PathVariable("id") Integer appId) throws Exception {
+		Map<String, Object> response = new HashMap<>();
+		response.put("resume", ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/file/download/").path(appId.toString()).toUriString());
+		response.put("posting", appService.findApplicationById(appId).getPosting());
+		response.put("applicant", appService.findApplicationById(appId).getApplicant());
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+	
+	@GetMapping(path = "/file/download/{id}")
+	@ApiOperation(value = "download applicant resume")
+	public ResponseEntity downloadResume(@PathVariable("id") Integer appId) throws Exception {
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + appService.findApplicationById(appId).getApplicant().getFirstName() +
+						appService.findApplicationById(appId).getApplicant().getLastName() + "\"")
+				.body(appService.findApplicationById(appId).getResume());
 	}
 
 }
