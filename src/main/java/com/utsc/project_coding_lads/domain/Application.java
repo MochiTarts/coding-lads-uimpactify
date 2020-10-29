@@ -34,6 +34,7 @@ public class Application extends BaseDataEntity {
 	public void setPosting(Posting posting) {
 		this.posting = posting;
 	}
+	@JoinColumn(name="email")
 	public String getEmail() {
 		return email;
 	}
