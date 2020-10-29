@@ -14,6 +14,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
+import com.utsc.project_coding_lads.exception.EntityNotFoundException;
 import com.utsc.project_coding_lads.exception.InvalidSocialInitNameException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
@@ -24,7 +25,7 @@ public class BaseController {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<Object> generic(HttpMessageNotReadableException e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "Improper format of role or socialInit field values");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 
@@ -74,7 +75,7 @@ public class BaseController {
 	@ExceptionHandler({MismatchedInputException.class, JsonParseException.class})
 	public ResponseEntity<Object> handleMismatchedInputException(Exception e) {
 		Map<String, Object> body = new HashMap<>();
-		body.put("message", "JSON request is improperly formatted");
+		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
 		
@@ -99,5 +100,15 @@ public class BaseController {
 		body.put("status", 400);
 		
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Object> handleEntityNotFoundException(ValidationFailedException e) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("message", e.getMessage());
+		body.put("timestamp", LocalDate.now());
+		body.put("status", 404);
+		
+		return new ResponseEntity<Object>(body, HttpStatus.NOT_FOUND);
 	}
 }

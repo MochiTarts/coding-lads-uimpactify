@@ -162,11 +162,43 @@ public class UserController extends BaseController {
 		return security.authentication(user);
 	}
 	
-	@PostMapping(path = "/apply")
+	@PostMapping(path = "/createApplication")
 	@ApiOperation(value = "user apply posting", response = Application.class)
 	public Application apply(@RequestBody Application app) throws Exception {
 		Application savedApp = appService.storeApplication(app);
 		return savedApp;
+	}
+	
+	@PostMapping(path = "/updateApplication")
+	@ApiOperation(value = "updating an application", response = Application.class)
+	public Application updateApp(@RequestBody Application app) throws Exception {
+		return appService.updateApplication(app);
+	}
+	
+	@PostMapping(path = "/deleteApplication/{id}")
+	@ApiOperation(value = "Delete an application", response = Boolean.class)
+	public Boolean deleteApp(@PathVariable("id") Integer id) throws Exception {
+		Boolean ok = true;
+		appService.deleteApplicationById(id);
+		return ok;
+	}
+
+	@GetMapping(path = "/getApplication/{id}")
+	@ApiOperation(value = "find a posting by id", response = Application.class)
+	public Application getApp(@PathVariable("id") Integer id) throws Exception {
+		return appService.findApplicationById(id);
+	}
+	
+	@GetMapping(path = "/getApplicationsByUser/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Application.class, responseContainer = "List")
+	public List<Application> getUserApps(@PathVariable("id") Integer userId) throws Exception {
+		return appService.findAllApplicationsByUserId(userId);
+	}
+	
+	@GetMapping(path = "/getApplicationsByPosting/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Application.class, responseContainer = "List")
+	public List<Application> getPostingApps(@PathVariable("id") Integer postingId) throws Exception {
+		return appService.findAllApplicationsByPostingId(postingId);
 	}
 
 }
