@@ -22,10 +22,15 @@ class MyOpportunities extends Component {
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
-        getMyOpportunities(this.state.uid).then(
+        const isEmployee = true ? this.state.socialInit : false;
+        getMyOpportunities(this.state.uid, isEmployee).then(
             (r) => {
                 for (var i = 0; i < r.data.length; i++) {
-                    curr = r.data[i];
+                    if (isEmployee) {
+                        curr = r.data[i];
+                    } else {
+                        curr = r.data[i].posting;
+                    }
                     if (curr.postingType === "VOLUNTEER") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {

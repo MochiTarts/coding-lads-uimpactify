@@ -107,6 +107,7 @@ class ExploreOpportunities extends Component {
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
                             type="VOLUNTEER"
@@ -118,6 +119,7 @@ class ExploreOpportunities extends Component {
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
                             type="EMPLOYMENT"
@@ -129,6 +131,7 @@ class ExploreOpportunities extends Component {
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
                             type="CONSULTING"

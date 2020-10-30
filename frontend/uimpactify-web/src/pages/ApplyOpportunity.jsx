@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/Opportunities.css";
+import { createApplication } from "../helpers/services/user-service";
 
 class ApplyOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type, title, description } = props.location.state;
+        const { pid, type, title, description } = props.location.state;
+        const uid = props.uid;
         this.state = {
                 uid: uid,
                 type: type,
+                pid: pid,
                 title: title,
                 description: description,
-                resume: null
+                email: null
         }
     }
 
     handleChange(event) {
-        this.setState({
-            resume: event.target.files[0]
-        });
+        this.setState({email: event.target.value});
     }
 
     handleApply(event) {
         event.preventDefault();
-        // TODO: hook up API here
-        console.log(this.state.resume);
+        const { uid, pid, email } = this.state;
+        createApplication(uid, pid, email).then(
+            (r) => {
+                this.props.history.push("/opportunity/myopportunities");
+            }
+        );
     }
 
     render() { 
-        var isValid = this.state.resume;
+        var isValid = this.state.email;
         return (
             <div className="opportunity-page-container">
                 <div className="shadow p-3 mb-5 bg-white rounded">
@@ -64,11 +69,11 @@ class ApplyOpportunity extends Component {
                             disabled/>
                     </div>
                     <div className="opportunity-formGroup files">
-                        <label htmlFor="resume">Upload Resume Here</label>
-                        <input type="file"
-                               id="resume"
+                        <label htmlFor="email">Your Email</label>
+                        <input type="email"
+                               id="email"
                                className="form-control"
-                               onChange={(event) => this.handleChange(event)} />
+                               onChange={(event) => this.setState({email: event.target.value})} />
                     </div>
                     
                     
