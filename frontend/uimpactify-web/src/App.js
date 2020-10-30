@@ -13,9 +13,10 @@ import Sidebar from "./components/Sidebar";
 import Landing from "./pages/Landing.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import SignIn from "./pages/SignIn.jsx";
-import Billing from './pages/Billing.jsx'
-import  {UserContextProvider} from "./components/UserContextProvider";
-import  PrivateRoute from "./components/PrivateRoute";
+import Billing from "./pages/Billing.jsx";
+import CalendarPlanner from "./pages/CalendarPlanner.jsx";
+import { UserContextProvider } from "./components/UserContextProvider";
+import PrivateRoute from "./components/PrivateRoute";
 
 const styles = {
   main: {
@@ -38,10 +39,24 @@ function App() {
             <Route path="/billing" exact component={Billing} />
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
-              <PrivateRoute path="/explore-opportunities" component={ExploreOpportunities} />
-              <PrivateRoute path="/myopportunities" exact component={MyOpportunities} />
-              <PrivateRoute path="/myopportunities/manage" component={ManageOpportunity} />
-              <PrivateRoute path="/myopportunities/create" component={CreateOpportunity} />
+              <PrivateRoute path="/calendar" component={CalendarPlanner} />
+              <PrivateRoute
+                path="/explore-opportunities"
+                component={ExploreOpportunities}
+              />
+              <PrivateRoute
+                path="/myopportunities"
+                exact
+                component={MyOpportunities}
+              />
+              <PrivateRoute
+                path="/myopportunities/manage"
+                component={ManageOpportunity}
+              />
+              <PrivateRoute
+                path="/myopportunities/create"
+                component={CreateOpportunity}
+              />
             </Fragment>
           </Switch>
         </BrowserRouter>

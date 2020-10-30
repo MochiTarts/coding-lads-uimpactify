@@ -1,7 +1,6 @@
 import React from "react";
 import InfiniteCalendar from "react-infinite-calendar";
 import "react-infinite-calendar/styles.css";
-import { createEvent } from "../../helpers/services/event-service";
 
 const today = new Date();
 const lastWeek = new Date(
