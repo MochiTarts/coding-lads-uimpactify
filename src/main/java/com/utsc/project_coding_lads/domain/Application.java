@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -14,6 +15,7 @@ public class Application extends BaseDataEntity {
 	
 	private User applicant;
 	private Posting posting;
+	private String email;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "applicant_id")
@@ -30,6 +32,13 @@ public class Application extends BaseDataEntity {
 	}
 	public void setPosting(Posting posting) {
 		this.posting = posting;
+	}
+	@Column(name="email")
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

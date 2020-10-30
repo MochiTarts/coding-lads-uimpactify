@@ -1,22 +1,16 @@
 package com.utsc.project_coding_lads.test.UserServiceTest;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.utsc.project_coding_lads.Application;
@@ -105,24 +99,32 @@ public class TestImpactLearnerApply {
 		User savedLearner = userService.findUserById(savedLearnerId);
 		Assert.assertNotNull(savedLearner);
 		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/apply")
-								.contentType(MediaType.APPLICATION_JSON).content("{\n"
-										+ "  \"applicant\": {\n"
-										+ "      \"id\": " + savedLearnerId + "\n"
-										+ "  },\n"
-										+ "  \"posting\": {\n"
-										+ "      \"id\": " + savedPostingId + "\n"
-										+ "  }\n"
-										+ "}"))
-								.andReturn();
+		String email = "learner@gmail.com";
 		
-//		System.out.println(mvc.getResponse().getContentAsString());
-		JSONObject application = new JSONObject(mvc.getResponse().getContentAsString());
-		Boolean found = appRepo.existsById(application.getInt("id"));
-		int status = mvc.getResponse().getStatus();
-		Assert.assertTrue(found);
-		Assert.assertEquals(200, status);
+		com.utsc.project_coding_lads.domain.Application app = new com.utsc.project_coding_lads.domain.Application();
+		app.setApplicant(savedLearner);
+		app.setPosting(savedPosting);
+		app.setEmail(email);
+		
+		com.utsc.project_coding_lads.domain.Application savedApp = appService.storeApplication(app);
+		Assert.assertNotNull(savedApp);
+		
+		Boolean exists = appService.existsById(savedApp.getId());
+		Assert.assertTrue(exists);
+		
+		savedLearner.setFirstName("newFirstName");
+		User newSavedLearner = userService.updateUser(savedLearner);
+		
+		savedPosting.setName("newPostingName");
+		Posting newSavedPosting = postingService.updatePosting(savedPosting);
+		
+		savedApp.setApplicant(newSavedLearner);
+		savedApp.setPosting(savedPosting);
+		com.utsc.project_coding_lads.domain.Application newSavedApp = appService.updateApplication(savedApp);
+		
+		Assert.assertNotNull(newSavedApp);
+		Assert.assertEquals("newFirstName", newSavedApp.getApplicant().getFirstName());
+		Assert.assertEquals("newPostingName", newSavedApp.getPosting().getName());
 	}
 	
 	@Test
@@ -164,143 +166,33 @@ public class TestImpactLearnerApply {
 		Integer savedLearnerId = userService.storeUser(learner);
 		User savedLearner = userService.findUserById(savedLearnerId);
 		Assert.assertNotNull(savedLearner);
+
+		String email = "learner@gmail.com";
 		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/apply")
-								.contentType(MediaType.APPLICATION_JSON).content("{\n"
-										+ "  \"applicant\": {\n"
-										+ "      \"id\": " + savedLearnerId + "\n"
-										+ "  },\n"
-										+ "  \"posting\": {\n"
-										+ "      \"id\": " + savedPostingId + "\n"
-										+ "  }\n"
-										+ "}"))
-								.andReturn();
+		com.utsc.project_coding_lads.domain.Application app = new com.utsc.project_coding_lads.domain.Application();
+		app.setApplicant(savedLearner);
+		app.setPosting(savedPosting);
+		app.setEmail(email);
 		
-//		System.out.println(mvc.getResponse().getContentAsString());
-		JSONObject application = new JSONObject(mvc.getResponse().getContentAsString());
-		Boolean found = appRepo.existsById(application.getInt("id"));
-		int status = mvc.getResponse().getStatus();
-		Assert.assertTrue(found);
-		Assert.assertEquals(200, status);
-	}
-	
-	@Test
-	public void applyToVolunteeringIneligible() throws Exception {
-		User user = new User();
-		user.setAge(90);
-		user.setFirstName("firstNameCreator");
-		user.setLastName("lastname");
-		user.setUsername("username3");
-		user.setHashedPassword("pw");
-		SocialInitiative socialInit = new SocialInitiative();
-		socialInit.setName("org c");
-		SocialInitiative savedSI = siService.storeSocialInit(socialInit);
+		com.utsc.project_coding_lads.domain.Application savedApp = appService.storeApplication(app);
+		Assert.assertNotNull(savedApp);
 		
-		user.setSocialInit(savedSI);
-		Integer savedUserId = userService.storeUser(user);
-		User savedUser = userService.findUserById(savedUserId);
+		Boolean exists = appService.existsById(savedApp.getId());
+		Assert.assertTrue(exists);
 		
-		Posting posting = new Posting();
-		posting.setPostingDate(LocalDateTime.now());
-		posting.setPostingDesc("desc");
-		posting.setName("name");
-		posting.setPostingType(PostingEnum.VOLUNTEERING.name());
-		posting.setPostingCreator(savedUser);
-		posting.setSocialInit(savedSI);
-		Posting savedPosting = postingService.savePosting(posting);
-		Assert.assertNotNull(savedPosting.getId());
-		Integer savedPostingId = savedPosting.getId();
+		savedLearner.setFirstName("newFirstName");
+		User newSavedLearner = userService.updateUser(savedLearner);
 		
-		User consultant = new User();
-		consultant.setAge(90);
-		consultant.setFirstName("firstName");
-		consultant.setLastName("lastname");
-		consultant.setUsername("usernameLearner3");
-		consultant.setHashedPassword("pw");
-		Role role = new Role("IMPACT_CONSULTANT");
-		Role savedRole = roleRepo.save(role);
-		consultant.setRole(savedRole);
+		savedPosting.setName("newPostingName");
+		Posting newSavedPosting = postingService.updatePosting(savedPosting);
 		
-		Integer savedConsultantId = userService.storeUser(consultant);
-		User savedConsultant = userService.findUserById(savedConsultantId);
-		Assert.assertNotNull(savedConsultant);
+		savedApp.setApplicant(newSavedLearner);
+		savedApp.setPosting(savedPosting);
+		com.utsc.project_coding_lads.domain.Application newSavedApp = appService.updateApplication(savedApp);
 		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/apply")
-								.contentType(MediaType.APPLICATION_JSON).content("{\n"
-										+ "  \"applicant\": {\n"
-										+ "      \"id\": " + savedConsultantId + "\n"
-										+ "  },\n"
-										+ "  \"posting\": {\n"
-										+ "      \"id\": " + savedPostingId + "\n"
-										+ "  }\n"
-										+ "}"))
-								.andReturn();
-		
-//		System.out.println(mvc.getResponse().getContentAsString());
-		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Impact learners can only apply to employment and/or volunteering opportunities. "
-				+ "Impact consultants can only apply to consultant opportunities"));
-		int status = mvc.getResponse().getStatus();
-		Assert.assertEquals(400, status);
-	}
-	
-	@Test
-	public void applyToEmploymentIneligible() throws Exception {
-		User user = new User();
-		user.setAge(90);
-		user.setFirstName("firstNameCreator");
-		user.setLastName("lastname");
-		user.setUsername("username4");
-		user.setHashedPassword("pw");
-		SocialInitiative socialInit = new SocialInitiative();
-		socialInit.setName("org d");
-		SocialInitiative savedSI = siService.storeSocialInit(socialInit);
-		
-		user.setSocialInit(savedSI);
-		Integer savedUserId = userService.storeUser(user);
-		User savedUser = userService.findUserById(savedUserId);
-		
-		Posting posting = new Posting();
-		posting.setPostingDate(LocalDateTime.now());
-		posting.setPostingDesc("desc");
-		posting.setName("name");
-		posting.setPostingType(PostingEnum.EMPLOYMENT.name());
-		posting.setPostingCreator(savedUser);
-		posting.setSocialInit(savedSI);
-		Posting savedPosting = postingService.savePosting(posting);
-		Assert.assertNotNull(savedPosting.getId());
-		Integer savedPostingId = savedPosting.getId();
-		
-		User consultant = new User();
-		consultant.setAge(90);
-		consultant.setFirstName("firstName");
-		consultant.setLastName("lastname");
-		consultant.setUsername("usernameLearner4");
-		consultant.setHashedPassword("pw");
-		consultant.setRole(roleRepo.findRoleByName("IMPACT_CONSULTANT"));
-		
-		Integer savedConsultantId = userService.storeUser(consultant);
-		User savedConsultant = userService.findUserById(savedConsultantId);
-		Assert.assertNotNull(savedConsultant);
-		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/apply")
-								.contentType(MediaType.APPLICATION_JSON).content("{\n"
-										+ "  \"applicant\": {\n"
-										+ "      \"id\": " + savedConsultantId + "\n"
-										+ "  },\n"
-										+ "  \"posting\": {\n"
-										+ "      \"id\": " + savedPostingId + "\n"
-										+ "  }\n"
-										+ "}"))
-								.andReturn();
-		
-//		System.out.println(mvc.getResponse().getContentAsString());
-		Assert.assertTrue(mvc.getResponse().getContentAsString().contains("Impact learners can only apply to employment and/or volunteering opportunities. "
-				+ "Impact consultants can only apply to consultant opportunities"));
-		int status = mvc.getResponse().getStatus();
-		Assert.assertEquals(400, status);
+		Assert.assertNotNull(newSavedApp);
+		Assert.assertEquals("newFirstName", newSavedApp.getApplicant().getFirstName());
+		Assert.assertEquals("newPostingName", newSavedApp.getPosting().getName());
 	}
 
 }

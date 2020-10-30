@@ -100,24 +100,32 @@ public class TestImpactConsultantApply {
 		User savedConsultant = userService.findUserById(savedConsultantId);
 		Assert.assertNotNull(savedConsultant);
 		
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		MvcResult mvc = mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/users/apply")
-								.contentType(MediaType.APPLICATION_JSON).content("{\n"
-										+ "  \"applicant\": {\n"
-										+ "      \"id\": " + savedConsultantId + "\n"
-										+ "  },\n"
-										+ "  \"posting\": {\n"
-										+ "      \"id\": " + savedPostingId + "\n"
-										+ "  }\n"
-										+ "}"))
-								.andReturn();
+		String email = "learner@gmail.com";
 		
-//		System.out.println(mvc.getResponse().getContentAsString());
-		JSONObject application = new JSONObject(mvc.getResponse().getContentAsString());
-		Boolean found = appRepo.existsById(application.getInt("id"));
-		int status = mvc.getResponse().getStatus();
-		Assert.assertTrue(found);
-		Assert.assertEquals(200, status);
+		com.utsc.project_coding_lads.domain.Application app = new com.utsc.project_coding_lads.domain.Application();
+		app.setApplicant(savedConsultant);
+		app.setPosting(savedPosting);
+		app.setEmail(email);
+		
+		com.utsc.project_coding_lads.domain.Application savedApp = appService.storeApplication(app);
+		Assert.assertNotNull(savedApp);
+		
+		Boolean exists = appService.existsById(savedApp.getId());
+		Assert.assertTrue(exists);
+		
+		savedConsultant.setFirstName("newFirstName");
+		User newSavedLearner = userService.updateUser(savedConsultant);
+		
+		savedPosting.setName("newPostingName");
+		Posting newSavedPosting = postingService.updatePosting(savedPosting);
+		
+		savedApp.setApplicant(newSavedLearner);
+		savedApp.setPosting(savedPosting);
+		com.utsc.project_coding_lads.domain.Application newSavedApp = appService.updateApplication(savedApp);
+		
+		Assert.assertNotNull(newSavedApp);
+		Assert.assertEquals("newFirstName", newSavedApp.getApplicant().getFirstName());
+		Assert.assertEquals("newPostingName", newSavedApp.getPosting().getName());
 	}
 
 }

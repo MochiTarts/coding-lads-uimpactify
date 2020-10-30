@@ -1,17 +1,20 @@
 package com.utsc.project_coding_lads.controller;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
@@ -145,7 +148,7 @@ public class UserController extends BaseController {
 
 	@GetMapping(path = "/getEventsByDate/{id}")
 	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
-	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) throws ValidationFailedException {
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) throws ValidationFailedException {
 		return eventService.findAllEventsByUserIdDate(userId, date);
 	}
 
@@ -162,11 +165,43 @@ public class UserController extends BaseController {
 		return security.authentication(user);
 	}
 	
-	@PostMapping(path = "/apply")
+	@PostMapping(path = "/createApplication")
 	@ApiOperation(value = "user apply posting", response = Application.class)
 	public Application apply(@RequestBody Application app) throws Exception {
 		Application savedApp = appService.storeApplication(app);
 		return savedApp;
+	}
+	
+	@PostMapping(path = "/updateApplication")
+	@ApiOperation(value = "updating an application", response = Application.class)
+	public Application updateApp(@RequestBody Application app) throws Exception {
+		return appService.updateApplication(app);
+	}
+	
+	@PostMapping(path = "/deleteApplication/{id}")
+	@ApiOperation(value = "Delete an application", response = Boolean.class)
+	public Boolean deleteApp(@PathVariable("id") Integer id) throws Exception {
+		Boolean ok = true;
+		appService.deleteApplicationById(id);
+		return ok;
+	}
+
+	@GetMapping(path = "/getApplication/{id}")
+	@ApiOperation(value = "find a posting by id", response = Application.class)
+	public Application getApp(@PathVariable("id") Integer id) throws Exception {
+		return appService.findApplicationById(id);
+	}
+	
+	@GetMapping(path = "/getApplicationsByUser/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Application.class, responseContainer = "List")
+	public List<Application> getUserApps(@PathVariable("id") Integer userId) throws Exception {
+		return appService.findAllApplicationsByUserId(userId);
+	}
+	
+	@GetMapping(path = "/getApplicationsByPosting/{id}")
+	@ApiOperation(value = "find all postings by userId", response = Application.class, responseContainer = "List")
+	public List<Application> getPostingApps(@PathVariable("id") Integer postingId) throws Exception {
+		return appService.findAllApplicationsByPostingId(postingId);
 	}
 
 }

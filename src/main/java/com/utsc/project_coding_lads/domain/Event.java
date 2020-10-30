@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.Date;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
@@ -20,7 +21,8 @@ public class Event extends BaseDataEntity {
 	private String eventName;
 	private String eventDesc;
 	private User eventCreator;
-	private LocalDateTime eventDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	private Date eventDate;
 	
 	@Column(name = "event_name", length = 32)
 	public String getEventName() {
@@ -37,10 +39,10 @@ public class Event extends BaseDataEntity {
 		this.eventDesc = eventDesc;
 	}
 	@Column(name = "event_date", length = 12)
-	public LocalDateTime getEventDate() {
+	public Date getEventDate() {
 		return eventDate;
 	}
-	public void setEventDate(LocalDateTime eventDate) {
+	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
