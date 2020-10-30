@@ -5,6 +5,7 @@ import java.util.List;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.EntityNotFoundException;
 
 public interface ImpactLearnerService {
 
@@ -14,6 +15,10 @@ public interface ImpactLearnerService {
 	
 	public void removeCourse(Integer courseId) throws Exception;
 	
-	public List<Course> getAllCoursesByLearner(ImpactLearner learnerId) throws Exception;
+	public ImpactLearner findImpactLearnerById(Integer id) throws EntityNotFoundException;
+	
+	public Boolean existsById(Integer id);
+	
+	public List<Course> findAllCoursesByLearner(ImpactLearner learnerId) throws Exception;
 	
 }

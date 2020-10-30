@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.exception.EntityNotFoundException;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 
@@ -35,9 +36,21 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public ImpactLearner findImpactLearnerById(Integer id) throws EntityNotFoundException {
+		if (!existsById(id))
+			throw new EntityNotFoundException("Impact Learner does not exist.");
+		return impactLearnerRepo.findById(id).get();
+	}
+	
+	@Override
+	public Boolean existsById(Integer id) {
+		return impactLearnerRepo.existsById(id);
+	}
 
 	@Override
-	public List<Course> getAllCoursesByLearner(ImpactLearner learnerId) throws Exception {
+	public List<Course> findAllCoursesByLearner(ImpactLearner learnerId) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
