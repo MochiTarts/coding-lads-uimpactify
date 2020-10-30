@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "react": "^16.13.1",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-big-calendar": "^0.28.1",
     "react-dom": "^16.13.1",
     "react-infinite-calendar": "^2.3.1",
     "react-router-dom": "^5.2.0",

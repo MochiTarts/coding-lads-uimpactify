@@ -1,7 +1,7 @@
 import React from "react";
-import { Navbar, Nav, NavbarBrand, NavItem, NavLink } from "shards-react";
 import InfiniteCalendar from "react-infinite-calendar";
 import "react-infinite-calendar/styles.css";
+import { createEvent } from "../../helpers/services/event-service";
 
 const today = new Date();
 const lastWeek = new Date(
@@ -9,7 +9,11 @@ const lastWeek = new Date(
   today.getMonth(),
   today.getDate() - 7
 );
+
 class Calender extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <InfiniteCalendar
