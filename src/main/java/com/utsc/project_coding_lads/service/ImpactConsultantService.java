@@ -7,6 +7,8 @@ import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 
 public interface ImpactConsultantService {
+	
+	public boolean existById(Integer id);
 
 	public Integer storeImpactConsultantService(ImpactConsultant impactConsultant) throws Exception;
 

@@ -46,26 +46,26 @@ public class CourseValidator implements Validator {
 
 	@Override
 	public void validate() throws ValidationFailedException {
-		// can a course has no class session?
+		// I assume a course can have no class session
 		if (courseName == null || courseDesc == null || instructor == null)
 			throw new MissingInformationException("The required field is missing");
-		if (instructor.getUser() == null)
-			throw new UnauthenticatedException("The impact consultant is not an instructor");
+		if (instructor.getId() == null)
+			throw new EntityNotExistException("The impact consultant id cannot be null");
 		if (impactConsultantService.findImpactConsultantById(instructor.getId()) == null)
-			throw new UnauthenticatedException("The impact consultant is not an instructor");
-		// Validate class session
-		if (session != null) {
-			for (ClassSession s : session) {
-				if (classSessionService.findSessionById(s.getId()) == null)
-					throw new UnauthenticatedException("There is a class session that does not exist");
-			}
-		}
+			throw new UnauthenticatedException("The given impact consultant is not an instructor");
+		// Validate class session (sessions always follow the course so no need to validate)
+//		if (session != null) {
+//			for (ClassSession s : session) {
+//				if (classSessionService.findSessionById(s.getId()) == null)
+//					throw new UnauthenticatedException("There are some class sessions do not exist");
+//			}
+//		}
 			
 	}
 	
 	public void validateExist() throws ValidationFailedException {
 		validate();
-		if (!courseService.existByID(courseId))
+		if (!courseService.existById(courseId))
 			throw new EntityNotExistException("This course does not exist");
 	}
 

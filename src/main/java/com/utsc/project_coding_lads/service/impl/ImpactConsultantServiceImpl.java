@@ -45,4 +45,9 @@ public class ImpactConsultantServiceImpl implements ImpactConsultantService {
 		return impactConsultantRepo.save(impactConsultant).getId();
 	}
 
+	@Override
+	public boolean existById(Integer id) {
+		return impactConsultantRepo.existsById(id);
+	}
+
 }
