@@ -1,6 +1,8 @@
 package com.utsc.project_coding_lads.service.impl;
 
 import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +41,14 @@ public class EventServiceImpl implements EventService {
 	public Event saveEvent(Event event) throws ValidationFailedException {
 		if (event == null)
 			throw new MissingInformationException("Event body is null");
-		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(), event.getEventDate());
+		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(),
+				event.getEventStartDate(), event.getEventEndDate());
 		eventValidator.validate();
 		User user = userService.findUserById(event.getEventCreator().getId());
 		event.setEventCreator(user);
 		user.getEvents().add(event);
 		User savedUser = userService.updateUser(user);
-		Event saved = savedUser.getEvents().get(user.getEvents().size()-1);
+		Event saved = savedUser.getEvents().get(user.getEvents().size() - 1);
 		return saved;
 	}
 
@@ -66,7 +69,8 @@ public class EventServiceImpl implements EventService {
 	public Event updateEvent(Event event) throws ValidationFailedException {
 		if (event == null)
 			throw new MissingInformationException("Event body is null");
-		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(), event.getEventDate(), event.getId());
+		eventValidator.init(event.getEventName(), event.getEventDesc(), event.getEventCreator(),
+				event.getEventStartDate(), event.getEventEndDate(), event.getId());
 		eventValidator.validateExists();
 		User user = userService.findUserById(event.getEventCreator().getId());
 		event.setEventCreator(user);
@@ -89,18 +93,13 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public List<Event> findAllEventsByUserIdDate(Integer userId, Date date) throws ValidationFailedException {
-		if (date == null) throw new ValidationFailedException("Date cannot be null.");
+	public List<Event> findAllEventsByUserIdDate(Integer userId, LocalDate date) throws ValidationFailedException {
+		if (date == null)
+			throw new ValidationFailedException("Date cannot be null.");
 		List<Event> eventsByDate = new ArrayList<>();
-		List<Event> events = null;
-		try {
-			events = findAllEventsByUserId(userId);
-		} catch (ValidationFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<Event> events = findAllEventsByUserId(userId);
 		for (Event event : events) {
-			if (event.getEventDate().compareTo(date) >= 0) {
+			if (event.getEventStartDate().toLocalDate().isEqual(date)) {
 				eventsByDate.add(event);
 			}
 		}

@@ -56,7 +56,10 @@ public class TestEventService {
 		Event event = new Event();
 		event.setEventName("name");
 		event.setEventDesc("desc");
-		event.setEventDate(new Date());
+		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
+		LocalDateTime end = LocalDateTime.of(2000, 10, 31, 00, 10, 00);
+		event.setEventStartDate(start);
+		event.setEventEndDate(end);
 		event.setEventCreator(savedUser);
 		
 		Event savedEvent = eventService.saveEvent(event);
