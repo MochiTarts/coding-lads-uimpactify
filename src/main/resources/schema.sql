@@ -78,7 +78,7 @@ CREATE TABLE APPLICATION (
 	id SERIAL PRIMARY KEY NOT NULL,
 	applicant_id INTEGER,
 	posting_id INTEGER,
-	email VARCHAR(64),
+	email VARCHAR(32),
 	FOREIGN KEY (applicant_id) REFERENCES UI_USER(id),
 	FOREIGN KEY (posting_id) REFERENCES POSTING(id)
 );

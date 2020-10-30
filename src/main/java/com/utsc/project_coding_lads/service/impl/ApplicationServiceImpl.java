@@ -48,28 +48,16 @@ public class ApplicationServiceImpl implements ApplicationService {
 			throw new MissingInformationException("Request cannot be null");
 		appValidator.init(app.getApplicant(), app.getPosting(), app.getEmail());
 		appValidator.validate();
-		String postingType = postingService.findPostingById(app.getPosting().getId()).getPostingType();
-		String userType = userService.findUserById(app.getApplicant().getId()).getRole().getName();
-		
-		if (((postingType.equals(PostingEnum.EMPLOYMENT.name()) || postingType.equals(PostingEnum.VOLUNTEERING.name())) && userType.equals(RoleEnum.IMPACT_LEARNER.name()))
-				|| (postingType.equals(PostingEnum.CONSULTING.name()) && userType.equals(RoleEnum.IMPACT_CONSULTANT.name()))) {
-			Posting posting = postingService.findPostingById(app.getPosting().getId());
-			app.setPosting(posting);
-			posting.getApplications().add(app);
-			User applicant = userService.findUserById(app.getApplicant().getId());
-			app.setApplicant(applicant);
-			applicant.getApplication().add(app);
-			
-			Posting savedPosting = postingService.updatePosting(posting);
-			User savedApplicant = userService.updateUser(applicant);
-			
-			savedApp = savedApplicant.getApplication().get(applicant.getApplication().size() - 1);			
-//			System.out.println(savedPosting.getApplications().get(posting.getApplications().size() - 1).getEmail());
-		} else {
-			throw new UserTypeInvalidException("Impact learners can only apply to employment and/or volunteering opportunities. "
-					+ "Impact consultants can only apply to consultant opportunities");
-		}
-			
+		appValidator.eligibilityValidate();
+		Posting posting = postingService.findPostingById(app.getPosting().getId());
+		app.setPosting(posting);
+		posting.getApplications().add(app);
+		User applicant = userService.findUserById(app.getApplicant().getId());
+		app.setApplicant(applicant);
+		applicant.getApplication().add(app);
+		Posting savedPosting = postingService.updatePosting(posting);
+		User savedApplicant = userService.updateUser(applicant);
+		savedApp = savedApplicant.getApplication().get(applicant.getApplication().size() - 1);
 		return savedApp;
 	}
 
@@ -109,6 +97,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		User applicant = userService.findUserById(userId);
 		userValidator.init(applicant);
 		userValidator.validateHasRole();
+		applicant.getApplication().size();
 		List<Application> applications = applicant.getApplication();
 		return applications;
 	}
@@ -120,6 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		postingValidator.init(posting.getName(), posting.getPostingDesc(), posting.getPostingCreator(),
 				posting.getPostingType(), posting.getPostingDate(), posting.getSocialInit(), posting.getId());
 		postingValidator.validateExists();
+		posting.getApplications().size();
 		List<Application> applications = posting.getApplications();
 		return applications;
 	}
