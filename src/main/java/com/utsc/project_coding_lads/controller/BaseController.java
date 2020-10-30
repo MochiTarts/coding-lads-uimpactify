@@ -98,7 +98,6 @@ public class BaseController {
 		body.put("message", e.getMessage());
 		body.put("timestamp", LocalDate.now());
 		body.put("status", 400);
-		
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 	}
 	
