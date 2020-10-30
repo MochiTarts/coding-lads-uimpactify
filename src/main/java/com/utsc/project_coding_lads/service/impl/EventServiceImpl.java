@@ -1,9 +1,11 @@
 package com.utsc.project_coding_lads.service.impl;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,7 @@ public class EventServiceImpl implements EventService {
 	EventValidator eventValidator;
 	@Autowired
 	UserValidator userValidator;
+	final static Logger log = LoggerFactory.getLogger(EventServiceImpl.class);
 
 	@Override
 	public Event saveEvent(Event event) throws ValidationFailedException {
@@ -86,12 +89,18 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public List<Event> findAllEventsByUserIdDate(Integer userId, LocalDateTime date) throws ValidationFailedException {
+	public List<Event> findAllEventsByUserIdDate(Integer userId, Date date) throws ValidationFailedException {
 		if (date == null) throw new ValidationFailedException("Date cannot be null.");
 		List<Event> eventsByDate = new ArrayList<>();
-		List<Event> events = findAllEventsByUserId(userId);
+		List<Event> events = null;
+		try {
+			events = findAllEventsByUserId(userId);
+		} catch (ValidationFailedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (Event event : events) {
-			if (event.getEventDate().isAfter(date)) {
+			if (event.getEventDate().compareTo(date) >= 0) {
 				eventsByDate.add(event);
 			}
 		}

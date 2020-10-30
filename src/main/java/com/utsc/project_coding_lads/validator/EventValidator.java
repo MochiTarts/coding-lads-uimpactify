@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.validator;
 
+import java.util.Date;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class EventValidator implements Validator {
 	private String eventName;
 	private String eventDesc;
 	private User eventCreator;
-	private LocalDateTime eventDate;
+	private Date eventDate;
 	private Integer eventId;
 	
 	@Autowired
@@ -28,14 +29,14 @@ public class EventValidator implements Validator {
 	@Autowired
 	EventService eventService;
 	
-	public void init(String eventName, String eventDesc, User eventCreator, LocalDateTime eventDate) {
+	public void init(String eventName, String eventDesc, User eventCreator, Date eventDate) {
 		this.eventName = eventName;
 		this.eventDesc = eventDesc;
 		this.eventCreator = eventCreator;
 		this.eventDate = eventDate;
 	}
 	
-	public void init(String eventName, String eventDesc, User eventCreator, LocalDateTime eventDate, Integer eventId) {
+	public void init(String eventName, String eventDesc, User eventCreator, Date eventDate, Integer eventId) {
 		this.eventName = eventName;
 		this.eventDesc = eventDesc;
 		this.eventCreator = eventCreator;

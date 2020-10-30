@@ -1,17 +1,20 @@
 package com.utsc.project_coding_lads.controller;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
@@ -145,7 +148,7 @@ public class UserController extends BaseController {
 
 	@GetMapping(path = "/getEventsByDate/{id}")
 	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
-	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) throws ValidationFailedException {
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) throws ValidationFailedException {
 		return eventService.findAllEventsByUserIdDate(userId, date);
 	}
 

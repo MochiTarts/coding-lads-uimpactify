@@ -1,6 +1,6 @@
 package com.utsc.project_coding_lads.service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import com.utsc.project_coding_lads.domain.Event;
@@ -22,6 +22,6 @@ public interface EventService {
 	
 	public List<Event> findAllEventsByUserId(Integer userId) throws ValidationFailedException;
 	
-	public List<Event> findAllEventsByUserIdDate(Integer userId, LocalDateTime date) throws ValidationFailedException;
+	public List<Event> findAllEventsByUserIdDate(Integer userId, Date date) throws ValidationFailedException;
 
 }
