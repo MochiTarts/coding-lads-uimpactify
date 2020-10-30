@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.EventTest;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -55,7 +56,7 @@ public class TestEventService {
 		Event event = new Event();
 		event.setEventName("name");
 		event.setEventDesc("desc");
-		event.setEventDate(LocalDateTime.now());
+		event.setEventDate(new Date());
 		event.setEventCreator(savedUser);
 		
 		Event savedEvent = eventService.saveEvent(event);
