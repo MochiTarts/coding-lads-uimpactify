@@ -2,18 +2,22 @@ package com.utsc.project_coding_lads.validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.enums.RoleEnum;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UnauthenticatedException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.service.RoleService;
 import com.utsc.project_coding_lads.service.SocialInitService;
 import com.utsc.project_coding_lads.service.UserService;
 
 @Component
+@Transactional
 public class UserValidator implements Validator {
 
 	private String firstName;
@@ -30,6 +34,8 @@ public class UserValidator implements Validator {
 	@Autowired
 	SocialInitService socialInitService;
 	@Autowired
+	RoleService roleService;
+	@Autowired
 	UserService userService;
 	
 	public void init(User user) {
@@ -42,7 +48,7 @@ public class UserValidator implements Validator {
 		//this.socialInitName = user.getSocialInit() != null ? user.getSocialInit().getName() : null;
 		this.role = user.getRole(); //I can check if Role and SocialInitiative are both null here
 		this.socialInit = user.getSocialInit();
-		this.userId = userId;
+		this.userId = user.getId();
 	}
 	
 	@Override
@@ -61,6 +67,12 @@ public class UserValidator implements Validator {
 			SocialInitiative savedSocialInit = socialInitService.findSocialInitByName(socialInit.getName());
 			if (savedSocialInit == null) throw new UnauthenticatedException("This user is not an employee");
 		}
+	}
+	
+	public void validateHasRole() throws ValidationFailedException {
+		validate();
+		if (role == null)
+			throw new UnauthenticatedException("This user is neither learner nor consultant");
 	}
 	
 	public void validateExists() throws ValidationFailedException {

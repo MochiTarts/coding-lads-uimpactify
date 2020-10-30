@@ -1,9 +1,27 @@
 import React from "react";
-import { Navbar, Nav, NavbarBrand, NavItem, NavLink } from "shards-react";
+import { Navbar, Nav, NavbarBrand, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "shards-react";
 import "../stylesheets/css/Sidebar.css";
 import  {UserContextConsumer} from "../components/UserContextProvider";
+import logo from "../img/uimpact_logo.png";
 
 class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownOpen: false,
+    }
+    this.toggleDropdown = this.toggleDropdown.bind(this)
+  }
+
+  toggleDropdown() {
+    this.setState({
+      ...this.state,
+      ...{
+        dropdownOpen: !this.state.dropdownOpen
+      }
+    });
+  }
+
   render() {
     return (
       <UserContextConsumer>
@@ -12,7 +30,7 @@ class Sidebar extends React.Component {
             <NavItem>
               <img
                 id="sidebar-logo"
-                src="https://wisxi.com/wp-content/uploads/2018/10/67226-1-e1539174955591.jpg"
+                src={logo}
               />
             </NavItem>
             {userContext.userId && 
@@ -20,9 +38,13 @@ class Sidebar extends React.Component {
               <NavItem>
                 <NavLink href="/dashboard">Dashboard</NavLink>
               </NavItem>,
-              <NavItem>
-                <NavLink href="/oppurtunities">Opportunities</NavLink>
-              </NavItem>,
+              <Dropdown open={this.state.dropdownOpen} toggle={this.toggleDropdown} direction="right">
+                <DropdownToggle nav caret>Opportunities</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem href="/myopportunities">My Opportunities</DropdownItem>
+                  <DropdownItem href="/explore-opportunities">Explore</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>,
               <NavItem>
                 <NavLink href="/settings">Settings</NavLink>
               </NavItem>,

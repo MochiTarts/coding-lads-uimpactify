@@ -13,7 +13,7 @@ class Calender extends React.Component {
   render() {
     return (
       <InfiniteCalendar
-        width={400}
+        width={300}
         height={200}
         selected={today}
         disabledDays={[]}

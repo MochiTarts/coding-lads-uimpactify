@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             {...rest}
             render={props =>
             context.userId ? (
-                <Component {...props} />
+                <Component {...props} uid={context.userId}/>
             ) : (
                 <Redirect to={{ pathname: '/', state: { from: props.location } }} />
             )

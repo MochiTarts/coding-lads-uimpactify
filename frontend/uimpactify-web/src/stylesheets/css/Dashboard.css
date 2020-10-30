@@ -5,7 +5,7 @@
           flex-direction: row;
 }
 
-.content-container {
+.container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -13,12 +13,12 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
 }
 
-.content-container .col {
+#content-container .col {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -28,9 +28,12 @@
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
 }
 
-.content-container .row {
+#content-container .row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -40,9 +43,141 @@
           flex-direction: column;
 }
 
-.content-container .dash-component {
+#content-container .btn {
+  background-color: #a64dff;
+  border-color: white;
+}
+
+.container .title-group {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.container #upcoming-events {
   background-color: whitesmoke;
-  min-width: 100%;
-  padding: 20px;
+  -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+}
+
+.container .dash-component {
+  max-width: -webkit-max-content;
+  max-width: -moz-max-content;
+  max-width: max-content;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 15px;
+}
+
+.container .dash-component #suggested-events,
+.container .dash-component #workshops,
+.container .dash-component #courses {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container .dash-component #suggested-events .item-row,
+.container .dash-component #workshops .item-row,
+.container .dash-component #courses .item-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.container .dash-component #suggested-events .item-row .col,
+.container .dash-component #workshops .item-row .col,
+.container .dash-component #courses .item-row .col {
+  padding: 0%;
+  margin: 3px;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item,
+.container .dash-component #workshops .item-row .col .event-item,
+.container .dash-component #courses .item-row .col .event-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+  background-color: whitesmoke;
+  border-radius: 15px;
+  width: 120px;
+  padding: 0%;
+  margin: 0%;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item .event-image,
+.container .dash-component #workshops .item-row .col .event-item .event-image,
+.container .dash-component #courses .item-row .col .event-item .event-image {
+  height: 50px;
+  width: 50px;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item .event-title,
+.container .dash-component #workshops .item-row .col .event-item .event-title,
+.container .dash-component #courses .item-row .col .event-item .event-title {
+  text-align: center;
+  width: 80px;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item .event-time,
+.container .dash-component #workshops .item-row .col .event-item .event-time,
+.container .dash-component #courses .item-row .col .event-item .event-time {
+  text-align: center;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item.add-new-courses,
+.container .dash-component #workshops .item-row .col .event-item.add-new-courses,
+.container .dash-component #courses .item-row .col .event-item.add-new-courses {
+  background: transparent;
+  border-style: dashed;
+}
+
+.container .dash-component #suggested-events .item-row .col .event-item.add-new-courses .event-image,
+.container .dash-component #workshops .item-row .col .event-item.add-new-courses .event-image,
+.container .dash-component #courses .item-row .col .event-item.add-new-courses .event-image {
+  height: 20px;
+  width: 20px;
+}
+
+.container .dash-component.news {
+  -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+          box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+  background-color: whitesmoke;
+  border-radius: 15px;
+}
+
+.container .dash-component.news .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.container .dash-component.news .container .news-display {
+  height: 100px;
 }
 /*# sourceMappingURL=Dashboard.css.map */

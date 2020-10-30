@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.utsc.project_coding_lads.custom_deserialize.RoleDeserializer;
@@ -29,30 +29,26 @@ public class User extends BaseDataEntity {
 	
 	@JsonProperty("firstName")
 	private String firstName;
-	
 	@JsonProperty("lastName")
 	private String lastName;
-	
 	@JsonProperty("username")
 	private String username;
-
 	@JsonProperty("password")
 	private String hashedPassword;
-	
 	@JsonProperty("age")
 	private Integer age;
-	
 	@JsonDeserialize(using = SocialInitDeserializer.class)
 	@JsonProperty("socialInit")
 	private SocialInitiative socialInit;
-	
 	@JsonDeserialize(using = RoleDeserializer.class)
 	@JsonProperty("role")
 	private Role role;
-//	private List<Application> application;
-	private List<Event> events;
-	private List<Posting> postings;
-
+	private List<Application> application;
+	private List<Event> events = new ArrayList<>();
+	private List<Posting> postings = new ArrayList<>();
+	private List<Invoice> invoices;
+	
+	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name="socialinit_id")
 	public SocialInitiative getSocialInit() {
@@ -64,7 +60,7 @@ public class User extends BaseDataEntity {
 	@ManyToOne(optional = true)
 	@JoinColumn(name="role_id")
 	public Role getRole() {
-		return this.role;
+		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
@@ -104,31 +100,39 @@ public class User extends BaseDataEntity {
 	public void setAge(Integer age) {
 		this.age = age;
 	}
-//	@OneToMany
-//	@JoinColumn(name="application_id")
-//	public List<Application> getApplication() {
-//		return application;
-//	}
-//	public void setApplication(List<Application> application) {
-//		this.application = application;
-//	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "eventCreator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "eventCreator")
 	public List<Event> getEvents() {
 		return events;
 	}
 	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "posting_id")
+	@JsonIgnore 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "postingCreator")
 	public List<Posting> getPostings() {
 		return postings;
 	}
 	public void setPostings(List<Posting> postings) {
 		this.postings = postings;
 	}
+	@JsonIgnore 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "applicant")
+	public List<Application> getApplication() {
+		return application;
+	}
+	public void setApplication(List<Application> application) {
+		this.application = application;
+	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+	
 	
 	
 	

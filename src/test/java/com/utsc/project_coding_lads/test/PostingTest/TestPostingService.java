@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.PostingTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -67,9 +68,20 @@ public class TestPostingService {
 		Assert.assertNotNull(getPosting);
 		Assert.assertEquals(savedPosting.getId(), getPosting.getId());
 		
+		List<Posting> postingsOld = postingService.findAllPostingsByUserId(savedUser.getId());
+		Assert.assertFalse(postingsOld.isEmpty());
+		Posting posting0 = postingsOld.get(0);
+		Assert.assertEquals(getPosting.getName(), posting0.getName());
+		
 		savedPosting.setName("new name");
 		savedPosting = postingService.updatePosting(savedPosting);
 		Assert.assertEquals("new name", savedPosting.getName());
+		
+		List<Posting> postings = postingService.findAllPostingsByUserId(savedUser.getId());
+		Assert.assertFalse(postings.isEmpty());
+		Posting posting1 = postings.get(0);
+		Assert.assertEquals("new name", posting1.getName());
+		
 		postingService.deletePostingById(savedPosting.getId());
 		
 		Boolean exist = postingService.existsById(id);

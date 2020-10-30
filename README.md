@@ -10,6 +10,7 @@
 7. in Goals field, type "clean install"
 8. In the checkboxes below, click "Skip Tests" to be true
 9. Left click the project at the root level, then click your new run config to do a clean install
+(10).  If running form the terminal, do "mvn clean install -DskipTests=true"
 
 ### Setting up the database
 1. Go to https://www.postgresql.org/download/ and install the latest version for your OS

@@ -57,7 +57,7 @@ public class TestImpactLearnerRepo {
 		user.setAge(90);
 		user.setFirstName("firstName");
 		user.setLastName("lastname");
-		user.setUsername("username");
+		user.setUsername("username1");
 		user.setHashedPassword("pw");
 		
 		il.setUser(user);
