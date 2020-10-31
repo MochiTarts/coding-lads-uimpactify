@@ -56,7 +56,7 @@ public class TestUserRepo {
 		user.setAge(90);
 		user.setFirstName("firstName");
 		user.setLastName("lastname");
-		user.setUsername("username");
+		user.setUsername("username2");
 		user.setHashedPassword("pw");
 		
 		Role role1 = new Role("IMPACT_LEARNER");

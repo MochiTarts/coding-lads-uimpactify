@@ -8,51 +8,58 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.EntityNotFoundException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
+import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.validator.CourseValidator;
+import com.utsc.project_coding_lads.validator.ImpactLearnerValidator;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
 @Transactional
 public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 
 	@Autowired
-	ImpactLearnerRepository impactLearnerRepo;
+	ImpactLearnerRepository learnerRepo;
+	@Autowired
+	ImpactLearnerValidator learnerValidator;
+	@Autowired
+	UserService userService;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
-		return impactLearnerRepo.save(impactLearner).getId();
-	}
-
-	@Override
-	public Course addCourse(Integer courseId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void removeCourse(Integer courseId) throws Exception {
-		// TODO Auto-generated method stub
-		
+		if (impactLearner == null)
+			throw new MissingInformationException("Impact Learner body is null.");
+		learnerValidator.init(impactLearner.getUser(), impactLearner.getId());
+		return learnerRepo.save(impactLearner).getId();
 	}
 	
 	@Override
 	public ImpactLearner findImpactLearnerById(Integer id) throws EntityNotFoundException {
 		if (!existsById(id))
 			throw new EntityNotFoundException("Impact Learner does not exist.");
-		return impactLearnerRepo.findById(id).get();
+		return learnerRepo.findById(id).get();
 	}
 	
 	@Override
 	public Boolean existsById(Integer id) {
-		return impactLearnerRepo.existsById(id);
+		return learnerRepo.existsById(id);
 	}
-
+	
 	@Override
-	public List<Course> findAllCoursesByLearner(ImpactLearner learnerId) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ImpactLearner updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException {
+		if (impactLearner == null)
+			throw new MissingInformationException("Impact Learner cannot be null.");
+		learnerValidator.init(impactLearner.getUser(), impactLearner.getId());
+		User savedUser = userService.findUserById(impactLearner.getUser().getId());
+		impactLearner.setUser(savedUser);
+		return learnerRepo.save(impactLearner);
 	}
 
 }
