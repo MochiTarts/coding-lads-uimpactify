@@ -1,7 +1,7 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -148,7 +148,7 @@ public class UserController extends BaseController {
 
 	@GetMapping(path = "/getEventsByDate/{id}")
 	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
-	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date) throws ValidationFailedException {
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws ValidationFailedException {
 		return eventService.findAllEventsByUserIdDate(userId, date);
 	}
 

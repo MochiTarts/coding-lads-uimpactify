@@ -63,7 +63,8 @@ CREATE TABLE EVENT (
 	event_desc VARCHAR(256),
 	user_id INTEGER,
 	FOREIGN KEY (user_id) REFERENCES UI_USER(id),
-	event_date TIMESTAMP NOT NULL
+	event_start_date_time TIMESTAMP NOT NULL, 
+	event_end_date_time TIMESTAMP NOT NULL
 );
 
 CREATE TABLE CLASS_SESSION (
