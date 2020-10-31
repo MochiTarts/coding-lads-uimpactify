@@ -1,8 +1,17 @@
 import axios from "axios";
 
 const apiUrl = "http://localhost:8080/uimpactify/users";
-export const createEvent = (eventName, eventDesc) => {
-  const dateUTC = new Date(new Date().getTime()).toISOString();
+export const createEvent = (
+  eventName,
+  eventDesc,
+  startDate,
+  startTime,
+  endDate,
+  endTime
+) => {
+  const startTimestamp = new Date(`${startDate}T${startTime}`).toISOString();
+  const endTimestamp = new Date(`${endDate}T${endTime}`).toISOString();
+
   const authedUserInfo = JSON.parse(localStorage.getItem("authenticatedUser"));
   const authedUserID = authedUserInfo.id;
   const authedUserSocialInit = authedUserInfo.socialInit.name;
@@ -10,14 +19,15 @@ export const createEvent = (eventName, eventDesc) => {
     eventName: eventName,
     eventDesc: eventDesc,
     eventCreator: { id: authedUserID },
-    eventDate: dateUTC,
+    eventStartDate: startTimestamp,
+    eventEndDate: endTimestamp,
     socialInit: { name: authedUserSocialInit },
   };
   return axios.post(`${apiUrl}/createEvent`, payload);
 };
 
-export const deleteEvent = (userId) => {
-  return axios.post(`${apiUrl}/deleteEvent/${userId}`, {});
+export const deleteEvent = (postId) => {
+  return axios.post(`${apiUrl}/deleteEvent/${postId}`, {});
 };
 
 export const getEvent = (userId) => {
@@ -29,4 +39,31 @@ export const getEvents = (userId) => {
 };
 export const getEventsByDate = (userId) => {
   return axios.get(`${apiUrl}/getEventsByDate/${userId}`);
+};
+
+export const updateEvent = (
+  postId,
+  eventName,
+  eventDesc,
+  startDate,
+  startTime,
+  endDate,
+  endTime
+) => {
+  const startTimestamp = new Date(`${startDate}T${startTime}`).toISOString();
+  const endTimestamp = new Date(`${endDate}T${endTime}`).toISOString();
+
+  const authedUserInfo = JSON.parse(localStorage.getItem("authenticatedUser"));
+  const authedUserID = authedUserInfo.id;
+  const authedUserSocialInit = authedUserInfo.socialInit.name;
+  const payload = {
+    id: postId,
+    eventName: eventName,
+    eventDesc: eventDesc,
+    eventCreator: { id: authedUserID },
+    eventStartDate: startTimestamp,
+    eventEndDate: endTimestamp,
+    socialInit: { name: authedUserSocialInit },
+  };
+  return axios.post(`${apiUrl}/updateEvent`, payload);
 };
