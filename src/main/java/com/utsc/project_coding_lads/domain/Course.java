@@ -2,8 +2,10 @@ package com.utsc.project_coding_lads.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -56,7 +58,7 @@ public class Course extends BaseDataEntity {
 		this.sessions = sessions;
 	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	public List<ImpactLearnerCourse> getStudents() {
 		return students;
 	}

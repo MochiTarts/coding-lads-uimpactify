@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,7 +15,7 @@ public class ImpactLearnerCourse extends BaseDataEntity {
 	private ImpactLearner student;
 	private Course course;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")
 	public ImpactLearner getStudent() {
 		return student;
@@ -22,7 +23,7 @@ public class ImpactLearnerCourse extends BaseDataEntity {
 	public void setStudent(ImpactLearner student) {
 		this.student = student;
 	}
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "course_id")
 	public Course getCourse() {
 		return course;

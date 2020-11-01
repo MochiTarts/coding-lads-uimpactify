@@ -1,12 +1,16 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.domain.User;
@@ -15,7 +19,10 @@ import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
+import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.UserRepository;
+import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.RoleService;
@@ -30,6 +37,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepo;
 	@Autowired
+	ImpactLearnerCourseRepository learnerCourseRepo;
+	@Autowired
 	RoleService roleService;
 	@Autowired
 	ImpactConsultantService consultantService;
@@ -37,6 +46,8 @@ public class UserServiceImpl implements UserService {
 	ImpactLearnerService learnerService;
 	@Autowired
 	SocialInitService socialInitService;
+	@Autowired
+	CourseService courseService;
 	@Autowired
 	UserValidator userValidator;
 
@@ -111,6 +122,27 @@ public class UserServiceImpl implements UserService {
 		User savedUser = findUserById(user.getId());
 		savedUser = userRepo.save(user);
 		return savedUser;
+	}
+
+	@Override
+	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
+		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
+		ImpactLearner savedStudent = learnerService.findLearnerById(student.getId());
+		Course savedCourse = courseService.findCourseById(course.getId());
+		learnerCourse.setCourse(savedCourse);
+		learnerCourse.setStudent(savedStudent);
+		savedStudent.getCourses().add(learnerCourse);
+		savedCourse.getStudents().add(learnerCourse);
+		learnerService.storeImpactLearner(savedStudent);
+		courseService.storeCourseService(savedCourse);
+		learnerService.storeImpactLearner(savedStudent);
+	}
+
+	@Override
+	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception {
+		ImpactLearner savedStudent = learnerService.findLearnerById(id);
+		savedStudent.getCourses().size();
+		return savedStudent.getCourses();
 	}
 
 }

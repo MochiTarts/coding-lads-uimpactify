@@ -13,6 +13,7 @@ import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.repository.RoleRepository;
@@ -79,6 +80,9 @@ class TestManageCourses {
 		Integer studentId = userService.storeUser(user2);
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
+		
+		userService.addCourseToLearner(savedStudent, savedCourse);
+		System.out.println(userService.findCoursesByLearnerId(savedStudent.getId()));
 	}
 
 }

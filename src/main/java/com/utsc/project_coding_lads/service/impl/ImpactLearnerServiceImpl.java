@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
@@ -19,6 +20,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
+		if (impactLearner == null)
+			throw new MissingInformationException("Impact learner cannot be null.");
 		return impactLearnerRepo.save(impactLearner).getId();
 	}
 
