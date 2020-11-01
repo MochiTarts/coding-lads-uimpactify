@@ -2,6 +2,8 @@ package com.utsc.project_coding_lads.validator;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
 @Component
+@Transactional
 public class CourseValidator implements Validator {
 	
 	private Integer courseId;
@@ -43,6 +46,14 @@ public class CourseValidator implements Validator {
 		this.instructor = course.getInstructor();
 		this.session = course.getSessions();
 	}
+	
+	public void init(Course course) {
+		this.courseId = course.getId();
+		this.courseName = course.getCourseName();
+		this.courseDesc = course.getCourseDesc();
+		this.instructor = course.getInstructor();
+		this.session = course.getSessions();
+	}
 
 	@Override
 	public void validate() throws ValidationFailedException {
@@ -51,7 +62,7 @@ public class CourseValidator implements Validator {
 			throw new MissingInformationException("The required field is missing");
 		if (instructor.getUser() == null)
 			throw new UnauthenticatedException("The impact consultant is not an instructor");
-		if (impactConsultantService.findImpactConsultantById(instructor.getId()) == null)
+		if (!impactConsultantService.existsById(instructor.getId()))
 			throw new UnauthenticatedException("The impact consultant is not an instructor");
 		// Validate class session
 		if (session != null) {

@@ -16,6 +16,8 @@ public class CourseServiceImpl implements CourseService {
 
 	@Autowired
 	CourseRepository courseRepo;
+	@Autowired
+	CourseValidator validator;
 	
 	@Override
 	public Boolean existByID(Integer id) {
@@ -26,7 +28,7 @@ public class CourseServiceImpl implements CourseService {
 	public Integer storeCourseService(Course course) throws Exception {
 		if (course == null)
 			throw new BadRequestException("Course body is null");
-		CourseValidator validator = new CourseValidator(course);
+		validator.init(course);
 		validator.validate();
 		return courseRepo.save(course).getId();
 	}
