@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.utsc.project_coding_lads.domain.Application;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.Event;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Posting;
@@ -223,6 +224,12 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "retrieving all courses from a student's load", response = ImpactLearnerCourse.class, responseContainer = "List")
 	public List<ImpactLearnerCourse> getAllCoursesFromStudent(@PathVariable("id") Integer studentId) throws Exception {
 		return learnerService.findCoursesByLearnerId(studentId);
+	}
+	
+	@GetMapping(path = "/getAllCoursesFromStudentByInstructor/{id}")
+	@ApiOperation(value = "retrieving all courses from a student's load that were taught by this instructor", response = ImpactLearnerCourse.class, responseContainer = "List")
+	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestBody ImpactConsultant instructor) throws Exception {
+		return learnerService.findCoursesByInstructorId(studentId, instructor);
 	}
 
 }

@@ -88,9 +88,9 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(ImpactConsultant instructor, ImpactLearner student) throws Exception {
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, ImpactConsultant instructor) throws Exception {
 		//Add validation later
-		ImpactLearner savedStudent = findLearnerById(student.getId());
+		ImpactLearner savedStudent = findLearnerById(studentId);
 		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructor.getId());
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
