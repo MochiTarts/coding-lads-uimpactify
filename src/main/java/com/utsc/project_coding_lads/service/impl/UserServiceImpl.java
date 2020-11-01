@@ -19,7 +19,6 @@ import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
-import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.CourseService;
@@ -36,8 +35,6 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserRepository userRepo;
-	@Autowired
-	ImpactLearnerCourseRepository learnerCourseRepo;
 	@Autowired
 	ImpactLearnerRepository learnerRepo;
 	@Autowired

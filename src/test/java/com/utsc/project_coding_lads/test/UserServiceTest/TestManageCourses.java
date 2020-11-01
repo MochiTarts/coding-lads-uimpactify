@@ -17,6 +17,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
@@ -31,6 +32,8 @@ public class TestManageCourses {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	ImpactLearnerRepository learnerRepo;
 	@Autowired
 	RoleRepository roleRepo;
 	@Autowired
@@ -84,13 +87,18 @@ public class TestManageCourses {
 		
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
 		List<ImpactLearnerCourse> courses = learnerService.findCoursesByLearnerId(savedStudent.getId());
+		Assert.assertFalse(courses.isEmpty());
+		
+		learnerService.removeCourseFromLearner(savedStudent, savedCourse);
+		List<ImpactLearnerCourse> courses2 = learnerService.findCoursesByLearnerId(savedStudent.getId());
+		Assert.assertTrue(courses2.isEmpty());
 		
 //		savedStudent = learnerService.findLearnerById(savedStudent.getId());
 //		savedStudent.getCourses().size();
 //		courses = savedStudent.getCourses();
-		for (ImpactLearnerCourse impactLearnerCourse : courses) {
-			System.out.println(impactLearnerCourse.getCourse().getCourseName());
-		}
+//		for (ImpactLearnerCourse impactLearnerCourse : courses) {
+//			System.out.println(impactLearnerCourse.getCourse().getCourseName());
+//		}
 	}
 
 }

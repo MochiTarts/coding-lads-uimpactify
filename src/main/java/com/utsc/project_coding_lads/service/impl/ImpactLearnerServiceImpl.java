@@ -53,11 +53,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		learnerCourse.setCourse(savedCourse);
 		learnerCourse.setStudent(savedStudent);
 		savedStudent.getCourses().size();
-		savedCourse.getStudents().size();
 		savedStudent.getCourses().add(learnerCourse);
-		savedCourse.getStudents().add(learnerCourse);
 		learnerRepo.save(savedStudent);
-		System.out.println(savedStudent.getCourses().size());
 	}
 
 	@Override
@@ -66,6 +63,23 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
 		return courses;
+	}
+
+	@Override
+	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
+		//Add in validation later
+		ImpactLearner savedStudent = findLearnerById(student.getId());
+		Course savedCourse = courseService.findCourseById(course.getId());
+		savedStudent.getCourses().size();
+		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
+		for (ImpactLearnerCourse ilc: courses) {
+			if (ilc.getCourse().getId() == savedCourse.getId()) {
+				courses.remove(ilc);
+				System.out.println(savedStudent.getCourses().size());
+				learnerRepo.save(savedStudent);
+				return;
+			}
+		}
 	}
 
 }
