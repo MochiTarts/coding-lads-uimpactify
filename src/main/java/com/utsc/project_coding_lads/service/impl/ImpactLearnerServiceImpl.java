@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 
@@ -18,6 +20,18 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
 		return impactLearnerRepo.save(impactLearner).getId();
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return impactLearnerRepo.existsById(id);
+	}
+
+	@Override
+	public ImpactLearner findLearnerById(Integer id) throws ValidationFailedException {
+		if (!existsById(id))
+			throw new EntityNotExistException("The impact learner does not exist.");
+		return impactLearnerRepo.findById(id).get();
 	}
 
 }

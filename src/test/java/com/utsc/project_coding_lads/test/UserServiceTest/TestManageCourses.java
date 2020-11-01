@@ -12,11 +12,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.SocialInitService;
 import com.utsc.project_coding_lads.service.UserService;
@@ -35,6 +37,8 @@ class TestManageCourses {
 	PostingService postingService;
 	@Autowired
 	ImpactConsultantService consultantService;
+	@Autowired
+	ImpactLearnerService learnerService;
 	@Autowired
 	CourseService courseService;
 
@@ -61,6 +65,20 @@ class TestManageCourses {
 		Integer savedCourseId = courseService.storeCourseService(course);
 		Course savedCourse = courseService.findCourseById(savedCourseId);
 		Assert.assertNotNull(savedCourse);
+		
+		User user2 = new User();
+		user2.setAge(90);
+		user2.setFirstName("student");
+		user2.setLastName("lastname");
+		user2.setUsername("student");
+		user2.setHashedPassword("password");
+		Role learner = new Role();
+		learner.setName("IMPACT_LEARNER");
+		Role savedLearner = roleRepo.save(learner);
+		user2.setRole(savedLearner);
+		Integer studentId = userService.storeUser(user2);
+		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
+		Assert.assertNotNull(savedStudent);
 	}
 
 }
