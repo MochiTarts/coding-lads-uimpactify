@@ -2,6 +2,7 @@ package com.utsc.project_coding_lads.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
 import com.utsc.project_coding_lads.domain.Event;
+import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
@@ -29,6 +31,7 @@ import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.EventService;
+import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -48,6 +51,9 @@ public class UserController extends BaseController {
 	EventService eventService;
 	@Autowired
 	ApplicationService appService;
+	@Autowired
+	InvoiceService invoiceService;
+	
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping(path = "/signup")
@@ -203,5 +209,24 @@ public class UserController extends BaseController {
 	public List<Application> getPostingApps(@PathVariable("id") Integer postingId) throws Exception {
 		return appService.findAllApplicationsByPostingId(postingId);
 	}
+	
+	@GetMapping(path = "/getInvoice")
+	public List<Invoice> getInvoiceForLearner(@PathVariable("userId") Integer userId) throws Exception {
+		return invoiceService.getInvoice(userId);
+	}
+	
+	@GetMapping(path = "/payInvoice")
+	public Integer payInvoice(@PathVariable("userId") Integer userId, @PathVariable("courseId") Integer courseId) throws Exception {
+		
+		return invoiceService.payInvoicePerCourse(userId, courseId);
+		
+	}
+	
+	@GetMapping(path = "/getpaid")
+	public Integer getPaid(@PathVariable("userId") Integer userId, @PathVariable("courseId") Integer courseId) throws Exception {
+		
+		return invoiceService.InstructorPayment(userId, courseId);
+	}
+	
 
 }
