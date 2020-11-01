@@ -59,6 +59,8 @@ class TestManageCourses {
 		course.setCourseDesc("desc");
 		course.setInstructor(savedInstructor);
 		Integer savedCourseId = courseService.storeCourseService(course);
+		Course savedCourse = courseService.findCourseById(savedCourseId);
+		Assert.assertNotNull(savedCourse);
 	}
 
 }

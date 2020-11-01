@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
@@ -31,6 +33,13 @@ public class CourseServiceImpl implements CourseService {
 		validator.init(course);
 		validator.validate();
 		return courseRepo.save(course).getId();
+	}
+
+	@Override
+	public Course findCourseById(Integer id) throws ValidationFailedException {
+		if (!existByID(id))
+			throw new EntityNotExistException("The course does not exist.");
+		return courseRepo.findById(id).get();
 	}
 
 }
