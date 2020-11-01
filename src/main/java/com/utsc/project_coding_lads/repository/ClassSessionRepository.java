@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.utsc.project_coding_lads.domain.ClassSession;
 
 @Repository
-@Transactional
 public interface ClassSessionRepository extends JpaRepository<ClassSession, Integer> {
 	
 }

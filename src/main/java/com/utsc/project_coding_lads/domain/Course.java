@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,8 +24,8 @@ public class Course extends BaseDataEntity {
 	private String courseName;
 	private String courseDesc;
 	private ImpactConsultant instructor;
-	private List<ImpactLearnerCourse> students;
-	private List<ClassSession> sessions;
+	private List<ImpactLearnerCourse> students = new ArrayList<>();
+	private List<ClassSession> sessions = new ArrayList<>();
 	private Invoice invoice;
 	
 	@Column(name = "course_name", length = 64)

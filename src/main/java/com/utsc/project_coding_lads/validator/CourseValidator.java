@@ -16,7 +16,6 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
 @Component
-@Transactional
 public class CourseValidator implements Validator {
 	
 	private Integer courseId;

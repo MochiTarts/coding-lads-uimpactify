@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public Integer storeCourseService(Course course) throws Exception {
+	public Integer storeCourse(Course course) throws Exception {
 		if (course == null)
 			throw new BadRequestException("Course body is null");
 		validator.init(course);

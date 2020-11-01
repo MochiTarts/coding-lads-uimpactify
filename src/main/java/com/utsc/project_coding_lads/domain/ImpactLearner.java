@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -20,7 +21,7 @@ public class ImpactLearner extends BaseDataEntity {
 	public static final String TABLE_NAME = "IMPACT_LEARNER";
 	
 	private User user;
-	private List<ImpactLearnerCourse> courses;
+	private List<ImpactLearnerCourse> courses = new ArrayList<>();
 
 	@OneToOne(optional = false)
 	@JoinColumn(name = "id")

@@ -1,13 +1,14 @@
 package com.utsc.project_coding_lads.test.UserServiceTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Course;
@@ -26,7 +27,8 @@ import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-class TestManageCourses {
+@Transactional
+public class TestManageCourses {
 	
 	@Autowired
 	UserService userService;
@@ -44,7 +46,7 @@ class TestManageCourses {
 	CourseService courseService;
 
 	@Test
-	void testService() throws Exception {
+	public void testCRUDService() throws Exception {
 		User user = new User();
 		user.setAge(20);
 		user.setFirstName("instructor");
@@ -63,7 +65,7 @@ class TestManageCourses {
 		course.setCourseName("course");
 		course.setCourseDesc("desc");
 		course.setInstructor(savedInstructor);
-		Integer savedCourseId = courseService.storeCourseService(course);
+		Integer savedCourseId = courseService.storeCourse(course);
 		Course savedCourse = courseService.findCourseById(savedCourseId);
 		Assert.assertNotNull(savedCourse);
 		
@@ -81,8 +83,15 @@ class TestManageCourses {
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
 		
-		learnerService.addCourseToLearner(savedStudent, savedCourse);
-		System.out.println(learnerService.findCoursesByLearnerId(savedStudent.getId()));
+		userService.addCourseToLearner(savedStudent, savedCourse);
+		List<ImpactLearnerCourse> courses = userService.findCoursesByLearnerId(savedStudent.getId());
+		
+		savedStudent = learnerService.findLearnerById(savedStudent.getId());
+		savedStudent.getCourses().size();
+		courses = savedStudent.getCourses();
+		for (ImpactLearnerCourse impactLearnerCourse : courses) {
+			System.out.println(impactLearnerCourse.getCourse().getCourseName());
+		}
 	}
 
 }
