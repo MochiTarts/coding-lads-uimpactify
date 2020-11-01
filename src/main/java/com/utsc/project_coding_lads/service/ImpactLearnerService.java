@@ -3,6 +3,7 @@ package com.utsc.project_coding_lads.service;
 import java.util.List;
 
 import com.utsc.project_coding_lads.domain.Course;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
@@ -21,6 +22,6 @@ public interface ImpactLearnerService {
 	
 	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception;
 	
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer instructorId, ImpactLearner student) throws Exception;
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(ImpactConsultant instructor, ImpactLearner student) throws Exception;
 	
 }

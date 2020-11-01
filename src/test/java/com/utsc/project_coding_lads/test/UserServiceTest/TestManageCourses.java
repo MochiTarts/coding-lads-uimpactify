@@ -93,7 +93,7 @@ public class TestManageCourses {
 		List<ImpactLearnerCourse> courses2 = learnerService.findCoursesByLearnerId(savedStudent.getId());
 //		Assert.assertTrue(courses2.isEmpty());
 		
-		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedInstructor.getId(), savedStudent);
+		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedInstructor, savedStudent);
 		Assert.assertEquals(1, instructorCourse.size());
 		
 //		savedStudent = learnerService.findLearnerById(savedStudent.getId());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Course;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
@@ -15,6 +16,7 @@ import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.CourseService;
+import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 
 @Service
@@ -25,6 +27,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	ImpactLearnerRepository learnerRepo;
 	@Autowired
 	CourseService courseService;
+	@Autowired
+	ImpactConsultantService consultantService;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -84,13 +88,14 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer instructorId, ImpactLearner student) throws Exception {
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(ImpactConsultant instructor, ImpactLearner student) throws Exception {
 		//Add validation later
 		ImpactLearner savedStudent = findLearnerById(student.getId());
+		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructor.getId());
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
 		for (ImpactLearnerCourse ilc: savedStudent.getCourses()) {
-			if (ilc.getCourse().getInstructor().getId() == instructorId)
+			if (ilc.getCourse().getInstructor().getId() == savedInstructor.getId())
 				foundCourses.add(ilc);
 		}
 		return foundCourses;
