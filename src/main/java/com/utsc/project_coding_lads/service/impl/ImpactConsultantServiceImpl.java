@@ -22,7 +22,7 @@ public class ImpactConsultantServiceImpl implements ImpactConsultantService {
 	
 	@Override
 	public ImpactConsultant findImpactConsultantById(Integer id) {
-		if (impactConsultantRepo.existsById(id)) {
+		if (impactConsultantRepo.existsById(id))
 			return impactConsultantRepo.getOne(id);
 //		throw new EntityNotExistException("This impact consultant does not exist");
 		return null;
