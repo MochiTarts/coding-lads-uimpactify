@@ -10,6 +10,7 @@ import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ImpactConsultantRepository;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
@@ -21,11 +22,10 @@ public class ImpactConsultantServiceImpl implements ImpactConsultantService {
 	ImpactConsultantRepository impactConsultantRepo;
 	
 	@Override
-	public ImpactConsultant findImpactConsultantById(Integer id) {
-		if (impactConsultantRepo.existsById(id))
-			return impactConsultantRepo.getOne(id);
-//		throw new EntityNotExistException("This impact consultant does not exist");
-		return null;
+	public ImpactConsultant findImpactConsultantById(Integer id) throws ValidationFailedException {
+		if (!impactConsultantRepo.existsById(id))
+			throw new EntityNotExistException("This impact consultant does not exist");
+		return impactConsultantRepo.findById(id).get();
 	}
 	
 	@Override

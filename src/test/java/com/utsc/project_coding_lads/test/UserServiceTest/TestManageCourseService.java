@@ -27,7 +27,6 @@ import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
-import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.SocialInitService;
@@ -37,10 +36,6 @@ import com.utsc.project_coding_lads.service.UserService;
 @SpringBootTest(classes = {Application.class})
 class TestManageCourseService {
 
-	@Autowired
-	ImpactLearnerCourseRepository learnerCourseRepo;
-	@Autowired
-	ImpactLearnerCourseService learnerCourseService;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -78,8 +73,8 @@ class TestManageCourseService {
 		course1.setInstructor(savedInstructor);
 		course1.setSessions(null);
 		Integer savedCourseId = courseService.storeCourseService(course1);
-//		Course savedCourse = courseService.findCourseById(savedCourseId);
-//		Assert.assertNotNull(savedCourse);
+		Course savedCourse = courseService.findCourseById(savedCourseId);
+		Assert.assertNotNull(savedCourse);
 		
 		
 	}

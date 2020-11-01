@@ -13,8 +13,6 @@ public interface CourseService {
 	
 	public Course findCourseById(Integer id) throws EntityNotFoundException;
 	
-	public Boolean existsById(Integer id);
-	
 	public Course updateCourse(Course course) throws ValidationFailedException;
 	
 }

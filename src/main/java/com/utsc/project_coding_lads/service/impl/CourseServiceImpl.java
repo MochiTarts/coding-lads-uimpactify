@@ -36,8 +36,8 @@ public class CourseServiceImpl implements CourseService {
 	public Integer storeCourseService(Course course) throws Exception {
 		if (course == null)
 			throw new BadRequestException("Course body is null");
-		CourseValidator validator = new CourseValidator(course);
-		validator.validate();
+		courseValidator.init(course);
+		courseValidator.validate();
 		return courseRepo.save(course).getId();
 	}
 
@@ -49,15 +49,10 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public Boolean existsById(Integer id) {
-		return courseRepo.existsById(id);
-	}
-
-	@Override
 	public Course updateCourse(Course course) throws ValidationFailedException {
 		if (course == null)
 			throw new MissingInformationException("Course cannot be null.");
-		courseValidator = new CourseValidator(course);
+		courseValidator.init(course);
 		courseValidator.validateExist();
 		ImpactConsultant savedInstructor = icService.findImpactConsultantById(course.getInstructor().getId());
 		course.setInstructor(savedInstructor);

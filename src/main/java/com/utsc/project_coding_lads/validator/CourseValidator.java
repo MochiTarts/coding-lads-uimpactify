@@ -2,6 +2,8 @@ package com.utsc.project_coding_lads.validator;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
 @Component
+@Transactional
 public class CourseValidator implements Validator {
 	
 	private Integer courseId;
@@ -37,6 +40,14 @@ public class CourseValidator implements Validator {
 	
 	public CourseValidator(Course course) {
 		super();
+		this.courseId = course.getId();
+		this.courseName = course.getCourseName();
+		this.courseDesc = course.getCourseDesc();
+		this.instructor = course.getInstructor();
+		this.session = course.getSessions();
+	}
+	
+	public void init(Course course) {
 		this.courseId = course.getId();
 		this.courseName = course.getCourseName();
 		this.courseDesc = course.getCourseDesc();
