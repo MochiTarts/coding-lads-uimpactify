@@ -52,6 +52,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		Course savedCourse = courseService.findCourseById(course.getId());
 		learnerCourse.setCourse(savedCourse);
 		learnerCourse.setStudent(savedStudent);
+		savedStudent.getCourses().size();
+		savedCourse.getStudents().size();
 		savedStudent.getCourses().add(learnerCourse);
 		savedCourse.getStudents().add(learnerCourse);
 		learnerRepo.save(savedStudent);
@@ -62,7 +64,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception {
 		ImpactLearner savedStudent = findLearnerById(id);
 		savedStudent.getCourses().size();
-		return savedStudent.getCourses();
+		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
+		return courses;
 	}
 
 }

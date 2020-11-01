@@ -59,7 +59,7 @@ public class Course extends BaseDataEntity {
 		this.sessions = sessions;
 	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<ImpactLearnerCourse> getStudents() {
 		return students;
 	}

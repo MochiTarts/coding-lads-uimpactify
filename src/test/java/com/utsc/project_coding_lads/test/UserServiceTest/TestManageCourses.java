@@ -27,7 +27,6 @@ import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-@Transactional
 public class TestManageCourses {
 	
 	@Autowired
@@ -83,12 +82,12 @@ public class TestManageCourses {
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
 		
-		userService.addCourseToLearner(savedStudent, savedCourse);
-		List<ImpactLearnerCourse> courses = userService.findCoursesByLearnerId(savedStudent.getId());
+		learnerService.addCourseToLearner(savedStudent, savedCourse);
+		List<ImpactLearnerCourse> courses = learnerService.findCoursesByLearnerId(savedStudent.getId());
 		
-		savedStudent = learnerService.findLearnerById(savedStudent.getId());
-		savedStudent.getCourses().size();
-		courses = savedStudent.getCourses();
+//		savedStudent = learnerService.findLearnerById(savedStudent.getId());
+//		savedStudent.getCourses().size();
+//		courses = savedStudent.getCourses();
 		for (ImpactLearnerCourse impactLearnerCourse : courses) {
 			System.out.println(impactLearnerCourse.getCourse().getCourseName());
 		}
