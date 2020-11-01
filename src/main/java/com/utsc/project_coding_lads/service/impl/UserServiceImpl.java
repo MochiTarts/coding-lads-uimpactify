@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	ImpactLearnerCourseRepository learnerCourseRepo;
 	@Autowired
+	ImpactLearnerRepository learnerRepo;
+	@Autowired
 	RoleService roleService;
 	@Autowired
 	ImpactConsultantService consultantService;
@@ -122,27 +124,6 @@ public class UserServiceImpl implements UserService {
 		User savedUser = findUserById(user.getId());
 		savedUser = userRepo.save(user);
 		return savedUser;
-	}
-
-	@Override
-	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
-		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
-		ImpactLearner savedStudent = learnerService.findLearnerById(student.getId());
-		Course savedCourse = courseService.findCourseById(course.getId());
-		learnerCourse.setCourse(savedCourse);
-		learnerCourse.setStudent(savedStudent);
-		savedStudent.getCourses().add(learnerCourse);
-		savedCourse.getStudents().add(learnerCourse);
-		learnerService.storeImpactLearner(savedStudent);
-		courseService.storeCourseService(savedCourse);
-		learnerService.storeImpactLearner(savedStudent);
-	}
-
-	@Override
-	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception {
-		ImpactLearner savedStudent = learnerService.findLearnerById(id);
-		savedStudent.getCourses().size();
-		return savedStudent.getCourses();
 	}
 
 }

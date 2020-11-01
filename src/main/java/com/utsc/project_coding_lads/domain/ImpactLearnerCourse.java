@@ -15,7 +15,7 @@ public class ImpactLearnerCourse extends BaseDataEntity {
 	private ImpactLearner student;
 	private Course course;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "student_id")
 	public ImpactLearner getStudent() {
 		return student;
@@ -23,7 +23,7 @@ public class ImpactLearnerCourse extends BaseDataEntity {
 	public void setStudent(ImpactLearner student) {
 		this.student = student;
 	}
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "course_id")
 	public Course getCourse() {
 		return course;

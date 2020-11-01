@@ -21,7 +21,4 @@ public interface UserService {
 	
 	public User updateUser(User user) throws ValidationFailedException;
 	
-	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception;
-	
-	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception;
 }

@@ -81,8 +81,8 @@ class TestManageCourses {
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
 		
-		userService.addCourseToLearner(savedStudent, savedCourse);
-		System.out.println(userService.findCoursesByLearnerId(savedStudent.getId()));
+		learnerService.addCourseToLearner(savedStudent, savedCourse);
+		System.out.println(learnerService.findCoursesByLearnerId(savedStudent.getId()));
 	}
 
 }
