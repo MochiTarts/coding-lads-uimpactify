@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +76,24 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		for (ImpactLearnerCourse ilc: courses) {
 			if (ilc.getCourse().getId() == savedCourse.getId()) {
 				courses.remove(ilc);
-				System.out.println(savedStudent.getCourses().size());
+//				System.out.println(savedStudent.getCourses().size());
 				learnerRepo.save(savedStudent);
 				return;
 			}
 		}
+	}
+
+	@Override
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer instructorId, ImpactLearner student) throws Exception {
+		//Add validation later
+		ImpactLearner savedStudent = findLearnerById(student.getId());
+		savedStudent.getCourses().size();
+		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
+		for (ImpactLearnerCourse ilc: savedStudent.getCourses()) {
+			if (ilc.getCourse().getInstructor().getId() == instructorId)
+				foundCourses.add(ilc);
+		}
+		return foundCourses;
 	}
 
 }
