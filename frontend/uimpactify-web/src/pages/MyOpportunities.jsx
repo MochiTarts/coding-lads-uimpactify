@@ -31,7 +31,7 @@ class MyOpportunities extends Component {
                     } else {
                         curr = r.data[i].posting;
                     }
-                    if (curr.postingType === "VOLUNTEER") {
+                    if (curr.postingType === "VOLUNTEERING") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {
                         empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
@@ -49,12 +49,8 @@ class MyOpportunities extends Component {
     render() { 
         const { uid, volOpp, empOpp, conOpp, role, socialInit } = this.state;
         const type = role ? role.name : null;
-        var isConsultant;
-        if (type === "IMPACT_CONSULTANT") {
-            isConsultant = true;
-        } else {
-            isConsultant = false;
-        }
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
         var buttonText;
         if (socialInit) {
             buttonText = "Manage";
@@ -68,16 +64,20 @@ class MyOpportunities extends Component {
                     <h3 className="opportunity-page-header">My Opportunities</h3>
                 </div>
 
-                <h3 className="opportunity-page-subheader">Volunteer Opportunities</h3>
+                {(socialInit || isLearner) &&
+                <h3 className="opportunity-page-subheader">
+                    Volunteer Opportunities
+                </h3>}
                 {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
                         pathname: "/opportunity/create",
-                        state: {uid: uid, type: "VOLUNTEER"}
+                        state: {uid: uid, type: "VOLUNTEERING"}
                     }}>
                     New
                 </Link>}
+                {(socialInit || isLearner) &&
                 <div className="row opportunityList">
                     {volOpp.map((opp) => (
                         <OpportunityCard
@@ -86,14 +86,17 @@ class MyOpportunities extends Component {
                             uid={uid}
                             title={opp.title}
                             description={opp.description}
-                            type="VOLUNTEER"
+                            type="VOLUNTEERING"
                             button={buttonText}
                         />
                     ))}
-                </div>
+                </div>}
 
 
-                <h3 className="opportunity-page-subheader">Employment Opportunities</h3>
+                {(socialInit || isLearner) &&
+                <h3 className="opportunity-page-subheader">
+                    Employment Opportunities
+                </h3>}
                 {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
@@ -103,6 +106,7 @@ class MyOpportunities extends Component {
                     }}>
                     New
                 </Link>}
+                {(socialInit || isLearner) &&
                 <div className="row opportunityList">
                     {empOpp.map((opp) => (
                         <OpportunityCard
@@ -115,11 +119,13 @@ class MyOpportunities extends Component {
                             button={buttonText}
                         />
                     ))}
-                </div>
+                </div>}
 
 
-                <h3 className="opportunity-page-subheader
-                ">Consulting Opportunities</h3>
+                {(socialInit || isConsultant) &&
+                <h3 className="opportunity-page-subheader">
+                    Consulting Opportunities
+                </h3>}
                 {socialInit &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
@@ -129,6 +135,7 @@ class MyOpportunities extends Component {
                     }}>
                     New
                 </Link>}
+                {(socialInit || isConsultant) &&
                 <div className="row opportunityList">
                     {conOpp.map((opp) => (
                         <OpportunityCard
@@ -141,7 +148,7 @@ class MyOpportunities extends Component {
                             button={buttonText}
                         />
                     ))}
-                </div>
+                </div>}
             </div>
         );
     }

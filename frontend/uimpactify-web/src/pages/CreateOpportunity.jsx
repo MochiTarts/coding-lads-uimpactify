@@ -36,7 +36,7 @@ class CreateOpportunity extends Component {
                     <h3 className="opportunity-page-header">Creating New Opportunity</h3>
                 </div>
 
-                <form>
+                <form className="col-md-6">
                     <div className="opportunity-formGroup">
                         <label htmlFor="title">Title</label>
                         <input 

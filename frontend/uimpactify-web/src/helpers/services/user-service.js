@@ -81,3 +81,11 @@ export const createApplication = (aid, pid, email) => {
         email: email
     });
 }
+
+export const getApplicationsByPosting = (pid) => {
+    return axios.get(`${apiUrl}/getApplicationsByPosting/${pid}`);
+}
+
+export const deleteApplication = (aid) => {
+    return axios.post(`${apiUrl}/deleteApplication/${aid}`);
+}

@@ -20,11 +20,23 @@ class ExploreOpportunities extends Component {
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
+
+        const type = this.state.role ? this.state.role.name : null;
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        if (isConsultant) {
+            document.getElementById("VolunteerContent").style.display = "none";
+            document.getElementById("EmploymentContent").style.display = "none";
+        } else if (isLearner) {
+            document.getElementById("EmploymentContent").style.display = "none";
+            document.getElementById("ConsultingContent").style.display = "none";
+        }
+
         getAllPosting(this.state.uid).then(
             (r) => {
                 for (var i = 0; i < r.data.length; i++) {
                     curr = r.data[i];
-                    if (curr.postingType === "VOLUNTEER") {
+                    if (curr.postingType === "VOLUNTEERING") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {
                         empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
@@ -49,7 +61,7 @@ class ExploreOpportunities extends Component {
         
         var tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "")
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
         
         document.getElementById(tab + "Content").style.display = "";
@@ -59,12 +71,8 @@ class ExploreOpportunities extends Component {
     render() {
         const { volOpp, empOpp, conOpp, role, socialInit } = this.state;
         const type = role ? role.name : null;
-        var isConsultant;
-        if (type === "IMPACT_CONSULTANT") {
-            isConsultant = true;
-        } else {
-            isConsultant = false;
-        }
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
         var buttonText;
         if (socialInit) {
             buttonText = "Details";
@@ -79,20 +87,22 @@ class ExploreOpportunities extends Component {
                 </div>
 
                 <ul className="nav nav-tabs">
+                    {(socialInit || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks active"
                                 id="Volunteer"
                                 onClick={() => this.handleTabSwitch("Volunteer")}>
                             Volunteer
                         </button>
-                    </li>
+                    </li>}
+                    {(socialInit || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Employment"
                                 onClick={() => this.handleTabSwitch("Employment")}>
                             Employment
                         </button>
-                    </li>
+                    </li>}
                     {(socialInit || isConsultant) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
@@ -110,12 +120,12 @@ class ExploreOpportunities extends Component {
                             pid={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="VOLUNTEER"
+                            type="VOLUNTEERING"
                             button={buttonText}
                         />
                     ))}
                 </div>
-                <div className="tabcontent row" id="EmploymentContent" style={{ display: "none" }}>
+                <div className="tabcontent row" id="EmploymentContent">
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
@@ -127,7 +137,7 @@ class ExploreOpportunities extends Component {
                         />
                     ))}
                 </div>
-                <div className="tabcontent row" id="ConsultingContent" style={{ display: "none" }}>
+                <div className="tabcontent row" id="ConsultingContent">
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
