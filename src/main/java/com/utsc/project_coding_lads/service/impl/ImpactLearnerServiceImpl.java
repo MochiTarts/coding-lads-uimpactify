@@ -14,9 +14,11 @@ import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
 import com.utsc.project_coding_lads.validator.UserValidator;
@@ -35,6 +37,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	CourseValidator courseValidator;
 	@Autowired
 	UserValidator userValidator;
+	@Autowired
+	ImpactLearnerCourseService learnerCourseService;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -108,14 +112,12 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
 		for (ImpactLearnerCourse ilc: courses) {
 			if (ilc.getCourse().getId() == savedCourse.getId()) {
+				learnerCourseService.deleteById(ilc.getId());
 				courses.remove(ilc);
-				System.out.println(savedStudent.getCourses().size());
 				learnerRepo.save(savedStudent);
 				return;
 			}
 		}
-		savedStudent.getCourses().clear();
-		learnerRepo.save(savedStudent);
 	}
 
 	@Override

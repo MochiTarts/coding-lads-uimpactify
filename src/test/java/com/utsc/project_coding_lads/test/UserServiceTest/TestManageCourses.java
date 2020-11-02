@@ -17,6 +17,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
@@ -90,9 +91,10 @@ public class TestManageCourses {
 		Assert.assertFalse(courses.isEmpty());
 		
 		learnerService.removeCourseFromLearner(savedStudent, savedCourse);
-		List<ImpactLearnerCourse> courses2 = learnerService.findCoursesByLearnerId(savedStudent.getId());
-//		Assert.assertTrue(courses2.isEmpty());
+		List<ImpactLearnerCourse> coursesRemoved = learnerService.findCoursesByLearnerId(savedStudent.getId());
+		Assert.assertTrue(coursesRemoved.isEmpty());
 		
+		learnerService.addCourseToLearner(savedStudent, savedCourse);
 		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor);
 		Assert.assertEquals(1, instructorCourse.size());
 		
@@ -108,6 +110,33 @@ public class TestManageCourses {
 		List<ImpactLearnerCourse> coursesUpdated = learnerService.findCoursesByLearnerId(savedStudent.getId());
 		Assert.assertFalse(coursesUpdated.isEmpty());
 		Assert.assertEquals(2, coursesUpdated.size());
+		
+		User user3 = new User();
+		user3.setAge(80);
+		user3.setFirstName("instructor 2");
+		user3.setLastName("lastname");
+		user3.setUsername("instructor 2");
+		user3.setHashedPassword("password");
+		user3.setRole(savedConsultant);
+		Integer instructor2Id = userService.storeUser(user3);
+		ImpactConsultant savedInstructor2 = consultantService.findImpactConsultantById(instructor2Id);
+		Assert.assertNotNull(savedInstructor2);
+		
+		Course course3 = new Course();
+		course3.setCourseName("course 3");
+		course3.setCourseDesc("desc");
+		course3.setInstructor(savedInstructor2);
+		Integer savedCourse3Id = courseService.storeCourse(course3);
+		Course savedCourse3 = courseService.findCourseById(savedCourse3Id);
+		Assert.assertNotNull(savedCourse3);
+		
+		learnerService.addCourseToLearner(savedStudent, savedCourse3);
+		List<ImpactLearnerCourse> coursesInstructor1 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor);
+		List<ImpactLearnerCourse> coursesInstructor2 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor2);
+		Assert.assertFalse(coursesInstructor1.isEmpty());
+		Assert.assertFalse(coursesInstructor2.isEmpty());
+		Assert.assertEquals(2, coursesInstructor1.size());
+		Assert.assertEquals(1, coursesInstructor2.size());
 		
 //		savedStudent = learnerService.findLearnerById(savedStudent.getId());
 //		savedStudent.getCourses().size();
