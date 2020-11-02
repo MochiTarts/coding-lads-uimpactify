@@ -96,6 +96,19 @@ public class TestManageCourses {
 		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor);
 		Assert.assertEquals(1, instructorCourse.size());
 		
+		Course course2 = new Course();
+		course2.setCourseName("course 2");
+		course2.setCourseDesc("desc");
+		course2.setInstructor(savedInstructor);
+		Integer savedCourse2Id = courseService.storeCourse(course2);
+		Course savedCourse2 = courseService.findCourseById(savedCourse2Id);
+		Assert.assertNotNull(savedCourse2);
+		
+		learnerService.addCourseToLearner(savedStudent, savedCourse2);
+		List<ImpactLearnerCourse> coursesUpdated = learnerService.findCoursesByLearnerId(savedStudent.getId());
+		Assert.assertFalse(coursesUpdated.isEmpty());
+		Assert.assertEquals(2, coursesUpdated.size());
+		
 //		savedStudent = learnerService.findLearnerById(savedStudent.getId());
 //		savedStudent.getCourses().size();
 //		courses = savedStudent.getCourses();

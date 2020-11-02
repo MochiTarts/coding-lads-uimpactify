@@ -57,7 +57,6 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	
 	@Override
 	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
-		//Add in validation stuff later
 		if (student == null || course == null)
 			throw new MissingInformationException("Student or course cannot be null.");
 		courseValidator.init(course);
@@ -89,7 +88,17 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 
 	@Override
 	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
-		//Add in validation later
+		if (student == null || course == null)
+			throw new MissingInformationException("Student or course cannot be null.");
+		courseValidator.init(course);
+		courseValidator.validateExist();
+		findLearnerById(student.getId());
+		if (student.getUser() == null)
+			throw new EntityNotExistException("Student's associated user cannot be null.");
+		userValidator.init(student.getUser());
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
 		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
 		ImpactLearner savedStudent = findLearnerById(student.getId());
 		Course savedCourse = courseService.findCourseById(course.getId());
