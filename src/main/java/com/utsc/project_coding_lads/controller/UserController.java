@@ -236,8 +236,8 @@ public class UserController extends BaseController {
 	
 	@GetMapping(path = "/getAllCoursesFromStudentByInstructor/{id}")
 	@ApiOperation(value = "retrieving all courses from a student's load that were taught by this instructor", response = ImpactLearnerCourse.class, responseContainer = "List")
-	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestBody ImpactConsultant instructor) throws Exception {
-		return learnerService.findCoursesByInstructorId(studentId, instructor);
+	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestParam("instructor") Integer instructorId) throws Exception {
+		return learnerService.findCoursesByInstructorId(studentId, instructorId);
 	}
 
 }

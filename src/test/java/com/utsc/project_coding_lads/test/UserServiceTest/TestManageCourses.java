@@ -95,7 +95,7 @@ public class TestManageCourses {
 		Assert.assertTrue(coursesRemoved.isEmpty());
 		
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
-		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor);
+		List<ImpactLearnerCourse> instructorCourse = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor.getId());
 		Assert.assertEquals(1, instructorCourse.size());
 		
 		Course course2 = new Course();
@@ -131,8 +131,8 @@ public class TestManageCourses {
 		Assert.assertNotNull(savedCourse3);
 		
 		learnerService.addCourseToLearner(savedStudent, savedCourse3);
-		List<ImpactLearnerCourse> coursesInstructor1 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor);
-		List<ImpactLearnerCourse> coursesInstructor2 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor2);
+		List<ImpactLearnerCourse> coursesInstructor1 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor.getId());
+		List<ImpactLearnerCourse> coursesInstructor2 = learnerService.findCoursesByInstructorId(savedStudent.getId(), savedInstructor2.getId());
 		Assert.assertFalse(coursesInstructor1.isEmpty());
 		Assert.assertFalse(coursesInstructor2.isEmpty());
 		Assert.assertEquals(2, coursesInstructor1.size());

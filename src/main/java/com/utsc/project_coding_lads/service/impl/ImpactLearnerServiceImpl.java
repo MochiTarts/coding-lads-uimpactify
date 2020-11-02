@@ -118,16 +118,16 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, ImpactConsultant instructor) throws Exception {
-		if (studentId == null || instructor == null)
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception {
+		if (studentId == null || instructorId == null)
 			throw new MissingInformationException("Student Id or instructor cannot be null");
-		consultantService.findImpactConsultantById(instructor.getId());
-		userValidator.init(userService.findUserById(instructor.getId()));
+		consultantService.findImpactConsultantById(instructorId);
+		userValidator.init(userService.findUserById(instructorId));
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
 		ImpactLearner savedStudent = findLearnerById(studentId);
-		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructor.getId());
+		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructorId);
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
 		for (ImpactLearnerCourse ilc: savedStudent.getCourses()) {

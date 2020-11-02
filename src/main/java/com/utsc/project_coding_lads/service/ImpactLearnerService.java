@@ -22,6 +22,6 @@ public interface ImpactLearnerService {
 	
 	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception;
 	
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, ImpactConsultant instructor) throws Exception;
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception;
 	
 }
