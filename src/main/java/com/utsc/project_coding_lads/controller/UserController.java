@@ -220,6 +220,14 @@ public class UserController extends BaseController {
 		return ok;
 	}
 	
+	@PostMapping(path = "/removeCourseFromStudent")
+	@ApiOperation(value = "remove a course to a student's load", response = Boolean.class)
+	public Boolean removeCourseFromStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		Boolean ok = true;
+		learnerService.removeCourseFromLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
+		return ok;
+	}
+	
 	@GetMapping(path = "/getAllCoursesFromStudent/{id}")
 	@ApiOperation(value = "retrieving all courses from a student's load", response = ImpactLearnerCourse.class, responseContainer = "List")
 	public List<ImpactLearnerCourse> getAllCoursesFromStudent(@PathVariable("id") Integer studentId) throws Exception {

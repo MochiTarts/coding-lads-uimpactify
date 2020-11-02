@@ -20,6 +20,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
 import com.utsc.project_coding_lads.validator.UserValidator;
 
@@ -34,11 +35,13 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	@Autowired
 	ImpactConsultantService consultantService;
 	@Autowired
+	ImpactLearnerCourseService learnerCourseService;
+	@Autowired
+	UserService userService;
+	@Autowired
 	CourseValidator courseValidator;
 	@Autowired
 	UserValidator userValidator;
-	@Autowired
-	ImpactLearnerCourseService learnerCourseService;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -63,12 +66,9 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
 		if (student == null || course == null)
 			throw new MissingInformationException("Student or course cannot be null.");
-		courseValidator.init(course);
+		courseValidator.init(courseService.findCourseById(course.getId()));
 		courseValidator.validateExist();
-		findLearnerById(student.getId());
-		if (student.getUser() == null)
-			throw new EntityNotExistException("Student's associated user cannot be null.");
-		userValidator.init(student.getUser());
+		userValidator.init(userService.findUserById(student.getId()));
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
@@ -94,12 +94,9 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
 		if (student == null || course == null)
 			throw new MissingInformationException("Student or course cannot be null.");
-		courseValidator.init(course);
+		courseValidator.init(courseService.findCourseById(course.getId()));
 		courseValidator.validateExist();
-		findLearnerById(student.getId());
-		if (student.getUser() == null)
-			throw new EntityNotExistException("Student's associated user cannot be null.");
-		userValidator.init(student.getUser());
+		userValidator.init(userService.findUserById(student.getId()));
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
@@ -125,9 +122,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		if (studentId == null || instructor == null)
 			throw new MissingInformationException("Student Id or instructor cannot be null");
 		consultantService.findImpactConsultantById(instructor.getId());
-		if (instructor.getUser() == null)
-			throw new EntityNotExistException("Instructor's associated user cannot be null.");
-		userValidator.init(instructor.getUser());
+		userValidator.init(userService.findUserById(instructor.getId()));
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
