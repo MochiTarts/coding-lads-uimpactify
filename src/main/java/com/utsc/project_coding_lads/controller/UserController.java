@@ -230,23 +230,6 @@ public class UserController extends BaseController {
 		return invoiceService.saveInvoice(inv);
 		
 	}
-	/*
-	 * @GetMapping(path = "/payInvoice") public Integer
-	 * payInvoice(@PathVariable("userId") Integer userId, @PathVariable("courseId")
-	 * Integer courseId) throws Exception {
-	 * 
-	 * return invoiceService.payInvoicePerCourse(userId, courseId);
-	 * 
-	 * }
-	 */
-	
-	/*
-	 * @GetMapping(path = "/getpaid") public Integer getPaid(@PathVariable("userId")
-	 * Integer userId, @PathVariable("courseId") Integer courseId) throws Exception
-	 * {
-	 * 
-	 * return invoiceService.InstructorPayment(userId, courseId); }
-	 */
 	
 
 }

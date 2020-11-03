@@ -68,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	
 	 
 	
-	@SuppressWarnings("null")
+	@Override
 	public Invoice findInvoiceByUserIdAndCourseId(Integer userId, Integer CourseId) throws Exception {
 		List<Invoice> invoices = getAllInvoicesByUserId(userId);
 		
@@ -122,7 +122,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 		if (inv == null)
 			throw new MissingInformationException("Invoice body is null");
 		invoiceValidator.init(inv.getCost(), inv.getUser(), inv.getCourse());
-		//invoiceValidator.validate();
+		invoiceValidator.validate();
 		User user = userService.findUserById(inv.getUser().getId());
 		inv.setUser(user);
 		user.getInvoices().add(inv);
