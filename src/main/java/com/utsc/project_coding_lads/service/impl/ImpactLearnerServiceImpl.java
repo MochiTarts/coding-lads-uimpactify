@@ -100,11 +100,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
-		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
 		ImpactLearner savedStudent = findLearnerById(student.getId());
 		Course savedCourse = courseService.findCourseById(course.getId());
-		learnerCourse.setCourse(savedCourse);
-		learnerCourse.setStudent(savedStudent);
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
 		for (ImpactLearnerCourse ilc: courses) {

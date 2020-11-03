@@ -65,7 +65,7 @@ public class TestManageCourses {
 		Assert.assertNotNull(savedInstructor);
 		
 		Course course = new Course();
-		course.setCourseName("course");
+		course.setCourseName("course 1");
 		course.setCourseDesc("desc");
 		course.setInstructor(savedInstructor);
 		Integer savedCourseId = courseService.storeCourse(course);
