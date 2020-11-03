@@ -6,8 +6,10 @@ import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public interface InvoiceService {
+	
+	public Integer payInvoice(Integer invoiceId) throws Exception;
 
-	public List<Invoice> getInvoice(int userId);
+	public List<Invoice> getUnpaidInvoice(int userId);
 	
 	public List<Invoice> getAllInvoicesByUserId(Integer userId) throws ValidationFailedException;
 
@@ -15,5 +17,9 @@ public interface InvoiceService {
 
 	public Integer payInvoicePerCourse(Integer userId, Integer courseId) throws Exception;
 	
-	public Integer InstructorPayment(Integer userId, Integer courseId) throws Exception; 
+	public Integer InstructorPayment(Integer userId, Integer courseId) throws Exception;
+
+	Boolean existsById(Integer invoiceId);
+
+	Invoice saveInvoice(Invoice inv) throws ValidationFailedException; 
 }

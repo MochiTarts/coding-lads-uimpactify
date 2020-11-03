@@ -212,21 +212,41 @@ public class UserController extends BaseController {
 	
 	@GetMapping(path = "/getInvoice")
 	public List<Invoice> getInvoiceForLearner(@PathVariable("userId") Integer userId) throws Exception {
-		return invoiceService.getInvoice(userId);
+		return invoiceService.getUnpaidInvoice(userId);
 	}
 	
 	@GetMapping(path = "/payInvoice")
-	public Integer payInvoice(@PathVariable("userId") Integer userId, @PathVariable("courseId") Integer courseId) throws Exception {
-		
-		return invoiceService.payInvoicePerCourse(userId, courseId);
-		
+	public Integer payInvoice(@PathVariable("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
 	}
 	
-	@GetMapping(path = "/getpaid")
-	public Integer getPaid(@PathVariable("userId") Integer userId, @PathVariable("courseId") Integer courseId) throws Exception {
-		
-		return invoiceService.InstructorPayment(userId, courseId);
+	@GetMapping(path = "/getPaid")
+	public Integer getPaid(@PathVariable("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
 	}
+	
+	@GetMapping(path = "/setInvoice")
+	public Invoice setPayable(@RequestBody Invoice inv) throws ValidationFailedException{
+		return invoiceService.saveInvoice(inv);
+		
+	}
+	/*
+	 * @GetMapping(path = "/payInvoice") public Integer
+	 * payInvoice(@PathVariable("userId") Integer userId, @PathVariable("courseId")
+	 * Integer courseId) throws Exception {
+	 * 
+	 * return invoiceService.payInvoicePerCourse(userId, courseId);
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * @GetMapping(path = "/getpaid") public Integer getPaid(@PathVariable("userId")
+	 * Integer userId, @PathVariable("courseId") Integer courseId) throws Exception
+	 * {
+	 * 
+	 * return invoiceService.InstructorPayment(userId, courseId); }
+	 */
 	
 
 }
