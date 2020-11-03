@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import "../stylesheets/css/OpportunityCard.css";
+import applied from "../img/applied_stamp.png";
 
 function OpportunityCard(props) {
     var linkPath = "/";
@@ -16,6 +17,7 @@ function OpportunityCard(props) {
         <div className="col-sm-3 border rounded opportunity-card-container">
             <div className="card" />
             <div className="card-body">
+                {props.applied && <img className="card-img-top" src={applied} />}
                 <h4 className="card-title">{props.title}</h4>
                 <p className="card-text opportunity-card-description">{props.description}</p>
                 <Link 
@@ -23,7 +25,6 @@ function OpportunityCard(props) {
                 to={{
                     pathname: linkPath,
                     state: {
-                        uid: props.uid,
                         type: props.type,
                         pid: props.pid,
                         title: props.title,

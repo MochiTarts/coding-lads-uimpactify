@@ -5,9 +5,9 @@ import { getApplicationsByPosting } from "../helpers/services/user-service";
 class DetailsOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type, pid, title, description } = props.location.state;
+        const { type, pid, title, description } = props.location.state;
         this.state = {
-                uid: uid,
+                uid: props.uid,
                 type: type,
                 pid: pid,
                 title: title,

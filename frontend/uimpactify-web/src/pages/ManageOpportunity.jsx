@@ -5,11 +5,10 @@ import "../stylesheets/css/Opportunities.css";
 class ManageOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type, pid, title, description } = props.location.state;
-        const socialInit = props.uinfo.socialInit;
+        const { type, pid, title, description } = props.location.state;
         this.state = {
-                uid: uid,
-                socialInit: socialInit,
+                uid: props.uid,
+                socialInit: props.uinfo.socialInit,
                 type: type,
                 pid: pid,
                 title: title,
@@ -128,8 +127,13 @@ class ManageOpportunity extends Component {
                                 onClick={(event) => this.handleSave(event)}>
                             Save
                         </button>
+                        <a href="javascript:history.back()"
+                           className="btn btn-secondary opportunity-formButtons">
+                            Cancel
+                        </a>
                         <button type="submit" 
-                                className="btn btn-secondary opportunity-formButtons" 
+                                className="btn btn-danger opportunity-formButtons" 
+                                style={ { float: "right" } }
                                 onClick={(event) => this.handleDelete(event)}>
                             Delete
                         </button>
@@ -139,7 +143,7 @@ class ManageOpportunity extends Component {
                         <div className="justify-content-center align-items-center">
                             <h3>Applicants</h3>
                             {appList.map((app) => (
-                                <div className="opportunity-application">
+                                <div key={app.id} className="opportunity-application">
                                     <button onClick={() => this.handleClickApp(app.id)}
                                             className="application-button"
                                             id={app.id + "_button"}>

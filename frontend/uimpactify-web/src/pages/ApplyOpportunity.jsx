@@ -6,9 +6,8 @@ class ApplyOpportunity extends Component {
     constructor(props) {
         super(props);
         const { pid, type, title, description } = props.location.state;
-        const uid = props.uid;
         this.state = {
-                uid: uid,
+                uid: props.uid,
                 type: type,
                 pid: pid,
                 title: title,

@@ -24,10 +24,11 @@ class ExploreOpportunities extends Component {
         const type = this.state.role ? this.state.role.name : null;
         const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
         const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        const isEmployee = true ? !type : false;
         if (isConsultant) {
             document.getElementById("VolunteerContent").style.display = "none";
             document.getElementById("EmploymentContent").style.display = "none";
-        } else if (isLearner) {
+        } else if (isLearner || isEmployee) {
             document.getElementById("EmploymentContent").style.display = "none";
             document.getElementById("ConsultingContent").style.display = "none";
         }
@@ -69,12 +70,13 @@ class ExploreOpportunities extends Component {
     }
 
     render() {
-        const { volOpp, empOpp, conOpp, role, socialInit } = this.state;
+        const { volOpp, empOpp, conOpp, role } = this.state;
         const type = role ? role.name : null;
         const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
         const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        const isEmployee = true ? !role : false;
         var buttonText;
-        if (socialInit) {
+        if (isEmployee) {
             buttonText = "Details";
         } else {
             buttonText = "Apply";
@@ -87,7 +89,7 @@ class ExploreOpportunities extends Component {
                 </div>
 
                 <ul className="nav nav-tabs">
-                    {(socialInit || isLearner) &&
+                    {(isEmployee || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks active"
                                 id="Volunteer"
@@ -95,7 +97,7 @@ class ExploreOpportunities extends Component {
                             Volunteer
                         </button>
                     </li>}
-                    {(socialInit || isLearner) &&
+                    {(isEmployee || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Employment"
@@ -103,7 +105,7 @@ class ExploreOpportunities extends Component {
                             Employment
                         </button>
                     </li>}
-                    {(socialInit || isConsultant) &&
+                    {(isEmployee || isConsultant) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Consulting"

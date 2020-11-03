@@ -5,11 +5,10 @@ import "../stylesheets/css/Opportunities.css";
 class CreateOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type } = props.location.state;
-        const socialInit = props.uinfo.socialInit;
+        const { type } = props.location.state;
         this.state = {
-                uid: uid,
-                socialInit: socialInit,
+                uid: props.uid,
+                socialInit: props.uinfo.socialInit,
                 type: type,
                 title: "",
                 description: ""
