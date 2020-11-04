@@ -2,15 +2,16 @@ import React from 'react';
 import { Container, Card, CardBody, Row, Col, FormInput, FormGroup, CardTitle } from 'shards-react';
 import '../stylesheets/css/Billing.css';
 import Chart from 'react-apexcharts';
-import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from "shards-react";
+import { Button, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from "shards-react";
+import {getAllInvoices, payInvoice} from '../helpers/services/invoice-service';
 export default class Billing extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
+          uid: props.uid,
           invoiceList: [],
           invoiceSeries: [],
-          earningSeries: [],
+          unpaidInvoiceSeries: [],
           invoiceOptions: {
             labels: [],
             chart: {
@@ -55,7 +56,7 @@ export default class Billing extends React.Component {
             }
 
           },
-          earningOptions: {
+          unpaidInvoiceOptions: {
             labels: [],
             chart: {
               type: 'donut',
@@ -103,11 +104,31 @@ export default class Billing extends React.Component {
     }
 
     componentDidMount() {
-        const invoiceList = [{invoiceId: 1, courseName: "Intro to CS", price: 300},{invoiceId: 2, courseName: "Intro to Math", price: 200}];
-        this.setState({invoiceList});
-        const invoiceSeries = invoiceList.map((item)=>item.price);
-        const invoiceLabels = invoiceList.map((item)=>item.courseName);
-        this.setState({earningSeries: [4, 5, 1, 7], earningOptions: {...this.state.earningOptions, labels: ["Intro to Computer Science","Course B","Course C","Course D"]}, invoiceSeries: invoiceSeries, invoiceOptions: {...this.state.invoiceOptions, labels: invoiceLabels}})
+        this.fetchInvoices();
+
+    }
+
+    fetchInvoices = () => {
+        getAllInvoices(this.state.uid).then(
+            (res) => {
+                const invoiceList = res.data;
+                this.setState({invoiceList});
+                const invoiceSeries = invoiceList.map((item)=>item.initCost);
+                const unpaidInvoices = invoiceList.filter((item)=>item.cost !== 0);
+                const unpaidInvoiceSeries = unpaidInvoices.map((item)=>item.cost);
+                const unpaidInvoiceLabels = unpaidInvoices.map((item)=>item.course.courseName);
+                const invoiceLabels = invoiceList.map((item)=>item.course.courseName);
+                this.setState({unpaidInvoiceSeries: unpaidInvoiceSeries, unpaidInvoiceOptions: {...this.state.unpaidInvoiceOptions, labels: unpaidInvoiceLabels}, invoiceSeries: invoiceSeries, invoiceOptions: {...this.state.invoiceOptions, labels: invoiceLabels}})
+
+            }
+        )
+    }
+    handlePayInvoice = (invoiceId) => {
+        payInvoice(invoiceId).then(
+            () => {
+                this.fetchInvoices();
+            }
+        )
     }
     
     render() {
@@ -127,10 +148,13 @@ export default class Billing extends React.Component {
                                 <Col xs="2">
                                 Invoice Id
                                 </Col>
-                                <Col xs="2">
+                                <Col xs="1">
                                 Cost
                                 </Col>
-                                <Col xs="8">
+                                <Col xs="2">
+                                  Payment
+                                </Col>
+                                <Col xs="7">
                                   Details
                                 </Col>
                             </Row>
@@ -138,16 +162,20 @@ export default class Billing extends React.Component {
                           {
                             this.state.invoiceList.map(
                               (item)=>
-                              <ListGroupItem key={item.invoiceId} className="billing-li">
+                              <ListGroupItem key={item.id} className="billing-li">
                                 <Row>
                                   <Col xs="2">
-                                    {item.invoiceId}
+                                    {item.id}
+                                  </Col>
+                                  <Col xs="1">
+                                    {`$${item.initCost}`}
                                   </Col>
                                   <Col xs="2">
-                                    {item.price}
+                                      {item.cost === 0 ? <Button pill size="sm" theme="success" disabled>Paid</Button> : <Button pill size="sm" onClick={()=>{this.handlePayInvoice(item.id)}}>Pay Now</Button>}
+                                    
                                   </Col>
-                                  <Col xs="8">
-                                    {item.courseName}
+                                  <Col xs="7">
+                                    {`${item.course.courseName} taught by ${item.course.instructor.user.firstName} ${item.course.instructor.user.lastName}`}
                                   </Col>
                                 </Row>
                               </ListGroupItem>)
@@ -161,7 +189,7 @@ export default class Billing extends React.Component {
                         <Row>
                             <Col >
                             <Card className="billing-card" >
-                                <CardTitle>{`Invoices (Total: ${this.state.invoiceSeries.length})`}</CardTitle>
+                                <CardTitle>{`All Invoices (Total: ${this.state.invoiceSeries.length})`}</CardTitle>
                                 <CardBody>
                                 <Chart options={this.state.invoiceOptions} series={this.state.invoiceSeries} type="donut" />
                                 </CardBody>
@@ -170,9 +198,10 @@ export default class Billing extends React.Component {
                             </Col>
                             <Col>
                             <Card  className="billing-card">
-                                <CardTitle>{`Earnings (Total: ${this.state.earningSeries.length})`}</CardTitle>
+                                <CardTitle>{`Outstanding Payments (Total: ${this.state.unpaidInvoiceSeries.length})`}</CardTitle>
                                 <CardBody>
-                                <Chart options={this.state.earningOptions} series={this.state.earningSeries} type="donut" />
+                                    {this.state.unpaidInvoiceSeries.length === 0 ? <p>No outstanding payments, good job!</p> :<Chart options={this.state.unpaidInvoiceOptions} series={this.state.unpaidInvoiceSeries} type="donut" /> }
+                                
 
                                 </CardBody>
                             </Card>

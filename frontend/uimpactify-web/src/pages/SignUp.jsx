@@ -183,7 +183,7 @@ class SignUp extends React.Component {
                     { this.state.signedUp &&
                       <Container  >
                         <Col >
-                          <Row className="container">
+                          <Row className="signup-container">
                           <img src={checkMark} id="checkMarkImg" alt="check-mark"></img>
                           </Row>
                           <hr></hr>
