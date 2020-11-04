@@ -261,6 +261,10 @@ public class UserController extends BaseController {
 		return invoiceService.saveInvoice(inv);
 		
 	}
-	
+	@GetMapping(path = "/allInvoices")
+	public List<Invoice> allInvoices(@RequestParam Integer userId) throws ValidationFailedException{
+		return invoiceService.getAllInvoicesByUserId(userId);
+
+	}
 
 }

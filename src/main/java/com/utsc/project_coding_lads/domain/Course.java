@@ -42,6 +42,13 @@ public class Course extends BaseDataEntity {
 	public void setCourseDesc(String courseDesc) {
 		this.courseDesc = courseDesc;
 	}
+	@Column(name = "price")
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
+	}
 	@ManyToOne
 	@JoinColumn(name = "impact_consultant_id")
 	public ImpactConsultant getInstructor() {
@@ -66,14 +73,8 @@ public class Course extends BaseDataEntity {
 	public void setStudents(List<ImpactLearnerCourse> students) {
 		this.students = students;
 	}
-	@OneToOne
-	@JoinColumn(name = "cost")
-	public Integer getCost() {
-		return cost;
-	}
-	public void setInvoice(Integer cost) {
-		this.cost = cost;
-	}
+
+
 	
 	@Override
 	public boolean equals(Object object) {
