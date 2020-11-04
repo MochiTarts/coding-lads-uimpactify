@@ -14,10 +14,15 @@ import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.validator.CourseValidator;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
 @Transactional
@@ -29,6 +34,14 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	CourseService courseService;
 	@Autowired
 	ImpactConsultantService consultantService;
+	@Autowired
+	ImpactLearnerCourseService learnerCourseService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	CourseValidator courseValidator;
+	@Autowired
+	UserValidator userValidator;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -50,8 +63,15 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 	
 	@Override
-	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
-		//Add in validation stuff later
+	public ImpactLearnerCourse addCourseToLearner(ImpactLearner student, Course course) throws Exception {
+		if (student == null || course == null)
+			throw new MissingInformationException("Student or course cannot be null.");
+		courseValidator.init(courseService.findCourseById(course.getId()));
+		courseValidator.validateExist();
+		userValidator.init(userService.findUserById(student.getId()));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
 		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
 		ImpactLearner savedStudent = findLearnerById(student.getId());
 		Course savedCourse = courseService.findCourseById(course.getId());
@@ -60,6 +80,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		savedStudent.getCourses().size();
 		savedStudent.getCourses().add(learnerCourse);
 		learnerRepo.save(savedStudent);
+		return savedStudent.getCourses().get(savedStudent.getCourses().size()-1);
 	}
 
 	@Override
@@ -71,27 +92,41 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
-		//Add in validation later
+	public Boolean removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
+		if (student == null || course == null)
+			throw new MissingInformationException("Student or course cannot be null.");
+		courseValidator.init(courseService.findCourseById(course.getId()));
+		courseValidator.validateExist();
+		userValidator.init(userService.findUserById(student.getId()));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
 		ImpactLearner savedStudent = findLearnerById(student.getId());
 		Course savedCourse = courseService.findCourseById(course.getId());
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
 		for (ImpactLearnerCourse ilc: courses) {
-			if (ilc.getCourse().getId() == savedCourse.getId()) {
+			if (ilc.getCourse().equals(savedCourse)) {
+				learnerCourseService.deleteById(ilc.getId());
 				courses.remove(ilc);
-//				System.out.println(savedStudent.getCourses().size());
 				learnerRepo.save(savedStudent);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	@Override
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, ImpactConsultant instructor) throws Exception {
-		//Add validation later
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception {
+		if (studentId == null || instructorId == null)
+			throw new MissingInformationException("Student Id or instructor cannot be null");
+		consultantService.findImpactConsultantById(instructorId);
+		userValidator.init(userService.findUserById(instructorId));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
 		ImpactLearner savedStudent = findLearnerById(studentId);
-		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructor.getId());
+		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructorId);
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
 		for (ImpactLearnerCourse ilc: savedStudent.getCourses()) {

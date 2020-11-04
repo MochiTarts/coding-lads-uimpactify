@@ -16,12 +16,12 @@ public interface ImpactLearnerService {
 	
 	public ImpactLearner findLearnerById(Integer id) throws ValidationFailedException;
 	
-	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception;
+	public ImpactLearnerCourse addCourseToLearner(ImpactLearner student, Course course) throws Exception;
 	
 	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception;
 	
-	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception;
+	public Boolean removeCourseFromLearner(ImpactLearner student, Course course) throws Exception;
 	
-	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, ImpactConsultant instructor) throws Exception;
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception;
 	
 }

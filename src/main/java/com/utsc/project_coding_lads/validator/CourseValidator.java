@@ -16,6 +16,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
 @Component
+@Transactional
 public class CourseValidator implements Validator {
 	
 	private Integer courseId;
@@ -64,12 +65,12 @@ public class CourseValidator implements Validator {
 		if (!impactConsultantService.existsById(instructor.getId()))
 			throw new UnauthenticatedException("The impact consultant is not an instructor");
 		// Validate class session
-		if (session != null) {
-			for (ClassSession s : session) {
-				if (classSessionService.findSessionById(s.getId()) == null)
-					throw new UnauthenticatedException("There is a class session that does not exist");
-			}
-		}
+//		if (session != null) {
+//			for (ClassSession s : session) {
+//				if (classSessionService.findSessionById(s.getId()) == null)
+//					throw new UnauthenticatedException("There is a class session that does not exist");
+//			}
+//		}
 			
 	}
 	

@@ -213,11 +213,15 @@ public class UserController extends BaseController {
 	}
 	
 	@PostMapping(path = "/addCourseToStudent")
-	@ApiOperation(value = "add a course to a student's load", response = Boolean.class)
-	public Boolean addCourseToStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
-		Boolean ok = true;
-		learnerService.addCourseToLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
-		return ok;
+	@ApiOperation(value = "add a course to a student's load", response = ImpactLearnerCourse.class)
+	public ImpactLearnerCourse addCourseToStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		return learnerService.addCourseToLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
+	}
+	
+	@PostMapping(path = "/removeCourseFromStudent")
+	@ApiOperation(value = "remove a course to a student's load", response = Boolean.class)
+	public Boolean removeCourseFromStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		return learnerService.removeCourseFromLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
 	}
 	
 	@GetMapping(path = "/getAllCoursesFromStudent/{id}")
@@ -228,8 +232,8 @@ public class UserController extends BaseController {
 	
 	@GetMapping(path = "/getAllCoursesFromStudentByInstructor/{id}")
 	@ApiOperation(value = "retrieving all courses from a student's load that were taught by this instructor", response = ImpactLearnerCourse.class, responseContainer = "List")
-	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestBody ImpactConsultant instructor) throws Exception {
-		return learnerService.findCoursesByInstructorId(studentId, instructor);
+	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestParam("instructor") Integer instructorId) throws Exception {
+		return learnerService.findCoursesByInstructorId(studentId, instructorId);
 	}
 
 }
