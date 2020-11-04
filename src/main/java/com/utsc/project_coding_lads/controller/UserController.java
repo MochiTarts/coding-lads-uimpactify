@@ -242,7 +242,7 @@ public class UserController extends BaseController {
 		return learnerService.findCoursesByInstructorId(studentId, instructorId);
 	}
 	@GetMapping(path = "/getInvoice")
-	public List<Invoice> getInvoiceForLearner(@PathVariable("userId") Integer userId) throws Exception {
+	public List<Invoice> getInvoiceForLearner(@RequestParam("userId") Integer userId) throws Exception {
 		return invoiceService.getUnpaidInvoice(userId);
 	}
 	

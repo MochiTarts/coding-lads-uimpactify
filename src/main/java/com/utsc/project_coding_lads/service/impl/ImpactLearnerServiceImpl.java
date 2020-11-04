@@ -11,6 +11,7 @@ import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
+import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
@@ -20,6 +21,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
 import com.utsc.project_coding_lads.validator.UserValidator;
@@ -42,6 +44,8 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	CourseValidator courseValidator;
 	@Autowired
 	UserValidator userValidator;
+	@Autowired
+	InvoiceService invoiceService;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -80,6 +84,12 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		savedStudent.getCourses().size();
 		savedStudent.getCourses().add(learnerCourse);
 		learnerRepo.save(savedStudent);
+		Invoice inv = new Invoice();
+		inv.setCourse(savedCourse);
+		inv.setUser(userService.findUserById(student.getId()));
+		inv.setCost(50);
+		invoiceService.saveInvoice(inv);
+		
 		return savedStudent.getCourses().get(savedStudent.getCourses().size()-1);
 	}
 
