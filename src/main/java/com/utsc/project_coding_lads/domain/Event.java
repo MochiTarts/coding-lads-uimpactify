@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.domain;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
@@ -20,7 +19,9 @@ public class Event extends BaseDataEntity {
 	private String eventName;
 	private String eventDesc;
 	private User eventCreator;
-	private LocalDateTime eventDate;
+	private String imgUrl;
+	private LocalDateTime eventStartDate;
+	private LocalDateTime eventEndDate;
 	
 	@Column(name = "event_name", length = 32)
 	public String getEventName() {
@@ -36,12 +37,19 @@ public class Event extends BaseDataEntity {
 	public void setEventDesc(String eventDesc) {
 		this.eventDesc = eventDesc;
 	}
-	@Column(name = "event_date", length = 12)
-	public LocalDateTime getEventDate() {
-		return eventDate;
+	@Column(name = "event_start_date_time", length = 12)
+	public LocalDateTime getEventStartDate() {
+		return eventStartDate;
 	}
-	public void setEventDate(LocalDateTime eventDate) {
-		this.eventDate = eventDate;
+	public void setEventStartDate(LocalDateTime eventStartDate) {
+		this.eventStartDate = eventStartDate;
+	}
+	@Column(name = "event_end_date_time", length = 12)
+	public LocalDateTime getEventEndDate() {
+		return eventEndDate;
+	}
+	public void setEventEndDate(LocalDateTime eventEndDate) {
+		this.eventEndDate = eventEndDate;
 	}
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -50,6 +58,13 @@ public class Event extends BaseDataEntity {
 	}
 	public void setEventCreator(User eventCreator) {
 		this.eventCreator = eventCreator;
+	}
+	@Column(name = "img_url", length = 256)
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 	
 	

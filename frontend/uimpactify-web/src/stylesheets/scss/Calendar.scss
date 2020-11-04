@@ -1,0 +1,9 @@
+.calender-group {
+  display: flex;
+  flex-direction: row;
+  .calender-form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+}

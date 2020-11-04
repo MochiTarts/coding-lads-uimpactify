@@ -54,7 +54,7 @@ CREATE TABLE COURSE (
 	impact_consultant_id INTEGER,
 	FOREIGN KEY (impact_consultant_id) REFERENCES IMPACT_CONSULTANT(id),
 	student_id INTEGER, 
-	invoice_id INTEGER
+	price INTEGER
 );
 
 CREATE TABLE EVENT (
@@ -63,7 +63,9 @@ CREATE TABLE EVENT (
 	event_desc VARCHAR(256),
 	user_id INTEGER,
 	FOREIGN KEY (user_id) REFERENCES UI_USER(id),
-	event_date TIMESTAMP NOT NULL
+	event_start_date_time TIMESTAMP NOT NULL, 
+	event_end_date_time TIMESTAMP NOT NULL,
+	img_url VARCHAR(256)
 );
 
 CREATE TABLE CLASS_SESSION (
@@ -78,6 +80,7 @@ CREATE TABLE APPLICATION (
 	id SERIAL PRIMARY KEY NOT NULL,
 	applicant_id INTEGER,
 	posting_id INTEGER,
+	email VARCHAR(32),
 	FOREIGN KEY (applicant_id) REFERENCES UI_USER(id),
 	FOREIGN KEY (posting_id) REFERENCES POSTING(id)
 );
@@ -87,7 +90,8 @@ CREATE TABLE IMPACT_LEARNER_COURSE (
 	course_id INTEGER,
 	FOREIGN KEY (course_id) REFERENCES COURSE(id),
 	student_id INTEGER,
-	FOREIGN KEY (student_id) REFERENCES IMPACT_LEARNER(id)
+	FOREIGN KEY (student_id) REFERENCES IMPACT_LEARNER(id),
+    price INTEGER
 );
 
 CREATE TABLE INVOICE (
@@ -95,7 +99,9 @@ CREATE TABLE INVOICE (
 	user_id INTEGER,
 	FOREIGN KEY (user_id) REFERENCES UI_USER(id),
 	course_id INTEGER,
-	FOREIGN KEY (course_id) REFERENCES COURSE(id)
+	FOREIGN KEY (course_id) REFERENCES COURSE(id),
+    price INTEGER,
+    init_price INTEGER
 );
 
 ALTER TABLE IMPACT_LEARNER

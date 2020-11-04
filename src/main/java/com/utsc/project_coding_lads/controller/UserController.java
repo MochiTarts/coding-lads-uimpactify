@@ -1,21 +1,31 @@
 package com.utsc.project_coding_lads.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
+import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.Event;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
+import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
@@ -26,6 +36,8 @@ import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.EventService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -45,6 +57,11 @@ public class UserController extends BaseController {
 	EventService eventService;
 	@Autowired
 	ApplicationService appService;
+	@Autowired
+	ImpactLearnerService learnerService;
+	@Autowired
+	InvoiceService invoiceService;
+	
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping(path = "/signup")
@@ -145,7 +162,7 @@ public class UserController extends BaseController {
 
 	@GetMapping(path = "/getEventsByDate/{id}")
 	@ApiOperation(value = "find all events by userId after date", response = Event.class, responseContainer = "List")
-	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestBody LocalDateTime date) throws ValidationFailedException {
+	public List<Event> getEventsByDate(@PathVariable("id") Integer userId, @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) throws ValidationFailedException {
 		return eventService.findAllEventsByUserIdDate(userId, date);
 	}
 
@@ -199,6 +216,55 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "find all postings by userId", response = Application.class, responseContainer = "List")
 	public List<Application> getPostingApps(@PathVariable("id") Integer postingId) throws Exception {
 		return appService.findAllApplicationsByPostingId(postingId);
+	}
+	
+	@PostMapping(path = "/addCourseToStudent")
+	@ApiOperation(value = "add a course to a student's load", response = ImpactLearnerCourse.class)
+	public ImpactLearnerCourse addCourseToStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		return learnerService.addCourseToLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
+	}
+	
+	@PostMapping(path = "/removeCourseFromStudent")
+	@ApiOperation(value = "remove a course to a student's load", response = Boolean.class)
+	public Boolean removeCourseFromStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		return learnerService.removeCourseFromLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
+	}
+	
+	@GetMapping(path = "/getAllCoursesFromStudent/{id}")
+	@ApiOperation(value = "retrieving all courses from a student's load", response = ImpactLearnerCourse.class, responseContainer = "List")
+	public List<ImpactLearnerCourse> getAllCoursesFromStudent(@PathVariable("id") Integer studentId) throws Exception {
+		return learnerService.findCoursesByLearnerId(studentId);
+	}
+	
+	@GetMapping(path = "/getAllCoursesFromStudentByInstructor/{id}")
+	@ApiOperation(value = "retrieving all courses from a student's load that were taught by this instructor", response = ImpactLearnerCourse.class, responseContainer = "List")
+	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestParam("instructor") Integer instructorId) throws Exception {
+		return learnerService.findCoursesByInstructorId(studentId, instructorId);
+	}
+	@GetMapping(path = "/getInvoice")
+	public List<Invoice> getInvoiceForLearner(@RequestParam("userId") Integer userId) throws Exception {
+		return invoiceService.getUnpaidInvoice(userId);
+	}
+	
+	@GetMapping(path = "/payInvoice")
+	public Integer payInvoice(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
+	}
+	
+	@GetMapping(path = "/getPaid")
+	public Integer getPaid(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
+	}
+	
+	@GetMapping(path = "/setInvoice")
+	public Invoice setPayable(@RequestBody Invoice inv) throws ValidationFailedException{
+		return invoiceService.saveInvoice(inv);
+		
+	}
+	@GetMapping(path = "/allInvoices")
+	public List<Invoice> allInvoices(@RequestParam Integer userId) throws ValidationFailedException{
+		return invoiceService.getAllInvoicesByUserId(userId);
+
 	}
 
 }

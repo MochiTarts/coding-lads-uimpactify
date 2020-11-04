@@ -14,7 +14,9 @@ public class Invoice extends BaseDataEntity {
 	
 	private User user;
 	private Course course;
-	
+	private int cost;
+	private int initCost;
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	public User getUser() {
@@ -32,6 +34,20 @@ public class Invoice extends BaseDataEntity {
 		this.course = course;
 	}
 	
-	
+	@JoinColumn(name = "price")
+	public int getCost() {
+		return cost;
+	}
+	public void setCost(int cost) {
+		this.cost = cost;
+	}
+
+	@JoinColumn(name = "init_price")
+	public int getInitCost() {
+		return initCost;
+	}
+	public void setInitCost(int initCost) {
+		this.initCost = initCost;
+	}
 	
 }

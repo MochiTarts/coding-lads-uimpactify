@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
+import com.utsc.project_coding_lads.enums.PostingEnum;
+import com.utsc.project_coding_lads.enums.RoleEnum;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.EntityNotFoundException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
@@ -71,6 +73,14 @@ public class ApplicationValidator implements Validator {
 		String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 		Pattern pattern = Pattern.compile(regex);
 		return pattern.matcher(email).matches();
+	}
+	
+	public void eligibilityValidate() throws ValidationFailedException {
+		String postingType = postingService.findPostingById(posting.getId()).getPostingType();
+		String userType = userService.findUserById(applicant.getId()).getRole().getName();
+		if (!((postingType.equals(PostingEnum.EMPLOYMENT.name()) || postingType.equals(PostingEnum.VOLUNTEERING.name())) && userType.equals(RoleEnum.IMPACT_LEARNER.name()))
+				&& !(postingType.equals(PostingEnum.CONSULTING.name()) && userType.equals(RoleEnum.IMPACT_CONSULTANT.name())))
+			throw new ValidationFailedException("Applicant is ineligible to apply to this posting.");
 	}
 	
 	public void validateExists() throws ValidationFailedException {

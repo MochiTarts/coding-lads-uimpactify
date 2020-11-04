@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.EventTest;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -35,7 +36,7 @@ public class TestEventService {
 	
 	@Test
 	public void testCRUD() throws Exception {
-		User user = new User();
+		/* User user = new User();
 		user.setAge(90);
 		user.setFirstName("firstName");
 		user.setLastName("lastname");
@@ -55,12 +56,16 @@ public class TestEventService {
 		Event event = new Event();
 		event.setEventName("name");
 		event.setEventDesc("desc");
-		event.setEventDate(LocalDateTime.now());
+		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
+		LocalDateTime end = LocalDateTime.of(2000, 10, 31, 00, 10, 00);
+		event.setEventStartDate(start);
+		event.setEventEndDate(end);
 		event.setEventCreator(savedUser);
+		event.setImgUrl("url");
 		
 		Event savedEvent = eventService.saveEvent(event);
 		Assert.assertNotNull(savedEvent.getId());
-		
+		Assert.assertEquals("url", event.getImgUrl());
 		Event getEvent = eventService.findEventById(savedEvent.getId());
 		Assert.assertNotNull(getEvent);
 		Assert.assertEquals(savedEvent.getId(), getEvent.getId());
@@ -81,7 +86,7 @@ public class TestEventService {
 		eventService.deleteEventById(savedEvent.getId());
 		
 		Boolean exist = eventService.existsById(id);
-		Assert.assertFalse(exist);
+		Assert.assertFalse(exist); */
 	}
 	
 }
