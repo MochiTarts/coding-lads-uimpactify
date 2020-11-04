@@ -3,6 +3,7 @@ package com.utsc.project_coding_lads.test.UserServiceTest;
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -112,6 +113,9 @@ public class TestImpactConsultantApply {
 		
 		Boolean exists = appService.existsById(savedApp.getId());
 		Assert.assertTrue(exists);
+		
+		List<com.utsc.project_coding_lads.domain.Application> getApp = appService.findAllApplicationsByUserId(savedConsultantId);
+		Assert.assertFalse(getApp.isEmpty());
 		
 		savedConsultant.setFirstName("newFirstName");
 		User newSavedLearner = userService.updateUser(savedConsultant);

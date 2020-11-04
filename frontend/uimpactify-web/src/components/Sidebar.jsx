@@ -40,65 +40,41 @@ class Sidebar extends React.Component {
             <NavItem>
               <img id="sidebar-logo" src={logo} />
             </NavItem>
-            {userContext.userId && (
-              <div>
-                <NavItem>
-                  <NavLink href="/dashboard">Dashboard</NavLink>
-                </NavItem>
-                ,
-                <NavItem>
-                  <NavLink href="/calendar">Calendar</NavLink>
-                </NavItem>
-                ,
-                <Dropdown
-                  open={this.state.dropdownOpen}
-                  toggle={this.toggleDropdown}
-                  direction="right"
-                >
-                  <DropdownToggle nav caret>
-                    Opportunities
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem href="/myopportunities">
-                      My Opportunities
-                    </DropdownItem>
-                    <DropdownItem href="/explore-opportunities">
-                      Explore
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-                ,
-                <NavItem>
-                  <NavLink href="/settings">Settings</NavLink>
-                </NavItem>
-                ,
-                <NavItem>
-                  <NavLink
-                    href="#"
-                    onClick={() => {
-                      userContext.signOut();
-                    }}
-                  >
-                    Sign Out
-                  </NavLink>
-                </NavItem>
-              </div>
-            )}
-            {!userContext.userId && (
-              <div>
-                <NavItem>
-                  <NavLink href="/aboutus">About Us</NavLink>
-                </NavItem>
-                ,
-                <NavItem>
-                  <NavLink href="/signin">Sign In</NavLink>
-                </NavItem>
-                ,
-                <NavItem>
-                  <NavLink href="/signup">Sign Up</NavLink>
-                </NavItem>
-              </div>
-            )}
+            {userContext.userId && 
+            <div>
+              <NavItem>
+                <NavLink href="/dashboard">Dashboard</NavLink>
+              </NavItem>,
+              <NavItem>
+                <NavLink href="/calendar">Calendar</NavLink>
+              </NavItem>,
+              <Dropdown open={this.state.dropdownOpen} toggle={this.toggleDropdown} direction="right">
+                <DropdownToggle nav caret>Opportunities</DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem href="/opportunity/myopportunities">My Opportunities</DropdownItem>
+                  <DropdownItem href="/opportunity/explore">Explore</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>,
+              <NavItem>
+                <NavLink href="/settings">Settings</NavLink>
+              </NavItem>,
+              <NavItem>
+                <NavLink href="#" onClick= {()=>{userContext.signOut()}}>Sign Out</NavLink>
+              </NavItem>
+            </div>}
+            {!userContext.userId && 
+            <div>
+              <NavItem>
+                <NavLink href="/aboutus">About Us</NavLink>
+              </NavItem>,
+              <NavItem>
+                <NavLink href="/signin">Sign In</NavLink>
+              </NavItem >,
+              <NavItem>
+                <NavLink href="/signup">Sign Up</NavLink>
+              </NavItem>
+            </div>}
+            
           </Nav>
         )}
       </UserContextConsumer>

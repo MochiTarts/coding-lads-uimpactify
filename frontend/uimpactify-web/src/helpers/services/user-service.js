@@ -21,31 +21,33 @@ export const signIn = (username, password) => {
     {username, password});
 }
 
-export const getMyOpportunities = (uid) => {
-    return axios.get(`${apiUrl}/getPostings/${uid}`);
+export const getMyOpportunities = (uid, isEmployee) => {
+    if (isEmployee) {
+        return axios.get(`${apiUrl}/getPostings/${uid}`);
+    } else {
+        return axios.get(`${apiUrl}/getApplicationsByUser/${uid}`);
+    }
 }
 
  export const createPosting = (title, description, uid, type, socialInit) => {
-    var date = new Date;
-    var serializedDate = date;
-    var creatorObj = {id: uid};
-    var socialInitObj = {name: socialInit};
+    const date = new Date;
+    const creatorObj = {id: uid};
+    const socialInitObj = {name: socialInit};
     
     return axios.post(`${apiUrl}/createPosting`, {
         name: title,
         postingDesc: description,
         postingCreator: creatorObj,
         postingType: type,
-        postingDate: serializedDate,
+        postingDate: date,
         socialInit: socialInitObj
     });
 }
 
 export const updatePosting = (pid, title, description, uid, type, socialInit) => {
-    var date = new Date;
-    var serializedDate = date;
-    var creatorObj = {id: uid};
-    var socialInitObj = {name: socialInit};
+    const date = new Date;
+    const creatorObj = {id: uid};
+    const socialInitObj = {name: socialInit};
 
     return axios.post(`${apiUrl}/updatePosting`, {
         id: pid,
@@ -53,7 +55,7 @@ export const updatePosting = (pid, title, description, uid, type, socialInit) =>
         postingDesc: description,
         postingCreator: creatorObj,
         postingType: type,
-        postingDate: serializedDate,
+        postingDate: date,
         socialInit: socialInitObj
     });
 }
@@ -68,4 +70,22 @@ export const getPosting = (pid) => {
 
 export const getUser = (uid) => {
     return axios.get(`${apiUrl}/getUser/${uid}`);
+}
+
+export const createApplication = (aid, pid, email) => {
+    const applicant = {id: aid};
+    const posting = {id: pid};
+    return axios.post(`${apiUrl}/createApplication`, {
+        applicant: applicant,
+        posting: posting,
+        email: email
+    });
+}
+
+export const getApplicationsByPosting = (pid) => {
+    return axios.get(`${apiUrl}/getApplicationsByPosting/${pid}`);
+}
+
+export const deleteApplication = (aid) => {
+    return axios.post(`${apiUrl}/deleteApplication/${aid}`);
 }

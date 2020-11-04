@@ -19,7 +19,7 @@ public class Event extends BaseDataEntity {
 	private String eventName;
 	private String eventDesc;
 	private User eventCreator;
-	
+	private String imgUrl;
 	private LocalDateTime eventStartDate;
 	private LocalDateTime eventEndDate;
 	
@@ -58,6 +58,13 @@ public class Event extends BaseDataEntity {
 	}
 	public void setEventCreator(User eventCreator) {
 		this.eventCreator = eventCreator;
+	}
+	@Column(name = "img_url", length = 256)
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 	
 	

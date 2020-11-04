@@ -1,23 +1,139 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.utsc.project_coding_lads.domain.Course;
+import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
+import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
+import com.utsc.project_coding_lads.service.CourseService;
+import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.UserService;
+import com.utsc.project_coding_lads.validator.CourseValidator;
+import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
 @Transactional
 public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 
 	@Autowired
-	ImpactLearnerRepository impactLearnerRepo;
+	ImpactLearnerRepository learnerRepo;
+	@Autowired
+	CourseService courseService;
+	@Autowired
+	ImpactConsultantService consultantService;
+	@Autowired
+	ImpactLearnerCourseService learnerCourseService;
+	@Autowired
+	UserService userService;
+	@Autowired
+	CourseValidator courseValidator;
+	@Autowired
+	UserValidator userValidator;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
-		return impactLearnerRepo.save(impactLearner).getId();
+		if (impactLearner == null)
+			throw new MissingInformationException("Impact learner cannot be null.");
+		return learnerRepo.save(impactLearner).getId();
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return learnerRepo.existsById(id);
+	}
+
+	@Override
+	public ImpactLearner findLearnerById(Integer id) throws ValidationFailedException {
+		if (!existsById(id))
+			throw new EntityNotExistException("The impact learner does not exist.");
+		return learnerRepo.findById(id).get();
+	}
+	
+	@Override
+	public ImpactLearnerCourse addCourseToLearner(ImpactLearner student, Course course) throws Exception {
+		if (student == null || course == null)
+			throw new MissingInformationException("Student or course cannot be null.");
+		courseValidator.init(courseService.findCourseById(course.getId()));
+		courseValidator.validateExist();
+		userValidator.init(userService.findUserById(student.getId()));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
+		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
+		ImpactLearner savedStudent = findLearnerById(student.getId());
+		Course savedCourse = courseService.findCourseById(course.getId());
+		learnerCourse.setCourse(savedCourse);
+		learnerCourse.setStudent(savedStudent);
+		savedStudent.getCourses().size();
+		savedStudent.getCourses().add(learnerCourse);
+		learnerRepo.save(savedStudent);
+		return savedStudent.getCourses().get(savedStudent.getCourses().size()-1);
+	}
+
+	@Override
+	public List<ImpactLearnerCourse> findCoursesByLearnerId(Integer id) throws Exception {
+		ImpactLearner savedStudent = findLearnerById(id);
+		savedStudent.getCourses().size();
+		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
+		return courses;
+	}
+
+	@Override
+	public Boolean removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
+		if (student == null || course == null)
+			throw new MissingInformationException("Student or course cannot be null.");
+		courseValidator.init(courseService.findCourseById(course.getId()));
+		courseValidator.validateExist();
+		userValidator.init(userService.findUserById(student.getId()));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
+		ImpactLearner savedStudent = findLearnerById(student.getId());
+		Course savedCourse = courseService.findCourseById(course.getId());
+		savedStudent.getCourses().size();
+		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
+		for (ImpactLearnerCourse ilc: courses) {
+			if (ilc.getCourse().equals(savedCourse)) {
+				learnerCourseService.deleteById(ilc.getId());
+				courses.remove(ilc);
+				learnerRepo.save(savedStudent);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception {
+		if (studentId == null || instructorId == null)
+			throw new MissingInformationException("Student Id or instructor cannot be null");
+		consultantService.findImpactConsultantById(instructorId);
+		userValidator.init(userService.findUserById(instructorId));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
+		ImpactLearner savedStudent = findLearnerById(studentId);
+		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructorId);
+		savedStudent.getCourses().size();
+		List<ImpactLearnerCourse> foundCourses = new ArrayList<ImpactLearnerCourse>();
+		for (ImpactLearnerCourse ilc: savedStudent.getCourses()) {
+			if (ilc.getCourse().getInstructor().getId() == savedInstructor.getId())
+				foundCourses.add(ilc);
+		}
+		return foundCourses;
 	}
 
 }

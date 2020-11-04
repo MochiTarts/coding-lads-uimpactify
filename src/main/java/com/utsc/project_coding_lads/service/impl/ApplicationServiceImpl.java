@@ -17,6 +17,7 @@ import com.utsc.project_coding_lads.exception.EntityNotFoundException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.UserTypeInvalidException;
 import com.utsc.project_coding_lads.repository.ApplicationRepository;
+import com.utsc.project_coding_lads.repository.UserRepository;
 import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;

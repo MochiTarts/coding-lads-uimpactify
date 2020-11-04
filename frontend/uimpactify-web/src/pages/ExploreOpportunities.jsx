@@ -7,6 +7,8 @@ class ExploreOpportunities extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            role: props.uinfo.role,
+            socialInit: props.uinfo.socialInit,
             volOpp: [],
             empOpp: [],
             conOpp: []
@@ -18,11 +20,24 @@ class ExploreOpportunities extends Component {
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
+
+        const type = this.state.role ? this.state.role.name : null;
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        const isEmployee = true ? !type : false;
+        if (isConsultant) {
+            document.getElementById("VolunteerContent").style.display = "none";
+            document.getElementById("EmploymentContent").style.display = "none";
+        } else if (isLearner || isEmployee) {
+            document.getElementById("EmploymentContent").style.display = "none";
+            document.getElementById("ConsultingContent").style.display = "none";
+        }
+
         getAllPosting(this.state.uid).then(
             (r) => {
                 for (var i = 0; i < r.data.length; i++) {
                     curr = r.data[i];
-                    if (curr.postingType === "VOLUNTEER") {
+                    if (curr.postingType === "VOLUNTEERING") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {
                         empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
@@ -47,7 +62,7 @@ class ExploreOpportunities extends Component {
         
         var tablinks = document.getElementsByClassName("tablinks");
         for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "")
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
         
         document.getElementById(tab + "Content").style.display = "";
@@ -55,7 +70,17 @@ class ExploreOpportunities extends Component {
     }
 
     render() {
-        const { volOpp, empOpp, conOpp } = this.state;
+        const { volOpp, empOpp, conOpp, role } = this.state;
+        const type = role ? role.name : null;
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        const isEmployee = true ? !role : false;
+        var buttonText;
+        if (isEmployee) {
+            buttonText = "Details";
+        } else {
+            buttonText = "Apply";
+        }
 
         return(
             <div className="opportunity-page-container">
@@ -64,59 +89,65 @@ class ExploreOpportunities extends Component {
                 </div>
 
                 <ul className="nav nav-tabs">
+                    {(isEmployee || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks active"
                                 id="Volunteer"
                                 onClick={() => this.handleTabSwitch("Volunteer")}>
                             Volunteer
                         </button>
-                    </li>
+                    </li>}
+                    {(isEmployee || isLearner) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Employment"
                                 onClick={() => this.handleTabSwitch("Employment")}>
                             Employment
                         </button>
-                    </li>
+                    </li>}
+                    {(isEmployee || isConsultant) &&
                     <li className="nav-item">
                         <button className="nav-link tablinks"
                                 id="Consulting"
                                 onClick={() => this.handleTabSwitch("Consulting")}>
                             Consulting
                         </button>
-                    </li>
+                    </li>}
                 </ul>
 
                 <div className="tabcontent row" id="VolunteerContent">
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="volunteer"
-                            button="Apply"
+                            type="VOLUNTEERING"
+                            button={buttonText}
                         />
                     ))}
                 </div>
-                <div className="tabcontent row" id="EmploymentContent" style={{ display: "none" }}>
+                <div className="tabcontent row" id="EmploymentContent">
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="employment"
-                            button="Apply"
+                            type="EMPLOYMENT"
+                            button={buttonText}
                         />
                     ))}
                 </div>
-                <div className="tabcontent row" id="ConsultingContent" style={{ display: "none" }}>
+                <div className="tabcontent row" id="ConsultingContent">
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
+                            pid={opp.id}
                             title={opp.title}
                             description={opp.description}
-                            type="consulting"
-                            button="Apply"
+                            type="CONSULTING"
+                            button={buttonText}
                         />
                     ))}
                 </div>
