@@ -19,7 +19,7 @@ import  PrivateRoute from "./components/PrivateRoute";
 
 const styles = {
   main: {
-    backgroundImage: `url(${bubbleBackground})`,
+    backgroundImage: `linear-gradient(to bottom, rgba(172, 119, 206, 0.4), rgba(172, 119, 206, 0.4)),url(${bubbleBackground})`,
     backgroundRepeat: "repeat",
     minHeight: "100vh",
   },
@@ -35,13 +35,14 @@ function App() {
             <Route path="/" exact component={Landing} />
             <Route path="/signup" exact component={SignUp} />
             <Route path="/signin" exact component={SignIn} />
-            <Route path="/billing" exact component={Billing} />
+            
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/explore-opportunities" component={ExploreOpportunities} />
               <PrivateRoute path="/myopportunities" exact component={MyOpportunities} />
               <PrivateRoute path="/myopportunities/manage" component={ManageOpportunity} />
               <PrivateRoute path="/myopportunities/create" component={CreateOpportunity} />
+              <PrivateRoute path="/billing" component={Billing} />
             </Fragment>
           </Switch>
         </BrowserRouter>

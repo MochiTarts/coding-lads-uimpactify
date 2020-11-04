@@ -46,6 +46,9 @@ class Sidebar extends React.Component {
                 </DropdownMenu>
               </Dropdown>,
               <NavItem>
+                <NavLink href="/billing">Billing</NavLink>
+              </NavItem>,
+              <NavItem>
                 <NavLink href="/settings">Settings</NavLink>
               </NavItem>,
               <NavItem>
