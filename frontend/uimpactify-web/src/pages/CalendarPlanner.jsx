@@ -18,10 +18,22 @@ const getAndConvertEvents = (cb) => {
   getEvents(storedAuthenticatedUserId).then((result) => {
     cb(
       result.data.map((x) => {
+        const convertUTCDateToLocalDate = (date) => {
+          let newDate = new Date(
+            date.getTime() + date.getTimezoneOffset() * 60 * 1000
+          );
+
+          let offset = date.getTimezoneOffset() / 60;
+          let hours = date.getHours();
+
+          newDate.setHours(hours - offset);
+
+          return newDate;
+        };
         return {
           title: x.eventName,
-          start: new Date(x.eventStartDate),
-          end: new Date(x.eventEndDate),
+          start: convertUTCDateToLocalDate(new Date(x.eventStartDate)),
+          end: convertUTCDateToLocalDate(new Date(x.eventEndDate)),
           resource: { desc: x.eventDesc, id: x.id },
         };
       })
@@ -75,16 +87,26 @@ class CalendarPlanner extends React.Component {
                 selectedEvent: "",
               });
             } else {
-              const startDate = event.start.toISOString().split("T")[0];
-              const startTime = event.start
-                .toISOString()
-                .split("T")[1]
-                .split(".")[0];
-              const endDate = event.end.toISOString().split("T")[0];
-              const endTime = event.end
-                .toISOString()
-                .split("T")[1]
-                .split(".")[0];
+              let localDateList = event.start.toLocaleDateString().split("/");
+              const startDate =
+                localDateList[2] +
+                "-" +
+                localDateList[0] +
+                "-" +
+                localDateList[1];
+              const startTime = event.start.toLocaleTimeString("en-US", {
+                hour12: false,
+              });
+              localDateList = event.end.toLocaleDateString().split("/");
+              const endDate =
+                localDateList[2] +
+                "-" +
+                localDateList[0] +
+                "-" +
+                localDateList[1];
+              const endTime = event.end.toLocaleTimeString("en-US", {
+                hour12: false,
+              });
               const title = event.title;
               const description = event.resource.desc;
               this.setState({
@@ -99,8 +121,14 @@ class CalendarPlanner extends React.Component {
             }
           }}
           onSelectSlot={(slot) => {
-            const date = slot.start.toISOString().split("T")[0];
-            this.setState({ startDate: date, startTime: null });
+            const localDateList = slot.start.toLocaleDateString().split("/");
+            const startDate =
+              localDateList[2] +
+              "-" +
+              localDateList[0] +
+              "-" +
+              localDateList[1];
+            this.setState({ startDate: startDate, startTime: null });
           }}
         />
         <div>
@@ -255,7 +283,7 @@ class CalendarPlanner extends React.Component {
           </ButtonGroup>
           <h4>
             {this.state.selectedEvent
-              ? `Selected ${this.state.title}`
+              ? `Selected "${this.state.title}"`
               : "No event selected"}
           </h4>
         </div>
