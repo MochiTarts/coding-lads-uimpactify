@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { Container, Row, Col, Button } from "shards-react";
-import Calender from "./Calender.jsx";
 
 class UpcomingEvents extends React.Component {
   constructor(props) {
