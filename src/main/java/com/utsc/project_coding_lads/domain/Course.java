@@ -26,7 +26,7 @@ public class Course extends BaseDataEntity {
 	private ImpactConsultant instructor;
 	private List<ImpactLearnerCourse> students = new ArrayList<>();
 	private List<ClassSession> sessions = new ArrayList<>();
-	private Invoice invoice;
+	private Integer cost;
 	
 	@Column(name = "course_name", length = 64)
 	public String getCourseName() {
@@ -67,12 +67,12 @@ public class Course extends BaseDataEntity {
 		this.students = students;
 	}
 	@OneToOne
-	@JoinColumn(name = "invoice_id")
-	public Invoice getInvoice() {
-		return invoice;
+	@JoinColumn(name = "cost")
+	public Integer getCost() {
+		return cost;
 	}
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
+	public void setInvoice(Integer cost) {
+		this.cost = cost;
 	}
 	
 	@Override

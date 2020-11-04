@@ -87,7 +87,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		Invoice inv = new Invoice();
 		inv.setCourse(savedCourse);
 		inv.setUser(userService.findUserById(student.getId()));
-		inv.setCost(50);
+		inv.setCost(savedCourse.getCost());
 		invoiceService.saveInvoice(inv);
 		
 		return savedStudent.getCourses().get(savedStudent.getCourses().size()-1);

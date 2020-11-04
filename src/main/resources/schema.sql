@@ -54,7 +54,7 @@ CREATE TABLE COURSE (
 	impact_consultant_id INTEGER,
 	FOREIGN KEY (impact_consultant_id) REFERENCES IMPACT_CONSULTANT(id),
 	student_id INTEGER, 
-	invoice_id INTEGER
+	cost INTEGER
 );
 
 CREATE TABLE EVENT (
