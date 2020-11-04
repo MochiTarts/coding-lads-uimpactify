@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = ImpactConsultant.TABLE_NAME)
 public class ImpactConsultant extends BaseDataEntity {
@@ -29,8 +31,8 @@ public class ImpactConsultant extends BaseDataEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "instructor")
-//	@JoinColumn(name = "course_id")
 	public List<Course> getCourses() {
 		return courses;
 	}

@@ -1,5 +1,6 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 	InvoiceValidator invoiceValidator;
 
 	@Override
-	@SuppressWarnings("null")
 	public List<Invoice> getUnpaidInvoice(int userId){
-		List<Invoice> result = null;
+		List<Invoice> result = new ArrayList<Invoice>();
 		try {
 			List<Invoice> invoices = getAllInvoicesByUserId(userId);
 			
@@ -43,11 +43,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 			if(i==0) {
 				return null;
 			}
-			while(i!=0) {
-				if(invoices.get(i).getCost() != 0) {
-					result.add(invoices.get(i));
+			for(int x = 0; x<i; x++) {
+				if(invoices.get(x).getCost() != 0) {
+					result.add(invoices.get(x));
 				}
-				i--;
+				
 			}
 		} catch (ValidationFailedException e) {
 			// TODO Auto-generated catch block
