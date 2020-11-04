@@ -213,19 +213,15 @@ public class UserController extends BaseController {
 	}
 	
 	@PostMapping(path = "/addCourseToStudent")
-	@ApiOperation(value = "add a course to a student's load", response = Boolean.class)
-	public Boolean addCourseToStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
-		Boolean ok = true;
-		learnerService.addCourseToLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
-		return ok;
+	@ApiOperation(value = "add a course to a student's load", response = ImpactLearnerCourse.class)
+	public ImpactLearnerCourse addCourseToStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
+		return learnerService.addCourseToLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
 	}
 	
 	@PostMapping(path = "/removeCourseFromStudent")
 	@ApiOperation(value = "remove a course to a student's load", response = Boolean.class)
 	public Boolean removeCourseFromStudent(@RequestBody ImpactLearnerCourse impactLearnerCourse) throws Exception {
-		Boolean ok = true;
-		learnerService.removeCourseFromLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
-		return ok;
+		return learnerService.removeCourseFromLearner(impactLearnerCourse.getStudent(), impactLearnerCourse.getCourse());
 	}
 	
 	@GetMapping(path = "/getAllCoursesFromStudent/{id}")

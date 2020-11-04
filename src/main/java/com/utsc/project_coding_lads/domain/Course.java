@@ -75,10 +75,12 @@ public class Course extends BaseDataEntity {
 		this.invoice = invoice;
 	}
 	
-	
-	
-	
-	
-	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof Course))
+			return false;
+		Course course = (Course) object;
+		return course.getId() == this.getId();
+	}
 	
 }

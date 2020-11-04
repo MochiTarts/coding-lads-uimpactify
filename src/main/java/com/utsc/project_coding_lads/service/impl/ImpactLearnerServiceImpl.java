@@ -63,7 +63,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 	
 	@Override
-	public void addCourseToLearner(ImpactLearner student, Course course) throws Exception {
+	public ImpactLearnerCourse addCourseToLearner(ImpactLearner student, Course course) throws Exception {
 		if (student == null || course == null)
 			throw new MissingInformationException("Student or course cannot be null.");
 		courseValidator.init(courseService.findCourseById(course.getId()));
@@ -80,6 +80,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		savedStudent.getCourses().size();
 		savedStudent.getCourses().add(learnerCourse);
 		learnerRepo.save(savedStudent);
+		return savedStudent.getCourses().get(savedStudent.getCourses().size()-1);
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public void removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
+	public Boolean removeCourseFromLearner(ImpactLearner student, Course course) throws Exception {
 		if (student == null || course == null)
 			throw new MissingInformationException("Student or course cannot be null.");
 		courseValidator.init(courseService.findCourseById(course.getId()));
@@ -105,13 +106,14 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		savedStudent.getCourses().size();
 		List<ImpactLearnerCourse> courses = savedStudent.getCourses();
 		for (ImpactLearnerCourse ilc: courses) {
-			if (ilc.getCourse().getId() == savedCourse.getId()) {
+			if (ilc.getCourse().equals(savedCourse)) {
 				learnerCourseService.deleteById(ilc.getId());
 				courses.remove(ilc);
 				learnerRepo.save(savedStudent);
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	@Override
