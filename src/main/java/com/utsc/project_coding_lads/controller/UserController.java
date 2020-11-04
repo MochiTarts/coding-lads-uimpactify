@@ -2,6 +2,7 @@ package com.utsc.project_coding_lads.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
+import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
@@ -35,6 +37,7 @@ import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.ApplicationService;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -56,6 +59,9 @@ public class UserController extends BaseController {
 	ApplicationService appService;
 	@Autowired
 	ImpactLearnerService learnerService;
+	@Autowired
+	InvoiceService invoiceService;
+	
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
 	@PostMapping(path = "/signup")
@@ -235,5 +241,26 @@ public class UserController extends BaseController {
 	public List<ImpactLearnerCourse> getAllCoursesFromStudentByInstructor(@PathVariable("id") Integer studentId, @RequestParam("instructor") Integer instructorId) throws Exception {
 		return learnerService.findCoursesByInstructorId(studentId, instructorId);
 	}
+	@GetMapping(path = "/getInvoice")
+	public List<Invoice> getInvoiceForLearner(@PathVariable("userId") Integer userId) throws Exception {
+		return invoiceService.getUnpaidInvoice(userId);
+	}
+	
+	@GetMapping(path = "/payInvoice")
+	public Integer payInvoice(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
+	}
+	
+	@GetMapping(path = "/getPaid")
+	public Integer getPaid(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
+		return invoiceService.payInvoice(invoiceId);
+	}
+	
+	@GetMapping(path = "/setInvoice")
+	public Invoice setPayable(@RequestBody Invoice inv) throws ValidationFailedException{
+		return invoiceService.saveInvoice(inv);
+		
+	}
+	
 
 }
