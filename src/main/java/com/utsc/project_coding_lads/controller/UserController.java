@@ -216,12 +216,12 @@ public class UserController extends BaseController {
 	}
 	
 	@GetMapping(path = "/payInvoice")
-	public Integer payInvoice(@PathVariable("invoiceId") Integer invoiceId) throws Exception {
+	public Integer payInvoice(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
 		return invoiceService.payInvoice(invoiceId);
 	}
 	
 	@GetMapping(path = "/getPaid")
-	public Integer getPaid(@PathVariable("invoiceId") Integer invoiceId) throws Exception {
+	public Integer getPaid(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
 		return invoiceService.payInvoice(invoiceId);
 	}
 	
