@@ -8,7 +8,7 @@ export default class Billing extends React.Component {
         super(props);
 
         this.state = {
-        
+          invoiceList: [],
           invoiceSeries: [],
           earningSeries: [],
           invoiceOptions: {
@@ -103,7 +103,11 @@ export default class Billing extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({earningSeries: [4, 5, 1, 7], earningOptions: {...this.state.earningOptions, labels: ["Intro to Computer Science","Course B","Course C","Course D"]}, invoiceSeries: [44, 55, 41, 17, 15,10,10], invoiceOptions: {...this.state.invoiceOptions, labels: [41, 17, 15,10,10,10,10]}})
+        const invoiceList = [{invoiceId: 1, courseName: "Intro to CS", price: 300},{invoiceId: 2, courseName: "Intro to Math", price: 200}];
+        this.setState({invoiceList});
+        const invoiceSeries = invoiceList.map((item)=>item.price);
+        const invoiceLabels = invoiceList.map((item)=>item.courseName);
+        this.setState({earningSeries: [4, 5, 1, 7], earningOptions: {...this.state.earningOptions, labels: ["Intro to Computer Science","Course B","Course C","Course D"]}, invoiceSeries: invoiceSeries, invoiceOptions: {...this.state.invoiceOptions, labels: invoiceLabels}})
     }
     
     render() {
@@ -121,7 +125,7 @@ export default class Billing extends React.Component {
                           <ListGroupItemHeading className="billing-li">
                             <Row>
                                 <Col xs="2">
-                                Date
+                                Invoice Id
                                 </Col>
                                 <Col xs="2">
                                 Cost
@@ -131,24 +135,24 @@ export default class Billing extends React.Component {
                                 </Col>
                             </Row>
                           </ListGroupItemHeading>
-                            <ListGroupItem className="billing-li">
-                              <Row>
-                                <Col xs="2">
-                                  123
-                                </Col>
-                                <Col xs="2">
-                                  456
-                                </Col>
-                                <Col xs="8">
-                                  789
-                                </Col>
-                              </Row>
+                          {
+                            this.state.invoiceList.map(
+                              (item)=>
+                              <ListGroupItem key={item.invoiceId} className="billing-li">
+                                <Row>
+                                  <Col xs="2">
+                                    {item.invoiceId}
+                                  </Col>
+                                  <Col xs="2">
+                                    {item.price}
+                                  </Col>
+                                  <Col xs="8">
+                                    {item.courseName}
+                                  </Col>
+                                </Row>
+                              </ListGroupItem>)
+                          }
 
-                            </ListGroupItem>
-                            <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-                            <ListGroupItem>Morbi leo risus</ListGroupItem>
-                            <ListGroupItem>Porta ac consectetur ac</ListGroupItem>
-                            <ListGroupItem>Vestibulum at eros</ListGroupItem>
                           </ListGroup>
                           </Col>
 
