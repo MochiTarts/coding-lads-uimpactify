@@ -13,6 +13,7 @@ import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.SocialInitiative;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.service.ClassSessionService;
@@ -34,34 +35,37 @@ public class CourseServiceImpl implements CourseService {
 	@Autowired
 	ClassSessionService classSessionService;
 	
+	@Autowired
+	CourseValidator validator;
+	
 	@Override
-	public Boolean existById(Integer id) {
+	public Boolean existsById(Integer id) {
 		return courseRepo.existsById(id);
 	}
 
 	@Override
-	public Course saveCourse(Course course) throws ValidationFailedException {
+	public Integer storeCourse(Course course) throws ValidationFailedException {
 		if (course == null)
 			throw new MissingInformationException("Course body is null");
-		CourseValidator validator = new CourseValidator(course);
+		validator.init(course);
 		validator.validate();
-		return courseRepo.save(course);
+		return courseRepo.save(course).getId();
 	}
 
 	@Override
 	public Course findCourseById(Integer id) throws ValidationFailedException {
 		if (id == null)
 			throw new MissingInformationException("Course id cannot be null");
-		if (existById(id))
-			return courseRepo.getOne(id);
-		return null;
+		if (!existsById(id))
+			throw new EntityNotExistException("The course does not exist.");
+		return courseRepo.findById(id).get();
 	}
 
 	@Override
 	public void updateCourse(Course course) throws ValidationFailedException {
 		if (course == null)
 			throw new MissingInformationException("Course body is null");
-		CourseValidator validator = new CourseValidator(course);
+		validator.init(course);
 		validator.validateExist();
 		ImpactConsultant savedImpactConsultant = impactConsultantService.findImpactConsultantById(course.getInstructor().getId());
 		course.setInstructor(savedImpactConsultant);

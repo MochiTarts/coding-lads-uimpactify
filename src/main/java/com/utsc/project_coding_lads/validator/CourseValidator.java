@@ -2,6 +2,8 @@ package com.utsc.project_coding_lads.validator;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 
 @Component
+@Transactional
 public class CourseValidator implements Validator {
 	
 	private Integer courseId;
@@ -31,12 +34,20 @@ public class CourseValidator implements Validator {
 	@Autowired
 	ClassSessionService classSessionService;
 	
-	public CourseValidator() {
-		super();
-	}
+//	public CourseValidator() {
+//		super();
+//	}
+//	
+//	public CourseValidator(Course course) {
+//		super();
+//		this.courseId = course.getId();
+//		this.courseName = course.getCourseName();
+//		this.courseDesc = course.getCourseDesc();
+//		this.instructor = course.getInstructor();
+//		this.session = course.getSessions();
+//	}
 	
-	public CourseValidator(Course course) {
-		super();
+	public void init(Course course) {
 		this.courseId = course.getId();
 		this.courseName = course.getCourseName();
 		this.courseDesc = course.getCourseDesc();
@@ -51,7 +62,7 @@ public class CourseValidator implements Validator {
 			throw new MissingInformationException("The required field is missing");
 		if (instructor.getId() == null)
 			throw new EntityNotExistException("The impact consultant id cannot be null");
-		if (impactConsultantService.findImpactConsultantById(instructor.getId()) == null)
+		if (!impactConsultantService.existsById(instructor.getId()))
 			throw new UnauthenticatedException("The given impact consultant is not an instructor");
 		// Validate class session (sessions always follow the course so no need to validate)
 //		if (session != null) {
@@ -65,7 +76,7 @@ public class CourseValidator implements Validator {
 	
 	public void validateExist() throws ValidationFailedException {
 		validate();
-		if (!courseService.existById(courseId))
+		if (!courseService.existsById(courseId))
 			throw new EntityNotExistException("This course does not exist");
 	}
 

@@ -48,7 +48,7 @@ public class ImpactConsultantValidator implements Validator {
 	
 	public void validateExist() throws ValidationFailedException {
 		validate();
-		if (!impactConsultantService.existById(instructorId))
+		if (!impactConsultantService.existsById(instructorId))
 			throw new EntityNotExistException("This course does not exist");
 	}
 

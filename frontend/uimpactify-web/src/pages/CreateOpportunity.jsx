@@ -5,9 +5,10 @@ import "../stylesheets/css/Opportunities.css";
 class CreateOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { uid, type } = props.location.state;
+        const { type } = props.location.state;
         this.state = {
-                uid: uid,
+                uid: props.uid,
+                socialInit: props.uinfo.socialInit,
                 type: type,
                 title: "",
                 description: ""
@@ -16,15 +17,10 @@ class CreateOpportunity extends Component {
 
     handleSave = (event) => {
         event.preventDefault();
-        const { title, description, uid, type } = this.state;
-        getUser(uid).then(
-            (r1) => {
-                const socialInit = r1.data.socialInit;
-                createPosting(title, description, uid, type, socialInit.name).then(
-                    (r2) => {
-                        this.props.history.push("/myopportunities");
-                    }
-                );
+        const { title, description, uid, type, socialInit } = this.state;
+        createPosting(title, description, uid, type, socialInit.name).then(
+            (r) => {
+                this.props.history.push("/opportunity/myopportunities");
             }
         );
     }
@@ -39,7 +35,7 @@ class CreateOpportunity extends Component {
                     <h3 className="opportunity-page-header">Creating New Opportunity</h3>
                 </div>
 
-                <form>
+                <form className="col-md-6">
                     <div className="opportunity-formGroup">
                         <label htmlFor="title">Title</label>
                         <input 
@@ -75,9 +71,9 @@ class CreateOpportunity extends Component {
                             onClick={(event) => this.handleSave(event)}>
                         Save
                     </button>
-                    <a href="/myopportunities"
+                    <a href="javascript:history.back()"
                        className="btn btn-secondary opportunity-formButtons">
-                            Cancel
+                        Cancel
                     </a>
                 </form>
             </div>

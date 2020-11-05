@@ -1,9 +1,12 @@
 package com.utsc.project_coding_lads.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -21,9 +24,9 @@ public class Course extends BaseDataEntity {
 	private String courseName;
 	private String courseDesc;
 	private ImpactConsultant instructor;
-	private List<ImpactLearnerCourse> students;
-	private List<ClassSession> sessions;
-	private Invoice invoice;
+	private List<ImpactLearnerCourse> students = new ArrayList<>();
+	private List<ClassSession> sessions = new ArrayList<>();
+	private Integer cost;
 	
 	@Column(name = "course_name", length = 64)
 	public String getCourseName() {
@@ -38,6 +41,13 @@ public class Course extends BaseDataEntity {
 	}
 	public void setCourseDesc(String courseDesc) {
 		this.courseDesc = courseDesc;
+	}
+	@Column(name = "price")
+	public Integer getCost() {
+		return cost;
+	}
+	public void setCost(Integer cost) {
+		this.cost = cost;
 	}
 	@ManyToOne
 	@JoinColumn(name = "impact_consultant_id")
@@ -56,26 +66,22 @@ public class Course extends BaseDataEntity {
 		this.sessions = sessions;
 	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "student")
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<ImpactLearnerCourse> getStudents() {
 		return students;
 	}
 	public void setStudents(List<ImpactLearnerCourse> students) {
 		this.students = students;
 	}
-	@OneToOne
-	@JoinColumn(name = "invoice_id")
-	public Invoice getInvoice() {
-		return invoice;
+
+
+	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof Course))
+			return false;
+		Course course = (Course) object;
+		return course.getId() == this.getId();
 	}
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-	
-	
-	
-	
-	
-	
 	
 }

@@ -1,5 +1,18 @@
-.container {
+.billing-container {
     display: flex;
-    align-items: center;
     justify-content: center;
+    text-align: center;
+}
+
+.billing-header {
+    margin-top: 3%;
+}
+
+.billing-card {
+    padding-top: 3%;
+
+}
+
+.billing-li {
+    text-align: left;
 }

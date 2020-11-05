@@ -13,13 +13,13 @@ public interface CourseService {
 	public void updateCourse(Course course) throws ValidationFailedException;
 	
 	public void deleteCourseById(Course course) throws Exception;
-
-	public Course saveCourse(Course course) throws ValidationFailedException;
 	
 	public List<Course> findAllCourseByInstructorId(Integer id) throws ValidationFailedException;
 	
 //	public List<Course> findAllCourseByInstructorIdDate(Integer id, LocalDateTime date) throws ValidationFailedException;
+	
+	public Integer storeCourse(Course course) throws ValidationFailedException;
 
-	public Boolean existById(Integer id);
+	public Boolean existsById(Integer id);
 	
 }

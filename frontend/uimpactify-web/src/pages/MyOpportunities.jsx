@@ -9,6 +9,8 @@ class MyOpportunities extends Component {
         super(props);
         this.state = {
             uid: props.uid,
+            role: props.uinfo.role,
+            socialInit: props.uinfo.socialInit,
             volOpp: [],
             empOpp: [],
             conOpp: []
@@ -20,11 +22,16 @@ class MyOpportunities extends Component {
         var volOpp = [];
         var empOpp = [];
         var conOpp = [];
-        getMyOpportunities(this.state.uid).then(
+        const isEmployee = true ? !this.state.role : false;
+        getMyOpportunities(this.state.uid, isEmployee).then(
             (r) => {
                 for (var i = 0; i < r.data.length; i++) {
-                    curr = r.data[i];
-                    if (curr.postingType === "VOLUNTEER") {
+                    if (isEmployee) {
+                        curr = r.data[i];
+                    } else {
+                        curr = r.data[i].posting;
+                    }
+                    if (curr.postingType === "VOLUNTEERING") {
                         volOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
                     } else if (curr.postingType === "EMPLOYMENT") {
                         empOpp.push({id: curr.id, title: curr.name, description: curr.postingDesc});
@@ -40,7 +47,17 @@ class MyOpportunities extends Component {
     }
 
     render() { 
-        const { uid, volOpp, empOpp, conOpp } = this.state;
+        const { uid, volOpp, empOpp, conOpp, role } = this.state;
+        const type = role ? role.name : null;
+        const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
+        const isLearner = true ? type === "IMPACT_LEARNER" : false;
+        const isEmployee = true ? !this.state.role : false;
+        var buttonText;
+        if (isEmployee) {
+            buttonText = "Manage";
+        } else {
+            buttonText = "Details";
+        }
 
         return (
             <div className="opportunity-page-container">
@@ -48,80 +65,91 @@ class MyOpportunities extends Component {
                     <h3 className="opportunity-page-header">My Opportunities</h3>
                 </div>
 
-                <h3 className="opportunity-page-subheader">Volunteer Opportunities</h3>
+                {(isEmployee || isLearner) &&
+                <h3 className="opportunity-page-subheader">
+                    Volunteer Opportunities
+                </h3>}
+                {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
-                        state: {uid: uid, type: "VOLUNTEER"}
-                    }}
-                >
+                        pathname: "/opportunity/create",
+                        state: {uid: uid, type: "VOLUNTEERING"}
+                    }}>
                     New
-                </Link>
+                </Link>}
+                {(isEmployee || isLearner) &&
                 <div className="row opportunityList">
                     {volOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
                             pid={opp.id}
-                            uid={uid}
                             title={opp.title}
                             description={opp.description}
-                            type="VOLUNTEER"
-                            button="Manage"
+                            type="VOLUNTEERING"
+                            button={buttonText}
+                            applied={isConsultant || isLearner}
                         />
                     ))}
-                </div>
+                </div>}
 
 
-                <h3 className="opportunity-page-subheader">Employment Opportunities</h3>
+                {(isEmployee || isLearner) &&
+                <h3 className="opportunity-page-subheader">
+                    Employment Opportunities
+                </h3>}
+                {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
+                        pathname: "/opportunity/create",
                         state: {uid: uid, type: "EMPLOYMENT"}
-                    }}
-                >
+                    }}>
                     New
-                </Link>
+                </Link>}
+                {(isEmployee || isLearner) &&
                 <div className="row opportunityList">
                     {empOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
                             pid={opp.id}
-                            uid={uid}
                             title={opp.title}
                             description={opp.description}
                             type="EMPLOYMENT"
-                            button="Manage"
+                            button={buttonText}
+                            applied={isConsultant || isLearner}
                         />
                     ))}
-                </div>
+                </div>}
 
 
-                <h3 className="opportunity-page-subheader
-                ">Consulting Opportunities</h3>
+                {(isEmployee || isConsultant) &&
+                <h3 className="opportunity-page-subheader">
+                    Consulting Opportunities
+                </h3>}
+                {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
                     to={{
-                        pathname: "/myopportunities/create",
+                        pathname: "/opportunity/create",
                         state: {uid: uid, type: "CONSULTING"}
-                    }}
-                >
+                    }}>
                     New
-                </Link>
+                </Link>}
+                {(isEmployee || isConsultant) &&
                 <div className="row opportunityList">
                     {conOpp.map((opp) => (
                         <OpportunityCard
                             key={opp.id}
                             pid={opp.id}
-                            uid={uid}
                             title={opp.title}
                             description={opp.description}
                             type="CONSULTING"
-                            button="Manage"
+                            button={buttonText}
+                            applied={isConsultant || isLearner}
                         />
                     ))}
-                </div>
+                </div>}
             </div>
         );
     }

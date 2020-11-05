@@ -2,6 +2,8 @@ package com.utsc.project_coding_lads.validator;
 
 import java.time.LocalDateTime;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +15,7 @@ import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
 
 @Component
+@Transactional
 public class ClassSessionValidator implements Validator {
 	
 	private Integer id;
