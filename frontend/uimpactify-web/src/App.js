@@ -22,7 +22,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 const styles = {
   main: {
-    backgroundImage: `linear-gradient(to bottom, rgba(172, 119, 206, 0.4), rgba(172, 119, 206, 0.4)),url(${bubbleBackground})`,
+    backgroundImage: `linear-gradient(to bottom, rgba(240, 240, 240, 0.4), rgba(240, 240, 240, 0.4)),url(${bubbleBackground})`,
     backgroundRepeat: "repeat",
     minHeight: "100vh",
   },
