@@ -45,7 +45,7 @@ public class ClassSessionValidator implements Validator {
 	public void validate() throws ValidationFailedException {
 		if (course == null || startDate == null || endDate == null)
 			throw new MissingInformationException("The required field is missing");
-		if (!courseService.existById(course.getId()))
+		if (!courseService.existsById(course.getId()))
 			throw new UnauthenticatedException("The course does not exist");
 	}
 	
