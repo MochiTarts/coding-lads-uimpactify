@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +26,7 @@ public class Course extends BaseDataEntity {
 	private List<ImpactLearnerCourse> students = new ArrayList<>();
 	private List<ClassSession> sessions = new ArrayList<>();
 	private Integer cost;
+	private List<Quiz> quizzes = new ArrayList<>();
 	
 	@Column(name = "course_name", length = 64)
 	public String getCourseName() {
@@ -73,8 +73,14 @@ public class Course extends BaseDataEntity {
 	public void setStudents(List<ImpactLearnerCourse> students) {
 		this.students = students;
 	}
-
-
+	@JsonIgnore
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Quiz> getQuizzes() {
+		return quizzes;
+	}
+	public void setQuizzes(List<Quiz> quizzes) {
+		this.quizzes = quizzes;
+	}
 	
 	@Override
 	public boolean equals(Object object) {
