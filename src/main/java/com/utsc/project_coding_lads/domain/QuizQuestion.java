@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = QuizQuestion.TABLE_NAME)
 public class QuizQuestion extends BaseDataEntity {
@@ -44,6 +46,7 @@ public class QuizQuestion extends BaseDataEntity {
 	public void setSolution(Solution solution) {
 		this.solution = solution;
 	}
+	@JsonIgnore
 	@OneToMany(mappedBy = "question")
 	public List<StudentAnswer> getStudentAnswers() {
 		return studentAnswers;

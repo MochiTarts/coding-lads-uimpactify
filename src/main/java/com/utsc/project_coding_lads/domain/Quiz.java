@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = Quiz.TABLE_NAME)
 public class Quiz extends BaseDataEntity {
@@ -46,6 +48,7 @@ public class Quiz extends BaseDataEntity {
 	public void setQuizEndDate(LocalDateTime quizEndDate) {
 		this.quizEndDate = quizEndDate;
 	}
+	@JsonIgnore
 	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<QuizQuestion> getQuizQuestions() {
 		return quizQuestions;
