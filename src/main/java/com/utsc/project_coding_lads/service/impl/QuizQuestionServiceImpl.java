@@ -9,6 +9,7 @@ import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.QuizQuestionRepository;
 import com.utsc.project_coding_lads.service.QuizQuestionService;
+import com.utsc.project_coding_lads.validator.QuizQuestionValidator;
 
 @Service
 @Transactional
@@ -16,9 +17,13 @@ public class QuizQuestionServiceImpl implements QuizQuestionService {
 
 	@Autowired
 	QuizQuestionRepository quizQnRepo;
+	@Autowired
+	QuizQuestionValidator questionValidator;
 	
 	@Override
 	public Integer createQuizQuestion(QuizQuestion question) throws ValidationFailedException {
+		questionValidator.init(question.getQuestionType(), question.getQuestionOptions());
+		questionValidator.validate();
 		return quizQnRepo.save(question).getId();
 	}
 

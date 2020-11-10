@@ -15,7 +15,6 @@ import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
-import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
@@ -145,6 +144,12 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 				foundCourses.add(ilc);
 		}
 		return foundCourses;
+	}
+
+	@Override
+	public Integer updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException {
+		if (!existsById(impactLearner.getId())) throw new EntityNotExistException("That Impact Learner does not exist.");
+		return learnerRepo.save(impactLearner).getId();
 	}
 
 }

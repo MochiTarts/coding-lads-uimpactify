@@ -22,6 +22,8 @@ public class QuizQuestion extends BaseDataEntity {
 	static final String TABLE_NAME = "QUIZ_QUESTION";
 	
 	private String questionType;
+	private String question;
+	private List<QuizQuestionOption> questionOptions = new ArrayList<>();
 	private Quiz quiz;
 	private Solution solution;
 	private List<StudentAnswer> studentAnswers = new ArrayList<>();
@@ -56,6 +58,22 @@ public class QuizQuestion extends BaseDataEntity {
 	public void setStudentAnswers(List<StudentAnswer> studentAnswers) {
 		this.studentAnswers = studentAnswers;
 	}
+	@Column(name = "question")
+	public String getQuestion() {
+		return question;
+	}
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	public List<QuizQuestionOption> getQuestionOptions() {
+		return questionOptions;
+	}
+	public void setQuestionOptions(List<QuizQuestionOption> questionOptions) {
+		this.questionOptions = questionOptions;
+	}
+	
+	
 	
 	
 	
