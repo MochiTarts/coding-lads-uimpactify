@@ -11,6 +11,7 @@ import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
+import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
 
@@ -22,6 +23,8 @@ public class CourseServiceImpl implements CourseService {
 	CourseRepository courseRepo;
 	@Autowired
 	CourseValidator validator;
+	@Autowired
+	ClassSessionService classSessionService;
 	
 	@Override
 	public Boolean existByID(Integer id) {
