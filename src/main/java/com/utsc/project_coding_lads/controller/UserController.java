@@ -2,9 +2,7 @@ package com.utsc.project_coding_lads.controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
-import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.Event;
-import com.utsc.project_coding_lads.domain.ImpactConsultant;
-import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
+import com.utsc.project_coding_lads.domain.Quiz;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
@@ -39,6 +35,7 @@ import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
+import com.utsc.project_coding_lads.service.QuizService;
 import com.utsc.project_coding_lads.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -61,6 +58,8 @@ public class UserController extends BaseController {
 	ImpactLearnerService learnerService;
 	@Autowired
 	InvoiceService invoiceService;
+	@Autowired
+	QuizService quizService;
 	
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -264,7 +263,32 @@ public class UserController extends BaseController {
 	@GetMapping(path = "/allInvoices")
 	public List<Invoice> allInvoices(@RequestParam Integer userId) throws ValidationFailedException{
 		return invoiceService.getAllInvoicesByUserId(userId);
+	}
+	
+	@PostMapping(path = "/createQuiz")
+	@ApiOperation(value = "create a new quiz", response = Quiz.class)
+	public Integer createQuiz(@RequestBody Quiz quiz) throws ValidationFailedException {
+		return quizService.createQuiz(quiz);
+	}
 
+	@PostMapping(path = "/updateQuiz")
+	@ApiOperation(value = "update a quiz", response = Quiz.class)
+	public Integer updateQuiz(@RequestBody Quiz quiz) throws ValidationFailedException {
+		return quizService.updateQuiz(quiz);
+	}
+
+	@PostMapping(path = "/deleteQuiz/{id}")
+	@ApiOperation(value = "Delete a quiz", response = Boolean.class)
+	public Boolean deleteQuiz(@PathVariable("id") Integer id) throws Exception {
+		Boolean ok = true;
+		quizService.deleteQuizById(id);
+		return ok;
+	}
+
+	@GetMapping(path = "/getQuiz/{id}")
+	@ApiOperation(value = "find a quiz by id", response = Quiz.class)
+	public Quiz getQuiz(@PathVariable("id") Integer id) throws ValidationFailedException {
+		return quizService.findQuizById(id);
 	}
 
 }
