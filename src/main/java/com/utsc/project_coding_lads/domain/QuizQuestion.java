@@ -3,8 +3,10 @@ package com.utsc.project_coding_lads.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -39,7 +41,7 @@ public class QuizQuestion extends BaseDataEntity {
 	public void setQuiz(Quiz quiz) {
 		this.quiz = quiz;
 	}
-	@OneToOne(mappedBy = "question")
+	@OneToOne(mappedBy = "question", cascade = CascadeType.ALL)
 	public Solution getSolution() {
 		return solution;
 	}
@@ -47,7 +49,7 @@ public class QuizQuestion extends BaseDataEntity {
 		this.solution = solution;
 	}
 	@JsonIgnore
-	@OneToMany(mappedBy = "question")
+	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<StudentAnswer> getStudentAnswers() {
 		return studentAnswers;
 	}
