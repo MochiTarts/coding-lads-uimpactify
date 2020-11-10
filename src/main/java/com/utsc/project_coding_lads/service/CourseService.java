@@ -11,4 +11,7 @@ public interface CourseService {
 	
 	public Course findCourseById(Integer id) throws ValidationFailedException;
 	
+	public Integer updateCourse(Course course) throws ValidationFailedException;
+	
+	public void deleteCourseById(Course course) throws ValidationFailedException;
 }
