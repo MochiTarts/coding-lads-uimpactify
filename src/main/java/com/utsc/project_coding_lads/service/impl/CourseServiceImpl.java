@@ -13,6 +13,7 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
+import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
 
 @Service
@@ -25,6 +26,8 @@ public class CourseServiceImpl implements CourseService {
 	CourseValidator validator;
 	@Autowired
 	ClassSessionService classSessionService;
+	@Autowired
+	ImpactConsultantService impactConsultantService;
 	
 	@Override
 	public Boolean existByID(Integer id) {
@@ -57,7 +60,7 @@ public class CourseServiceImpl implements CourseService {
 		course.setInstructor(savedImpactConsultant);
 		// batch update class sessions
 		classSessionService.batchUpdateSession(course.getSessions());
-		courseRepo.save(course);
+		return courseRepo.save(course).getId();
 	}
 
 	@Override
