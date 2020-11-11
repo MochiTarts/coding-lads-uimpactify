@@ -29,12 +29,19 @@ public class ClassSessionValidator implements Validator {
 	@Autowired
 	CourseService courseService;
 	
-	public ClassSessionValidator() {
-		super();
-	}
+	// public ClassSessionValidator() {
+	// 	super();
+	// }
 	
-	public ClassSessionValidator(ClassSession session) {
-		super();
+	// public ClassSessionValidator(ClassSession session) {
+	// 	super();
+	// 	this.id = session.getId();
+	// 	this.course = session.getCourse();
+	// 	this.startDate = session.getStartDate();
+	// 	this.endDate = session.getEndDate();
+	// }
+
+	public void init(ClassSession session) {
 		this.id = session.getId();
 		this.course = session.getCourse();
 		this.startDate = session.getStartDate();
