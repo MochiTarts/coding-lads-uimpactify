@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Dashboard from "./pages/Dashboard.jsx";
+import MyCourses from "./pages/MyCourses.jsx";
+import CoursePage from "./pages/CoursePage.jsx";
 import MyOpportunities from "./pages/MyOpportunities.jsx";
 import ExploreOpportunities from "./pages/ExploreOpportunities.jsx";
 import ManageOpportunity from "./pages/ManageOpportunity.jsx";
@@ -42,6 +44,8 @@ function App() {
             <Fragment>
               <PrivateRoute path="/dashboard" component={Dashboard} />
               <PrivateRoute path="/calendar" component={CalendarPlanner} />
+              <PrivateRoute path="/courses/mycourses" exact component={MyCourses} />
+              <PrivateRoute path="/courses/mycourses/coursepage" component={CoursePage} />
               <PrivateRoute path="/opportunity/myopportunities" component={MyOpportunities} />
               <PrivateRoute path="/opportunity/explore" component={ExploreOpportunities} />
               <PrivateRoute path="/opportunity/apply" component={ApplyOpportunity} />

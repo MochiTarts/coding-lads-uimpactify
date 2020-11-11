@@ -1,6 +1,6 @@
 # Sprint 1 Marking
 Team Name: Coding Lads  
-Total Mark: 73/85 (85.8%)
+Total Mark: 75/85 (88.2%)
 
 ## Planning Meetings (5/5)
 - Release Planning Meeting  
@@ -28,7 +28,7 @@ Total Mark: 73/85 (85.8%)
   hold a meeting and the TA observes that, the TA will reduce the Standup mark to 0]  
 Your mark: 10
 	
-## User Stories (Tracked in Jira) (8/10) 
+## User Stories (Tracked in Jira) (10/10) 
 - Correctly formulated user stories   
  [2 marks=all stories in Jira Backlog follow the User Story template]  
  [1 mark=two or more stories in Jira Backlog do not follow the template]  
@@ -53,7 +53,7 @@ Your mark: 2
  [2 marks=all Sprint 1 stories have clearly defined and testable acceptance criteria]  
  [1 mark=one or more Sprint 1 stories do not have clearly defined or testable acceptance criteria]  
  [0 marks=the majority of the Sprint1 stories do not have clearly defined or testable acceptance criteria]  
-Your mark: 0
+Your mark: 2
 
 
 

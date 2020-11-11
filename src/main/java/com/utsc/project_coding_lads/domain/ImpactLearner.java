@@ -22,6 +22,7 @@ public class ImpactLearner extends BaseDataEntity {
 	
 	private User user;
 	private List<ImpactLearnerCourse> courses = new ArrayList<>();
+	private List<StudentAnswer> questions = new ArrayList<>();
 
 	@OneToOne(optional = false)
 	@JoinColumn(name = "id")
@@ -40,6 +41,15 @@ public class ImpactLearner extends BaseDataEntity {
 	public void setCourses(List<ImpactLearnerCourse> courses) {
 		this.courses = courses;
 	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<StudentAnswer> getQuestions() {
+		return questions;
+	}
+	public void setQuestions(List<StudentAnswer> questions) {
+		this.questions = questions;
+	}
+	
 	
 
 	
