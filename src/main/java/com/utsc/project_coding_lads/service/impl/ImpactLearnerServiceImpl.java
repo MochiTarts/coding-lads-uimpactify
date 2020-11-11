@@ -179,9 +179,10 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		for (StudentAnswer studentAnswer: savedQuestion.getStudentAnswers()) {
 			if (studentAnswer.getStudent().getId() == savedStudent.getId()) {
 				studentAnswer.setStudentAnswer(answer);
-				Integer answerId = studentAnswerService.updateStudentAnswer(studentAnswer);
+//				Integer answerId = studentAnswerService.updateStudentAnswer(studentAnswer);
 				questionService.updateQuizQuestion(savedQuestion);
-				return studentAnswerService.findStudentAnswerById(answerId);
+//				return studentAnswerService.findStudentAnswerById(answerId);
+				return studentAnswer;
 			}
 		}
 		return null;

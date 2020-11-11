@@ -86,7 +86,7 @@ public class TestManageCourses {
 		Integer studentId = userService.storeUser(user2);
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
-//		Assert.assertNotNull(savedStudent.getUser().getInvoices());
+		Assert.assertNotNull(savedStudent.getUser().getInvoices());
 		
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
 		List<ImpactLearnerCourse> courses = learnerService.findCoursesByLearnerId(savedStudent.getId());

@@ -8,11 +8,15 @@ import java.util.ArrayList;
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.transaction.BeforeTransaction;
 
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Course;
@@ -37,7 +41,6 @@ import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
-@Transactional
 class TestLongAnswers {
 
 	@Autowired
@@ -55,9 +58,16 @@ class TestLongAnswers {
 	@Autowired
 	QuizService quizService;
 	
-	@Test
-	public void testQuizServiceCRUD() throws Exception {
-		User user = new User();
+	User user;
+	ImpactConsultant savedInstructor;
+	User user2;
+	ImpactLearner savedStudent;
+	Course course;
+	Course savedCourse;
+	
+	@BeforeTransaction
+	public void setup() throws Exception {
+		user = new User();
 		user.setAge(20);
 		user.setFirstName("instructor");
 		user.setLastName("lastname");
@@ -68,32 +78,33 @@ class TestLongAnswers {
 		Role savedConsultant = roleRepo.save(consultant);
 		user.setRole(savedConsultant);
 		Integer instructorId = userService.storeUser(user);
-		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructorId);
+		savedInstructor = consultantService.findImpactConsultantById(instructorId);
 		
-		User user2 = new User();
+		user2 = new User();
 		user2.setAge(90);
 		user2.setFirstName("student");
 		user2.setLastName("lastname");
 		user2.setUsername("student");
 		user2.setHashedPassword("password");
-		user2.setInvoices(new ArrayList<Invoice>());
 		Role learner = new Role();
 		learner.setName("IMPACT_LEARNER");
 		Role savedLearner = roleRepo.save(learner);
 		user2.setRole(savedLearner);
 		Integer studentId = userService.storeUser(user2);
-		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
-		Assert.assertNotNull(savedStudent);
-		Assert.assertNotNull(savedStudent.getUser().getInvoices());
+		savedStudent = learnerService.findLearnerById(studentId);
 		
-		Course course = new Course();
+		course = new Course();
 		course.setCost(123);
 		course.setCourseDesc("desc");
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
-		Course savedCourse = courseService.storeCourse(course);
+		savedCourse = courseService.storeCourse(course);
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
-		
+	}
+	
+	@Test
+	@Transactional
+	public void testQuizServiceCRUD() throws Exception {
 		Quiz quiz = new Quiz();
 		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
 		quiz.setQuizStartDate(start);
@@ -114,13 +125,27 @@ class TestLongAnswers {
 		savedQuiz.getQuizQuestions().get(0).getStudentAnswers().size();
 		Assert.assertFalse(savedQuiz.getQuizQuestions().isEmpty());
 		Assert.assertFalse(savedQuiz.getQuizQuestions().get(0).getStudentAnswers().isEmpty());
+//		Assert.assertTrue(savedQuiz.getQuizQuestions().get(0).getStudentAnswers().size() == 1);
 		
 		QuizQuestion qn = savedQuiz.getQuizQuestions().get(0);
 		Solution soln = qn.getSolution();
 		Assert.assertNotNull(soln);
 		Assert.assertEquals("answer", soln.getAnswer());
 		
-		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer");
+		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer 1");
+		Assert.assertNotNull(answer);
+		Assert.assertEquals("answer 1", answer.getStudentAnswer());
+		
+		for (StudentAnswer studentAnswer: qn.getStudentAnswers()) {
+			if (studentAnswer.getStudent().getId() == savedStudent.getId()) {
+				System.out.println(studentAnswer.getStudentAnswer());
+				Assert.assertEquals("answer 1", studentAnswer.getStudentAnswer());
+			}
+		}
+		
+		
+		
+		
 	}
 
 }
