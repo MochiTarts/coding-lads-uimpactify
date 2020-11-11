@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ClassSessionRepository;
-import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.validator.ClassSessionValidator;
@@ -34,8 +34,6 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	@Autowired
 	CourseValidator courseValidator;
 
-	
-
 	@Override
 	public ClassSession findSessionById(Integer id) {
 		if (classSessionRepo.existsById(id))
@@ -47,8 +45,8 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	public ClassSession storeClassSession(ClassSession classSession) throws Exception {
 		if (classSession == null)
 			throw new MissingInformationException("Class session is null");
-		ClassSessionValidator validator = new ClassSessionValidator(classSession);
-		validator.validate();
+		classSessionValidator.init(classSession);
+		classSessionValidator.validate();
 		return classSessionRepo.save(classSession);
 	}
 
@@ -65,7 +63,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 
 	@Override
 	public List<ClassSession> batchUpdateSession(List<ClassSession> sessions) throws ValidationFailedException {
-		List<ClassSession> savedSessions = null;
+		List<ClassSession> savedSessions = new ArrayList<>();
 		for (ClassSession session : sessions) {
 			savedSessions.add(updateSingleSession(session));
 		}
