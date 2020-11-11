@@ -56,3 +56,13 @@
     border-left: groove;
     border-width: 1px;
 }
+
+.course-formGroup {
+    width: 85%;
+}
+
+.course-formButton {
+    float: right;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
