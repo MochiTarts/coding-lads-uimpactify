@@ -69,7 +69,7 @@ public class TestManageCourses {
 		course.setCourseName("course 1");
 		course.setCourseDesc("desc");
 		course.setInstructor(savedInstructor);
-		Integer savedCourseId = courseService.storeCourse(course);
+		Integer savedCourseId = courseService.storeCourse(course).getId();
 		Course savedCourse = courseService.findCourseById(savedCourseId);
 		Assert.assertNotNull(savedCourse);
 		
@@ -105,7 +105,7 @@ public class TestManageCourses {
 		course2.setCourseName("course 2");
 		course2.setCourseDesc("desc");
 		course2.setInstructor(savedInstructor);
-		Integer savedCourse2Id = courseService.storeCourse(course2);
+		Integer savedCourse2Id = courseService.storeCourse(course2).getId();
 		Course savedCourse2 = courseService.findCourseById(savedCourse2Id);
 		Assert.assertNotNull(savedCourse2);
 		
@@ -130,7 +130,7 @@ public class TestManageCourses {
 		course3.setCourseName("course 3");
 		course3.setCourseDesc("desc");
 		course3.setInstructor(savedInstructor2);
-		Integer savedCourse3Id = courseService.storeCourse(course3);
+		Integer savedCourse3Id = courseService.storeCourse(course3).getId();
 		Course savedCourse3 = courseService.findCourseById(savedCourse3Id);
 		Assert.assertNotNull(savedCourse3);
 		

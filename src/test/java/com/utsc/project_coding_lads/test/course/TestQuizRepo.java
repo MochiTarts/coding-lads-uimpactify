@@ -66,7 +66,7 @@ public class TestQuizRepo {
 		course.setCourseDesc("desc");
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
-		Integer courseId = courseService.storeCourse(course);
+		Integer courseId = courseService.storeCourse(course).getId();
 		Course savedCourse = courseService.findCourseById(courseId);
 		
 		Quiz quiz = new Quiz();
@@ -102,8 +102,7 @@ public class TestQuizRepo {
 		course.setCourseDesc("desc");
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
-		Integer courseId = courseService.storeCourse(course);
-		Course savedCourse = courseService.findCourseById(courseId);
+		Course savedCourse = courseService.storeCourse(course);
 		
 		Quiz quiz = new Quiz();
 		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);

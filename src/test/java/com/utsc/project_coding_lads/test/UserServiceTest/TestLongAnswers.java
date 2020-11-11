@@ -91,8 +91,7 @@ class TestLongAnswers {
 		course.setCourseDesc("desc");
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
-		Integer courseId = courseService.storeCourse(course);
-		Course savedCourse = courseService.findCourseById(courseId);
+		Course savedCourse = courseService.storeCourse(course);
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
 		
 		Quiz quiz = new Quiz();

@@ -39,7 +39,7 @@ public class QuizValidator implements Validator {
 	public void validate() throws ValidationFailedException {
 		if (course == null || course.getId() == null || quizStartDate == null || quizEndDate == null) 
 			throw new MissingInformationException("Required information is missing.");
-		if (!courseService.existByID(course.getId())) throw new EntityNotExistException("That course does not exist");
+		if (!courseService.existsById(course.getId())) throw new EntityNotExistException("That course does not exist");
 	}
 
 	
