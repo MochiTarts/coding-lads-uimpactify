@@ -65,6 +65,7 @@ public class TestManageCourses {
 		Assert.assertNotNull(savedInstructor);
 		
 		Course course = new Course();
+		course.setCost(100);
 		course.setCourseName("course 1");
 		course.setCourseDesc("desc");
 		course.setInstructor(savedInstructor);
@@ -85,6 +86,7 @@ public class TestManageCourses {
 		Integer studentId = userService.storeUser(user2);
 		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
 		Assert.assertNotNull(savedStudent);
+//		Assert.assertNotNull(savedStudent.getUser().getInvoices());
 		
 		learnerService.addCourseToLearner(savedStudent, savedCourse);
 		List<ImpactLearnerCourse> courses = learnerService.findCoursesByLearnerId(savedStudent.getId());
@@ -99,6 +101,7 @@ public class TestManageCourses {
 		Assert.assertEquals(1, instructorCourse.size());
 		
 		Course course2 = new Course();
+		course2.setCost(100);
 		course2.setCourseName("course 2");
 		course2.setCourseDesc("desc");
 		course2.setInstructor(savedInstructor);
@@ -123,6 +126,7 @@ public class TestManageCourses {
 		Assert.assertNotNull(savedInstructor2);
 		
 		Course course3 = new Course();
+		course3.setCost(100);
 		course3.setCourseName("course 3");
 		course3.setCourseDesc("desc");
 		course3.setInstructor(savedInstructor2);

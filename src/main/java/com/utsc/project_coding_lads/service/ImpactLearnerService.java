@@ -5,6 +5,8 @@ import java.util.List;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
+import com.utsc.project_coding_lads.domain.QuizQuestion;
+import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public interface ImpactLearnerService {
@@ -24,5 +26,7 @@ public interface ImpactLearnerService {
 	public List<ImpactLearnerCourse> findCoursesByInstructorId(Integer studentId, Integer instructorId) throws Exception;
 	
 	public Integer updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException;
+	
+	public StudentAnswer longAnswerQuizQuestion(QuizQuestion question, ImpactLearner student, String answer) throws Exception;
 	
 }
