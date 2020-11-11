@@ -117,8 +117,10 @@ CREATE TABLE QUIZ_QUESTION (
 	quiz_id INTEGER,
 	FOREIGN KEY (quiz_id) REFERENCES QUIZ(id),
 	quiz_type VARCHAR(32),
+	question VARCHAR(256),
 	answer_id INTEGER,
-	student_answer_id INTEGER
+	student_answer_id INTEGER,
+	question_option_id INTEGER
 );
 
 CREATE TABLE SOLUTION (
@@ -135,6 +137,13 @@ CREATE TABLE STUDENT_ANSWER (
 	student_id INTEGER,
 	FOREIGN KEY (student_id) REFERENCES IMPACT_LEARNER(id),
     student_answer VARCHAR(256)
+);
+
+CREATE TABLE QUIZ_QUESTION_OPTION (
+	id SERIAL PRIMARY KEY NOT NULL,
+	question_id INTEGER,
+	FOREIGN KEY (question_id) REFERENCES QUIZ_QUESTION(id),
+	question_option VARCHAR(256)
 );
 
 
@@ -162,4 +171,6 @@ fk_question_solution FOREIGN KEY (answer_id) REFERENCES SOLUTION(id);
 ALTER TABLE QUIZ_QUESTION
 ADD CONSTRAINT
 fk_question_student_answer FOREIGN KEY (student_answer_id) REFERENCES STUDENT_ANSWER(student_id);
-
+ALTER TABLE QUIZ_QUESTION
+ADD CONSTRAINT
+fk_question_option FOREIGN KEY (question_option_id) REFERENCES QUIZ_QUESTION_OPTION(id);	

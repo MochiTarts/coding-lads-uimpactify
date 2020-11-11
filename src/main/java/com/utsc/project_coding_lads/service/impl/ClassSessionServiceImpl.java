@@ -1,11 +1,14 @@
 package com.utsc.project_coding_lads.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.ClassSession;
 import com.utsc.project_coding_lads.exception.BadRequestException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ClassSessionRepository;
 import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.validator.ClassSessionValidator;
@@ -31,6 +34,12 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 		ClassSessionValidator validator = new ClassSessionValidator(classSession);
 		validator.validate();
 		return classSessionRepo.save(classSession).getId();
+	}
+	
+	@Override
+	public void batchUpdateSession(List<ClassSession> sessions) throws ValidationFailedException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
