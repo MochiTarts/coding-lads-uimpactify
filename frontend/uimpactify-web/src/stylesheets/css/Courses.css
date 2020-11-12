@@ -66,3 +66,31 @@
     margin-right: 0.5rem;
     margin-left: 0.5rem;
 }
+
+.courses-listing-available {
+    width: 80%
+}
+
+.courses-listing-button {
+    background-color: rgb(221, 203, 233);
+    color: rgb(68,68,68);
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-bottom: double;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 15px;
+}
+
+.c-expanded, .courses-listing-button:hover {
+    background-color: rgb(224, 183, 243);
+}
+
+.courses-listing-detail {
+    width: 100%;
+    padding: 9px 18px;
+    overflow: hidden;
+    background-color: rgb(221, 227, 236);
+    border-radius: 15px;
+}
