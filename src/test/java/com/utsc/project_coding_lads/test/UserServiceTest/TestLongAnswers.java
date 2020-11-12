@@ -41,6 +41,7 @@ import com.utsc.project_coding_lads.service.UserService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
+@Transactional
 class TestLongAnswers {
 
 	@Autowired
@@ -103,7 +104,6 @@ class TestLongAnswers {
 	}
 	
 	@Test
-	@Transactional
 	public void testQuizServiceCRUD() throws Exception {
 		Quiz quiz = new Quiz();
 		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
@@ -132,14 +132,14 @@ class TestLongAnswers {
 		Assert.assertNotNull(soln);
 		Assert.assertEquals("answer", soln.getAnswer());
 		
-		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer 1");
+		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer");
 		Assert.assertNotNull(answer);
-		Assert.assertEquals("answer 1", answer.getStudentAnswer());
+		Assert.assertEquals("answer", answer.getStudentAnswer());
 		
 		for (StudentAnswer studentAnswer: qn.getStudentAnswers()) {
-			if (studentAnswer.getStudent().getId() == savedStudent.getId()) {
+			if (studentAnswer.getStudent().equals(savedStudent)) {
 				System.out.println(studentAnswer.getStudentAnswer());
-				Assert.assertEquals("answer 1", studentAnswer.getStudentAnswer());
+				Assert.assertEquals("answer", studentAnswer.getStudentAnswer());
 			}
 		}
 		
