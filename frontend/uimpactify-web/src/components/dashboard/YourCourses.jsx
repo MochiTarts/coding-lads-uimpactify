@@ -8,15 +8,22 @@ class YourCourses extends React.Component {
   }
   render() {
     return (
-      <div className="dash-component" >
+      <div className="dash-component">
         <Container id="courses">
           <Row className="item-row">
             {this.props.courses.slice(0, 4).map((x) => {
-              return (
-                <Col>
-                  <EventItem image={x.image} title={x.title} omittime />
-                </Col>
-              );
+              const isEmpty = (obj) => {
+                for (let key in obj) {
+                  if (obj.hasOwnProperty(key)) return false;
+                }
+                return true;
+              };
+              if (!isEmpty(x))
+                return (
+                  <Col>
+                    <EventItem image={x.image} title={x.title} omittime />
+                  </Col>
+                );
             })}
             <Col>
               <EventItem
@@ -24,6 +31,9 @@ class YourCourses extends React.Component {
                 image="https://image.flaticon.com/icons/png/512/32/32339.png"
                 title="Add a New Course"
                 omittime
+                onClick={() => {
+                  window.location.href = "/courses/mycourses";
+                }}
               />
             </Col>
           </Row>

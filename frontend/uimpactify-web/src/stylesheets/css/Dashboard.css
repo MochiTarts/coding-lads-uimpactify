@@ -154,6 +154,7 @@
 .container .dash-component #courses .item-row .col .event-item.add-new-courses {
   background: transparent;
   border-style: dashed;
+  cursor: pointer;
 }
 
 .container .dash-component #suggested-events .item-row .col .event-item.add-new-courses .event-image,

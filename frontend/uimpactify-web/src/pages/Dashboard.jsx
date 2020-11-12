@@ -21,7 +21,13 @@ class Dashboard extends React.Component {
           <Row>
             <div className="title-group">
               <h4>Your Courses</h4>
-              <Button>See All</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = "/courses/mycourses";
+                }}
+              >
+                See All
+              </Button>
             </div>
             <YourCourses courses={[{}, {}, {}, {}]} />
           </Row>
