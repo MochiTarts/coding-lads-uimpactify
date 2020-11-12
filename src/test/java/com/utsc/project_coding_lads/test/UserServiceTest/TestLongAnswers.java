@@ -119,12 +119,20 @@ class TestLongAnswers {
 		question.setSolution(solution);
 		quiz.getQuizQuestions().add(question);
 		
+		QuizQuestion question2 = new QuizQuestion();
+		question2.setQuestionType(QuizQuestionTypeEnum.SHORT_ANSWER.name());
+		Solution solution2 = new Solution();
+		solution2.setAnswer("answer 2");
+		question2.setSolution(solution2);
+		quiz.getQuizQuestions().add(question2);
+		
 		Integer savedQuizId = quizService.createQuiz(quiz);
 		Quiz savedQuiz = quizService.findQuizById(savedQuizId);
 		savedQuiz.getQuizQuestions().size();
 		savedQuiz.getQuizQuestions().get(0).getStudentAnswers().size();
 		Assert.assertFalse(savedQuiz.getQuizQuestions().isEmpty());
 		Assert.assertFalse(savedQuiz.getQuizQuestions().get(0).getStudentAnswers().isEmpty());
+		Assert.assertFalse(savedQuiz.getQuizQuestions().get(1).getStudentAnswers().isEmpty());
 //		Assert.assertTrue(savedQuiz.getQuizQuestions().get(0).getStudentAnswers().size() == 1);
 		
 		QuizQuestion qn = savedQuiz.getQuizQuestions().get(0);
@@ -132,14 +140,30 @@ class TestLongAnswers {
 		Assert.assertNotNull(soln);
 		Assert.assertEquals("answer", soln.getAnswer());
 		
+		QuizQuestion qn2 = savedQuiz.getQuizQuestions().get(1);
+		Solution soln2 = qn2.getSolution();
+		Assert.assertNotNull(soln2);
+		Assert.assertEquals("answer 2", soln2.getAnswer());
+		
 		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer");
 		Assert.assertNotNull(answer);
 		Assert.assertEquals("answer", answer.getStudentAnswer());
+		
+		StudentAnswer answer2 = learnerService.longAnswerQuizQuestion(qn2, savedStudent, "answer 2");
+		Assert.assertNotNull(answer2);
+		Assert.assertEquals("answer 2", answer2.getStudentAnswer());
 		
 		for (StudentAnswer studentAnswer: qn.getStudentAnswers()) {
 			if (studentAnswer.getStudent().equals(savedStudent)) {
 				System.out.println(studentAnswer.getStudentAnswer());
 				Assert.assertEquals("answer", studentAnswer.getStudentAnswer());
+			}
+		}
+		
+		for (StudentAnswer studentAnswer: qn2.getStudentAnswers()) {
+			if (studentAnswer.getStudent().equals(savedStudent)) {
+				System.out.println(studentAnswer.getStudentAnswer());
+				Assert.assertEquals("answer 2", studentAnswer.getStudentAnswer());
 			}
 		}
 		
