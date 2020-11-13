@@ -13,6 +13,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Quiz;
 import com.utsc.project_coding_lads.domain.QuizQuestion;
+import com.utsc.project_coding_lads.domain.QuizQuestionOption;
 import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
@@ -58,7 +59,8 @@ public class QuizServiceImpl implements QuizService {
 			Integer savedQuestionId =  quizQuestionService.createQuizQuestion(question);
 			QuizQuestion savedQuestion = quizQuestionService.findQuizQuestionById(savedQuestionId);
 			savedQuestion.getQuestionOptions().size();
-			for (ImpactLearnerCourse student : quiz.getCourse().getStudents()) {
+			savedCourse.getStudents().size();
+			for (ImpactLearnerCourse student : savedCourse.getStudents()) {
 				StudentAnswer studentAnswer = new StudentAnswer();
 				studentAnswer.setQuestion(savedQuestion);
 				ImpactLearner learner = impactLearnerService.findLearnerById(student.getStudent().getId());

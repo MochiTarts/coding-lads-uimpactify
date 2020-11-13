@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = Solution.TABLE_NAME)
 public class Solution extends BaseDataEntity {
@@ -15,6 +17,7 @@ public class Solution extends BaseDataEntity {
 	private QuizQuestion question;
 	private String answer;
 	
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "quiz_question_id")
 	public QuizQuestion getQuestion() {

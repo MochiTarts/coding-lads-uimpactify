@@ -60,8 +60,8 @@ public class CourseValidator implements Validator {
 		// can a course has no class session?
 		if (courseName == null || courseDesc == null || instructor == null)
 			throw new MissingInformationException("The required field is missing");
-		if (instructor.getUser() == null)
-			throw new UnauthenticatedException("The impact consultant is not an instructor");
+//		if (instructor.getUser() == null)
+//			throw new UnauthenticatedException("The impact consultant is not an instructor");
 		if (!impactConsultantService.existsById(instructor.getId()))
 			throw new UnauthenticatedException("The impact consultant is not an instructor");
 		// Validate class session

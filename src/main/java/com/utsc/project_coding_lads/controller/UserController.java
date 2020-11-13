@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
+import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.Quiz;
+import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
@@ -31,10 +33,12 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.ApplicationService;
+import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
+import com.utsc.project_coding_lads.service.QuizQuestionService;
 import com.utsc.project_coding_lads.service.QuizService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -60,6 +64,10 @@ public class UserController extends BaseController {
 	InvoiceService invoiceService;
 	@Autowired
 	QuizService quizService;
+	@Autowired
+	QuizQuestionService quizQuestionService;
+	@Autowired
+	CourseService courseService;
 	
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -266,13 +274,13 @@ public class UserController extends BaseController {
 	}
 	
 	@PostMapping(path = "/createQuiz")
-	@ApiOperation(value = "create a new quiz", response = Quiz.class)
+	@ApiOperation(value = "create a new quiz", response = Integer.class)
 	public Integer createQuiz(@RequestBody Quiz quiz) throws ValidationFailedException {
 		return quizService.createQuiz(quiz);
 	}
 
 	@PostMapping(path = "/updateQuiz")
-	@ApiOperation(value = "update a quiz", response = Quiz.class)
+	@ApiOperation(value = "update a quiz", response = Integer.class)
 	public Integer updateQuiz(@RequestBody Quiz quiz) throws ValidationFailedException {
 		return quizService.updateQuiz(quiz);
 	}
@@ -290,5 +298,30 @@ public class UserController extends BaseController {
 	public Quiz getQuiz(@PathVariable("id") Integer id) throws ValidationFailedException {
 		return quizService.findQuizById(id);
 	}
+	
+	@PostMapping(path = "/createCourse")
+	@ApiOperation(value = "create a new course", response = Integer.class)
+	public Integer createCourse(@RequestBody Course course) throws Exception {
+		return courseService.storeCourse(course);
+	}
+
+	@PostMapping(path = "/updateCourse")
+	@ApiOperation(value = "update a course", response = Integer.class)
+	public Integer updateCourse(@RequestBody Course course) throws ValidationFailedException {
+		return courseService.updateCourse(course);
+	}
+
+	@GetMapping(path = "/getCourse/{id}")
+	@ApiOperation(value = "find a course by id", response = Course.class)
+	public Course getCourse(@PathVariable("id") Integer id) throws ValidationFailedException {
+		return courseService.findCourseById(id);
+	}
+	
+	@GetMapping(path = "/getQuizQuestions/{id}")
+	@ApiOperation(value = "find quiz questions by quiz id", response = QuizQuestion.class, responseContainer = "List")
+	public List<QuizQuestion> getQuizQuestionsByQuizId(@PathVariable("id") Integer id) throws ValidationFailedException {
+		return quizQuestionService.findQuestionsByQuizId(id);
+	}
+	
 
 }
