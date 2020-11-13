@@ -1,11 +1,40 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/Courses.css";
+import { createCourse } from "../helpers/services/course-service";
 
 class CreateCourse extends Component {
-    consturctor(props) {
-        
+    constructor(props) {
+        super(props);
+        this.state = {
+            uid: props.uid,
+            title: "",
+            cost: 0,
+            description: ""
+        }
     }
     
+    handleChangeName = (event) => {
+        this.setState({ title: event.target.value });
+    }
+
+    handleChangeCost = (event) => {
+        this.setState({ cost: event.target.value });
+    }
+
+    handleChangeDescription = (event) => {
+        this.setState({ description: event.target.value });
+    }
+
+    handleSave = (event) => {
+        event.preventDefault();
+        const { uid, title, cost, description } = this.state;
+        createCourse(title, cost, description, uid).then(
+            (_) => {
+                this.props.history.push("/courses/mycourses");
+            }
+        );
+    }
+
     render() { 
         return (
             <div className="courses-page-container">
@@ -14,22 +43,25 @@ class CreateCourse extends Component {
                 </div>
 
                 <form className="course-formGroup">
-                    <div class="form-group row">
+                    <div className="form-group row">
                         <label htmlFor="title" className="col-sm-2 col-form-label">Course Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="title" className="form-control"/>
+                        <div className="col-sm-10">
+                            <input type="text" id="title" className="form-control" 
+                                    onChange={(event) => this.handleChangeName(event)}/>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div className="form-group row">
                         <label htmlFor="cost" className="col-sm-2 col-form-label">Course Cost</label>
-                        <div class="col-sm-2">
-                            <input type="number" min="0.00" max="999.99" step="0.10" id="cost" className="form-control" placeholder="$"/>
+                        <div className="col-sm-2">
+                            <input type="number" min="0" max="999" step="1" id="cost" className="form-control" 
+                                    placeholder="$" onChange={(event) => this.handleChangeCost(event)}/>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div className="form-group row">
                         <label htmlFor="description" className="col-sm-2 col-form-label">Course Description</label>
-                        <div class="col-sm-10">
-                            <textarea type="text" id="description" className="form-control" rows="10"/>
+                        <div className="col-sm-10">
+                            <textarea type="text" id="description" className="form-control" rows="10" 
+                                        onChange={(event) => this.handleChangeDescription(event)}/>
                         </div>
                     </div>
 
@@ -38,7 +70,8 @@ class CreateCourse extends Component {
                         Cancel
                     </a>
                     <button type="submit" 
-                            className="btn btn-primary course-formButton">
+                            className="btn btn-primary course-formButton"
+                            onClick={(event) => this.handleSave(event)}>
                         Create
                     </button>
                 </form>
