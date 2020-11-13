@@ -72,7 +72,6 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		courseValidator.init(courseService.findCourseById(course.getId()));
 		courseValidator.validateExist();
 		userValidator.init(userService.findUserById(student.getId()));
-		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
 		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
@@ -80,9 +79,16 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		Course savedCourse = courseService.findCourseById(course.getId());
 		learnerCourse.setCourse(savedCourse);
 		learnerCourse.setStudent(savedStudent);
+		Integer savedLearnerCourseId = learnerCourseService.saveLearnerCourse(learnerCourse);
+		learnerCourse = learnerCourseService.findLearnerCourseById(savedLearnerCourseId);
+		
 		savedStudent.getCourses().size();
 		savedStudent.getCourses().add(learnerCourse);
 		learnerRepo.save(savedStudent);
+		
+		savedCourse.getStudents().add(learnerCourse);
+		courseService.updateCourse(savedCourse);
+		
 		Invoice inv = new Invoice();
 		inv.setCourse(savedCourse);
 		inv.setUser(userService.findUserById(student.getId()));

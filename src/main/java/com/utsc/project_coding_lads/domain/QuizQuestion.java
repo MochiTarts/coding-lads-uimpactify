@@ -51,7 +51,6 @@ public class QuizQuestion extends BaseDataEntity {
 	public void setSolution(Solution solution) {
 		this.solution = solution;
 	}
-//	@JsonIgnore
 	@OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<StudentAnswer> getStudentAnswers() {
 		return studentAnswers;

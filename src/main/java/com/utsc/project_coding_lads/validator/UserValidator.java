@@ -42,7 +42,7 @@ public class UserValidator implements Validator {
 		this.userName = user.getUsername();
 		this.hashedPassword = user.getHashedPassword();
 		this.age = user.getAge();
-		this.role = user.getRole(); //I can check if Role and SocialInitiative are both null here
+		this.role = user.getRole(); 
 		this.socialInit = user.getSocialInit();
 		this.userId = user.getId();
 	}

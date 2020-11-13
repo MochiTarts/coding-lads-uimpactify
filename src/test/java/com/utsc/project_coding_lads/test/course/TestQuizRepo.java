@@ -1,6 +1,7 @@
 package com.utsc.project_coding_lads.test.course;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -14,17 +15,21 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.utsc.project_coding_lads.Application;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
+import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.Quiz;
 import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.domain.QuizQuestionOption;
 import com.utsc.project_coding_lads.domain.Role;
 import com.utsc.project_coding_lads.domain.Solution;
+import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.enums.QuizQuestionTypeEnum;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
+import com.utsc.project_coding_lads.service.ImpactLearnerService;
+import com.utsc.project_coding_lads.service.QuizQuestionService;
 import com.utsc.project_coding_lads.service.QuizService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -44,7 +49,11 @@ public class TestQuizRepo {
 	@Autowired
 	ImpactConsultantService consultantService;
 	@Autowired
+	ImpactLearnerService ilService;
+	@Autowired
 	QuizService quizService;
+	@Autowired
+	QuizQuestionService quizQnService;
 	
 	@Test
 	public void testQuizCRUD() throws Exception {
@@ -84,18 +93,33 @@ public class TestQuizRepo {
 	
 	@Test
 	public void testQuizServiceCRUD() throws Exception {
+		Role consultant = new Role();
+		consultant.setName("IMPACT_CONSULTANT");
+		Role savedConsultant = roleRepo.save(consultant);
+		
+		Role learnerRole = new Role();
+		learnerRole.setName("IMPACT_LEARNER");
+		Role savedLearnerRole = roleRepo.save(learnerRole);
+		
 		User user = new User();
 		user.setAge(20);
 		user.setFirstName("instructor");
 		user.setLastName("lastname");
 		user.setUsername("instructor");
 		user.setHashedPassword("password");
-		Role consultant = new Role();
-		consultant.setName("IMPACT_CONSULTANT");
-		Role savedConsultant = roleRepo.save(consultant);
 		user.setRole(savedConsultant);
 		Integer instructorId = userService.storeUser(user);
 		ImpactConsultant savedInstructor = consultantService.findImpactConsultantById(instructorId);
+		
+		User learner = new User();
+		learner.setAge(20);
+		learner.setFirstName("learner");
+		learner.setLastName("lastname");
+		learner.setUsername("learner");
+		learner.setHashedPassword("password");
+		learner.setRole(savedLearnerRole);
+		Integer learnerId = userService.storeUser(learner);
+		ImpactLearner student = ilService.findLearnerById(learnerId);
 		
 		Course course = new Course();
 		course.setCost(123);
@@ -104,6 +128,8 @@ public class TestQuizRepo {
 		course.setInstructor(savedInstructor);
 		Integer courseId = courseService.storeCourse(course);
 		Course savedCourse = courseService.findCourseById(courseId);
+		
+		ilService.addCourseToLearner(student, savedCourse);
 		
 		Quiz quiz = new Quiz();
 		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
@@ -123,14 +149,16 @@ public class TestQuizRepo {
 		quiz.getQuizQuestions().add(question);
 		
 		Integer savedQuizId = quizService.createQuiz(quiz);
-		Quiz savedQuiz = quizService.findQuizById(savedQuizId);
-		savedQuiz.getQuizQuestions().size();
-		Assert.assertFalse(savedQuiz.getQuizQuestions().isEmpty());
+		List<QuizQuestion> savedQuestions = quizQnService.findQuestionsByQuizId(savedQuizId);
+		Assert.assertFalse(savedQuestions.isEmpty());
 		
-		QuizQuestion qn = savedQuiz.getQuizQuestions().get(0);
+		QuizQuestion qn = savedQuestions.get(0);
 		QuizQuestionOption op = qn.getQuestionOptions().get(0);
 		Assert.assertEquals(option.getQuestionOption(), op.getQuestionOption());
 		
+		qn = quizQnService.findQuizQuestionById(qn.getId());
+		qn.getStudentAnswers().size();
+		Assert.assertFalse(qn.getStudentAnswers().isEmpty());
 	}
 
 }

@@ -48,7 +48,7 @@ public class Quiz extends BaseDataEntity {
 	public void setQuizEndDate(LocalDateTime quizEndDate) {
 		this.quizEndDate = quizEndDate;
 	}
-	@JsonIgnore
+//	@JsonIgnore
 	@OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	public List<QuizQuestion> getQuizQuestions() {
 		return quizQuestions;
