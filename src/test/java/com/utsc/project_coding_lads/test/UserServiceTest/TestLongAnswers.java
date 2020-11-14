@@ -31,6 +31,7 @@ import com.utsc.project_coding_lads.domain.Solution;
 import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.enums.QuizQuestionTypeEnum;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
@@ -165,6 +166,12 @@ class TestLongAnswers {
 				System.out.println(studentAnswer.getStudentAnswer());
 				Assert.assertEquals("answer 2", studentAnswer.getStudentAnswer());
 			}
+		}
+		
+		try {
+			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn, savedStudent, null);
+		} catch(MissingInformationException e) {
+			Assert.assertTrue(e.getMessage().contains("Question, student, or answer cannot be null"));
 		}
 		
 		
