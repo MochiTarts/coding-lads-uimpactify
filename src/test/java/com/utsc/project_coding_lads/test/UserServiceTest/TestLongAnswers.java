@@ -146,11 +146,11 @@ class TestLongAnswers {
 		Assert.assertNotNull(soln2);
 		Assert.assertEquals("answer 2", soln2.getAnswer());
 		
-		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn, savedStudent, "answer");
+		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), "answer");
 		Assert.assertNotNull(answer);
 		Assert.assertEquals("answer", answer.getStudentAnswer());
 		
-		StudentAnswer answer2 = learnerService.longAnswerQuizQuestion(qn2, savedStudent, "answer 2");
+		StudentAnswer answer2 = learnerService.longAnswerQuizQuestion(qn2.getId(), savedStudent.getId(), "answer 2");
 		Assert.assertNotNull(answer2);
 		Assert.assertEquals("answer 2", answer2.getStudentAnswer());
 		
@@ -169,9 +169,9 @@ class TestLongAnswers {
 		}
 		
 		try {
-			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn, savedStudent, null);
+			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), null);
 		} catch(MissingInformationException e) {
-			Assert.assertTrue(e.getMessage().contains("Question, student, or answer cannot be null"));
+			Assert.assertTrue(e.getMessage().contains("Question ID, student ID, or answer cannot be null"));
 		}
 		
 		

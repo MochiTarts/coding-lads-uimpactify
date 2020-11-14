@@ -3,6 +3,7 @@ package com.utsc.project_coding_lads.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.Quiz;
+import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
 import com.utsc.project_coding_lads.exception.EntityAlreadyExistsException;
@@ -334,6 +336,13 @@ public class UserController extends BaseController {
 	public Course getCourseByClassSession(@PathVariable("id") Integer classSessionId, @RequestBody LocalDateTime date)
 			throws ValidationFailedException {
 		return courseService.findCourseByClassSessionId(classSessionId);
+	}
+	
+	@PostMapping(path = "/answerLongQuizQuestion/{id}")
+	@ApiOperation(value = "answer this long answer quiz question", response = StudentAnswer.class)
+	public StudentAnswer answerLongQuizQuestion(@PathVariable("id") Integer quizQuestionId, @RequestParam("student") Integer studentId, @RequestBody Map<String, String> answer)
+			throws Exception {
+		return learnerService.longAnswerQuizQuestion(quizQuestionId, studentId, answer.get("answer"));
 	}
 
 }

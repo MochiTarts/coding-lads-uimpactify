@@ -165,17 +165,17 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public StudentAnswer longAnswerQuizQuestion(QuizQuestion question, ImpactLearner student, String answer) throws Exception {
-		if (question == null || student == null || answer == null)
-			throw new MissingInformationException("Question, student, or answer cannot be null");
-		questionValidator.init(question.getQuestionType(), new ArrayList<QuizQuestionOption>());
+	public StudentAnswer longAnswerQuizQuestion(Integer questionId, Integer studentId, String answer) throws Exception {
+		if (questionId == null || studentId == null || answer == null)
+			throw new MissingInformationException("Question ID, student ID, or answer cannot be null");
+		questionValidator.init(questionService.findQuizQuestionById(questionId).getQuestionType(), new ArrayList<QuizQuestionOption>());
 		questionValidator.validate();
-		userValidator.init(userService.findUserById(student.getId()));
+		userValidator.init(userService.findUserById(studentId));
 		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
-		QuizQuestion savedQuestion = questionService.findQuizQuestionById(question.getId());
-		ImpactLearner savedStudent = findLearnerById(student.getId());
+		QuizQuestion savedQuestion = questionService.findQuizQuestionById(questionId);
+		ImpactLearner savedStudent = findLearnerById(studentId);
 		for (StudentAnswer studentAnswer: savedQuestion.getStudentAnswers()) {
 			if (studentAnswer.getStudent().equals(savedStudent)) {
 				studentAnswer.setStudentAnswer(answer);
