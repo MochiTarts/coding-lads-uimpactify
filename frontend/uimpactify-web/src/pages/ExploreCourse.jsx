@@ -1,22 +1,35 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/Courses.css";
+import { getAllCourses, enrollInCourse } from "../helpers/services/course-service";
 
 class ExploreCourse extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            uid: props.uid,
             courseList: []
         }
         
     }
 
     componentDidMount() {
-        // TODO: remove hard-coded list
-        var courseList = [
-            {cid: 1, title: "Hard-Coding 101: Spaghetti Edition", description: "Do you like hard coding because thinking is too difficult, well then enjoy our course on some tasty spaghetti and meatballs.", instructor: "Poytel Lias", cost: 50.50},
-            {cid: 2, title: "Unmangling the Mangler: Complete Course on Making PoST", description: "Have you heard of the infamous Code Mangler? If not, then you are hearing about it now. This slimy mangly coder will take your precious spaghetti and mangle it with its fluids, making your code unrecognizable.", instructor: "Deliao Puyat", cost: 100}
-        ];
-        this.setState({ courseList: courseList })
+        getAllCourses().then(
+            (r) => {
+                var courseList = [];
+                for (var i = 0; i < r.data.length; i++) {
+                    const curr = r.data[i];
+                    const { firstName, lastName } = curr.instructor.user;
+                    courseList.push({
+                        cid: curr.id,
+                        title: curr.courseName,
+                        instructor: firstName + " " + lastName,
+                        cost: curr.cost,
+                        description: curr.courseDesc
+                    });
+                }
+                this.setState({ courseList: courseList })
+            }
+        );
     }
 
     handleClickCourse(id) {
@@ -29,6 +42,14 @@ class ExploreCourse extends Component {
             courseDetail.style.display = "none";
             courseButton.className = courseButton.className.replace(" c-expanded", "");
         }
+    }
+
+    handleEnroll(cid) {
+        enrollInCourse(cid, this.state.uid).then(
+            (_) => {
+                this.props.history.push("/courses/mycourses");
+            }
+        );
     }
 
     render() { 
@@ -60,7 +81,8 @@ class ExploreCourse extends Component {
                                 <h6>${course.cost}</h6>
                                 Description:
                                 <h6>{course.description}</h6>
-                                <button className="btn btn-danger btn-sm float-right">
+                                <button className="btn btn-danger btn-sm float-right"
+                                        onClick={() => this.handleEnroll(course.cid)}>
                                     Enroll
                                 </button>
                             </div>
