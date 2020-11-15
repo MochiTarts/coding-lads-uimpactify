@@ -298,15 +298,15 @@ public class UserController extends BaseController {
 		return courseService.findCourseById(id);
 	}
 
-	@GetMapping(path = "/getCourses/{id}")
-	@ApiOperation(value = "find all courses by instructor", response = Course.class, responseContainer = "List")
-	public List<Course> getCourses(@PathVariable("id") Integer instructorId) throws ValidationFailedException {
+	@GetMapping(path = "/getCoursesByInstructor/{id}")
+	@ApiOperation(value = "find all courses by instructor id", response = Course.class, responseContainer = "List")
+	public List<Course> getCoursesByInstructor(@PathVariable("id") Integer instructorId) throws ValidationFailedException {
 		return courseService.findAllCourseByInstructorId(instructorId);
 	}
 
 	@GetMapping(path = "/getCourseByClassSession/{id}")
-	@ApiOperation(value = "find the course by a class session", response = Course.class)
-	public Course getCourseByClassSession(@PathVariable("id") Integer classSessionId, @RequestBody LocalDateTime date)
+	@ApiOperation(value = "find the course by a class session id", response = Course.class)
+	public Course getCourseByClassSession(@PathVariable("id") Integer classSessionId)
 			throws ValidationFailedException {
 		return courseService.findCourseByClassSessionId(classSessionId);
 	}

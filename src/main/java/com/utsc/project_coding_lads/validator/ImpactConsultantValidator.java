@@ -2,7 +2,10 @@ package com.utsc.project_coding_lads.validator;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ImpactConsultant;
@@ -14,6 +17,8 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.UserService;
 
+@Component
+@Transactional
 public class ImpactConsultantValidator implements Validator {
 	
 	private Integer instructorId;
@@ -25,12 +30,8 @@ public class ImpactConsultantValidator implements Validator {
 	
 	@Autowired
 	UserService userService;
-	
-	public ImpactConsultantValidator() {
-		super();
-	}
-	
-	public ImpactConsultantValidator(ImpactConsultant instructor) {
+
+	public void init(ImpactConsultant instructor) {
 		instructorId = instructor.getId();
 		user = instructor.getUser();
 		courses = instructor.getCourses();
@@ -48,6 +49,8 @@ public class ImpactConsultantValidator implements Validator {
 	
 	public void validateExist() throws ValidationFailedException {
 		validate();
+		if (instructorId == null)
+			throw new MissingInformationException("The impact consultant id field is missing");
 		if (!impactConsultantService.existsById(instructorId))
 			throw new EntityNotExistException("This course does not exist");
 	}
