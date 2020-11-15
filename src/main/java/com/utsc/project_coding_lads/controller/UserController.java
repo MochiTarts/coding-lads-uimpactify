@@ -38,6 +38,7 @@ import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
+import com.utsc.project_coding_lads.service.QuizQuestionService;
 import com.utsc.project_coding_lads.service.QuizService;
 import com.utsc.project_coding_lads.service.UserService;
 
@@ -65,6 +66,8 @@ public class UserController extends BaseController {
 	CourseService courseService;
 	@Autowired
 	QuizService quizService;
+	@Autowired
+	QuizQuestionService quizQuestionService;
 
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
