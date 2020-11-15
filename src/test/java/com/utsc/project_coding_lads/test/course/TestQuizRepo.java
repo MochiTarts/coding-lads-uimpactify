@@ -127,11 +127,8 @@ public class TestQuizRepo {
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
 		Course savedCourse = courseService.storeCourse(course);
-<<<<<<< HEAD
-=======
 		
 		ilService.addCourseToLearner(student, savedCourse);
->>>>>>> master
 		
 		Quiz quiz = new Quiz();
 		LocalDateTime start = LocalDateTime.of(2000, 10, 31, 00, 00, 00);
