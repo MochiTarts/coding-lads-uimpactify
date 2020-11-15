@@ -29,12 +29,19 @@ public class ClassSessionValidator implements Validator {
 	@Autowired
 	CourseService courseService;
 	
-	public ClassSessionValidator() {
-		super();
-	}
+	// public ClassSessionValidator() {
+	// 	super();
+	// }
 	
-	public ClassSessionValidator(ClassSession session) {
-		super();
+	// public ClassSessionValidator(ClassSession session) {
+	// 	super();
+	// 	this.id = session.getId();
+	// 	this.course = session.getCourse();
+	// 	this.startDate = session.getStartDate();
+	// 	this.endDate = session.getEndDate();
+	// }
+
+	public void init(ClassSession session) {
 		this.id = session.getId();
 		this.course = session.getCourse();
 		this.startDate = session.getStartDate();
@@ -45,12 +52,14 @@ public class ClassSessionValidator implements Validator {
 	public void validate() throws ValidationFailedException {
 		if (course == null || startDate == null || endDate == null)
 			throw new MissingInformationException("The required field is missing");
-		if (!courseService.existByID(course.getId()))
+		if (!courseService.existsById(course.getId()))
 			throw new UnauthenticatedException("The course does not exist");
 	}
 	
 	public void validateExist(ClassSession session) throws ValidationFailedException {
 		validate();
+		if (id == null)
+			throw new MissingInformationException("The class session id field is missing");
 		if (classSessionService.findSessionById(id) == null)
 			throw new EntityNotExistException("The class session does not exist");
 	}

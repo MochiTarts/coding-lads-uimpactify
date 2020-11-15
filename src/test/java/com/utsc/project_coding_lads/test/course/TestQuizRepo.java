@@ -75,7 +75,7 @@ public class TestQuizRepo {
 		course.setCourseDesc("desc");
 		course.setCourseName("name");
 		course.setInstructor(savedInstructor);
-		Integer courseId = courseService.storeCourse(course);
+		Integer courseId = courseService.storeCourse(course).getId();
 		Course savedCourse = courseService.findCourseById(courseId);
 		
 		Quiz quiz = new Quiz();
