@@ -14,4 +14,5 @@ public interface QuizService {
 	public void deleteQuizById(Integer id) throws ValidationFailedException;
 	
 	public Boolean existsById(Integer id);
+	
 }

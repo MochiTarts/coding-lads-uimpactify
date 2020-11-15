@@ -9,7 +9,8 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public interface ClassSessionService {
 
-	public ClassSession findSessionById(Integer id);
+
+	public ClassSession findSessionById(Integer id) throws ValidationFailedException;
 	
 	public List<ClassSession> findAllSessionByCourseId(Integer id) throws ValidationFailedException;
 	

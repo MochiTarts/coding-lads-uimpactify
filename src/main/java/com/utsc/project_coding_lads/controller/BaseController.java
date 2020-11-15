@@ -3,8 +3,8 @@ package com.utsc.project_coding_lads.controller;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -101,7 +101,7 @@ public class BaseController {
 		return new ResponseEntity<Object>(body, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(EntityNotFoundException.class)
+	@ExceptionHandler({EntityNotFoundException.class, NoSuchElementException.class})
 	public ResponseEntity<Object> handleEntityNotFoundException(ValidationFailedException e) {
 		Map<String, Object> body = new HashMap<>();
 		body.put("message", e.getMessage());

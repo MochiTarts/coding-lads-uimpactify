@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +46,8 @@ public class QuizServiceImpl implements QuizService {
 	@Autowired
 	ImpactLearnerService impactLearnerService;
 	
+	final static Logger log = LoggerFactory.getLogger(QuizServiceImpl.class);
+	
 	@Override
 	public Integer createQuiz(Quiz quiz) throws ValidationFailedException {
 		quizValidator.init(quiz.getCourse(), quiz.getQuizStartDate(), quiz.getQuizEndDate(), quiz.getQuizQuestions());
@@ -57,23 +61,30 @@ public class QuizServiceImpl implements QuizService {
 			question.setQuiz(savedQuiz);
 			Integer savedQuestionId =  quizQuestionService.createQuizQuestion(question);
 			QuizQuestion savedQuestion = quizQuestionService.findQuizQuestionById(savedQuestionId);
+			savedQuestion.setQuiz(savedQuiz);
 			savedQuestion.getQuestionOptions().size();
-			for (ImpactLearnerCourse student : quiz.getCourse().getStudents()) {
+			savedCourse.getStudents().size();
+			for (ImpactLearnerCourse student : savedCourse.getStudents()) {
 				StudentAnswer studentAnswer = new StudentAnswer();
 				studentAnswer.setQuestion(savedQuestion);
 				ImpactLearner learner = impactLearnerService.findLearnerById(student.getStudent().getId());
 				studentAnswer.setStudent(learner);
+				Integer savedStudentAnswerId = studentAnswerService.createBlankStudentAnswer(studentAnswer);
+				studentAnswer = studentAnswerService.findStudentAnswerById(savedStudentAnswerId);
 				savedQuestion.getStudentAnswers().add(studentAnswer);
 				learner.getQuestions().add(studentAnswer);
 				impactLearnerService.updateImpactLearner(learner);
 			}
 			savedQuestionId = quizQuestionService.updateQuizQuestion(savedQuestion);
 			savedQuestion = quizQuestionService.findQuizQuestionById(savedQuestionId);
-			savedQuestions.add(savedQuestion);
+			savedQuestions.add(question);
 		}
-		savedQuiz.getQuizQuestions().clear();
-		savedQuiz.getQuizQuestions().addAll(savedQuestions);
-		return quizRepo.save(quiz).getId();
+		quiz.getQuizQuestions().clear();
+		quiz.getQuizQuestions().addAll(savedQuestions);
+		savedQuiz = quizRepo.save(quiz);
+		savedCourse.getQuizzes().add(savedQuiz);
+		courseService.updateCourse(savedCourse);
+		return savedQuiz.getId();
 	}
 
 	@Override
