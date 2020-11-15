@@ -84,7 +84,7 @@ public class StudentAnswerServiceImpl implements StudentAnswerService {
 				return studentAnswer;
 			}
 		}
-		return null;
+		throw new EntityNotExistException("There does not exist a Student Answer record with this quiz question and this impact learner");
 	}
 
 	

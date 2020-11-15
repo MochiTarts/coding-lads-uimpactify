@@ -175,8 +175,6 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		if (questionId == null || studentId == null || answer == null)
 			throw new MissingInformationException("Question ID, student ID, or answer cannot be null");
 		StudentAnswer studentAnswer = studentAnswerService.findByStudentAndQuestion(questionId, studentId);
-		if (studentAnswer == null)
-			throw new EntityNotExistException("There does not exist a Student Answer record with this quiz question and this impact learner");
 		studentAnswer.setStudentAnswer(answer);
 		Integer updatedAnswerId = studentAnswerService.updateStudentAnswer(studentAnswer);
 		return studentAnswerService.findStudentAnswerById(updatedAnswerId);
