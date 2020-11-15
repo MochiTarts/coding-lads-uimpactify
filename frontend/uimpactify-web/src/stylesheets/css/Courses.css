@@ -1,0 +1,58 @@
+.courses-page-container {
+    margin-right: 25px;
+    margin-left: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.courses-page-header {
+    color: rgb(172, 119, 206);
+    width: 80vw;
+}
+
+.courses-page-subheader {
+    color: rgb(79, 79, 79);
+    display: inline;
+    margin-right: 10px;
+}
+
+.courses-button {
+    margin-bottom: 10px;
+}
+
+.courses-list {
+    gap: 1rem;
+}
+
+.courses-page-grid {
+    display: grid;
+    grid-template-columns: 12% 88%;
+    grid-template-rows: 75vh;
+    grid-template-areas: "cSidebar cContent";
+}
+
+
+.courses-page-sidebar {
+    grid-area: cSidebar;
+    border-right: groove;
+    border-width: 1px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.courses-page-sidebar-tab {
+    display: block;
+    margin-bottom: 1.2rem;
+    border-radius: 5px;
+}
+
+.active-tab {
+    background-color: rgb(224, 208, 243);
+}
+
+.courses-page-content {
+    grid-area: cContent;
+    padding-left: 1rem;
+    border-left: groove;
+    border-width: 1px;
+}
