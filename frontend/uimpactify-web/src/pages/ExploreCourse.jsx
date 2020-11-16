@@ -7,25 +7,29 @@ class ExploreCourse extends Component {
         super(props);
         this.state = {
             uid: props.uid,
-            courseList: []
+            courseList: [],
+            enrolled: props.location.state.enrolled
         }
         
     }
 
     componentDidMount() {
+        const { enrolled } = this.state;
         getAllCourses().then(
             (r) => {
                 var courseList = [];
                 for (var i = 0; i < r.data.length; i++) {
                     const curr = r.data[i];
                     const { firstName, lastName } = curr.instructor.user;
-                    courseList.push({
-                        cid: curr.id,
-                        title: curr.courseName,
-                        instructor: firstName + " " + lastName,
-                        cost: curr.cost,
-                        description: curr.courseDesc
-                    });
+                    if (!enrolled.includes(curr.id)) {
+                        courseList.push({
+                            cid: curr.id,
+                            title: curr.courseName,
+                            instructor: firstName + " " + lastName,
+                            cost: curr.cost,
+                            description: curr.courseDesc
+                        });    
+                    }
                 }
                 this.setState({ courseList: courseList })
             }

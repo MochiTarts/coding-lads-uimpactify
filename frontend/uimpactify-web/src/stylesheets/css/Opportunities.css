@@ -86,21 +86,21 @@
 .grid-pTitle {
     grid-area: pTitle;
     padding: 10px 10px 10px 10px;
-    border-right: dotted;
-    border-bottom: dotted;
+    border-right: groove;
+    border-bottom: groove;
 }
 
 .grid-pType {
     grid-area: pType;
     padding: 10px 10px 10px 10px;
-    border-left: dotted;
-    border-bottom: dotted;
+    border-left: groove;
+    border-bottom: groove;
 }
 
 .grid-pDescription {
     grid-area: pDescription;
     padding: 10px 10px 10px 10px;
-    border-top: dashed;
+    border-top: groove;
 }
 
 .pTitle-content, .pType-content {

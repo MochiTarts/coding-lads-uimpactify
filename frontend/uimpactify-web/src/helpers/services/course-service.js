@@ -28,5 +28,5 @@ export const getStudentCourses = (student_id) => {
 }
 
 export const getInstructorCourses = (instructor_id) => {
-    return axios.get(`${apiUrl}/users/getCourses/${instructor_id}`);
+    return axios.get(`${apiUrl}/users/getCoursesByInstructor/${instructor_id}`);
 }
