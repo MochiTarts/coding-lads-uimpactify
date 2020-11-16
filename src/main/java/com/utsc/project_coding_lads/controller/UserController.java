@@ -324,8 +324,8 @@ public class UserController extends BaseController {
 		return courseService.findCourseByClassSessionId(classSessionId);
 	}
 	
-	@PostMapping(path = "/answerLongQuizQuestion/{id}")
-	@ApiOperation(value = "answer this long answer quiz question", response = StudentAnswer.class)
+	@PostMapping(path = "/submitQuizByStudent")
+	@ApiOperation(value = "answer this quiz question", response = StudentAnswer.class)
 	public StudentAnswer answerLongQuizQuestion(@PathVariable("id") Integer quizQuestionId, @RequestParam("student") Integer studentId, @RequestBody Map<String, String> answer)
 			throws Exception {
 		return learnerService.longAnswerQuizQuestion(quizQuestionId, studentId, answer.get("answer"));
