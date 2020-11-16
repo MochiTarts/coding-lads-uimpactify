@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import "../stylesheets/css/Courses.css";
 import CourseCard from "../components/CourseCard.jsx";
+import { getStudentCourses, getInstructorCourses } from "../helpers/services/course-service";
 
 class MyCourses extends Component {
     constructor(props) {
@@ -9,22 +10,55 @@ class MyCourses extends Component {
         this.state = {
             uid: props.uid,
             role: props.uinfo.role,
-            socialInit: props.uinfo.socialInit,
-            courseList: []
+            courseList: [],
+            enrolled: []
         }
     }
 
     componentDidMount() {
-        // TODO: remove hard-coded list
-        var courseList = [
-            {cid: 1, title: "Hard-Coding 101: Spaghetti Edition", description: "Do you like hard coding because thinking is too difficult, well then enjoy our course on some tasty spaghetti and meatballs.", instructor: "Poytel Lias"},
-            {cid: 2, title: "Unmangling the Mangler: Complete Course on Making PoST", description: "Have you heard of the infamous Code Mangler? If not, then you are hearing about it now. This slimy mangly coder will take your precious spaghetti and mangle it with its fluids, making your code unrecognizable.", instructor: "Deliao Puyat"}
-        ];
-        this.setState({ courseList: courseList })
+        const { uid, role } = this.state;
+        if (role !== null && role.name === "IMPACT_LEARNER") {
+            getStudentCourses(uid).then(
+                (r) => {
+                    var courseList = [];
+                    var enrolled = [];
+                    for (var i = 0; i < r.data.length; i++) {
+                        const curr = r.data[i].course;
+                        const { firstName, lastName } = curr.instructor.user;
+                        courseList.push({
+                            cid: curr.id,
+                            title: curr.courseName,
+                            instructor: firstName + " " + lastName,
+                            description: curr.courseDesc
+                        });
+                        enrolled.push(curr.id);
+                    }
+                    this.setState({ courseList: courseList, enrolled: enrolled });
+                }
+            );
+        } else if (role !== null && role.name === "IMPACT_CONSULTANT") {
+            getInstructorCourses(uid).then(
+                (r) => {
+                    var courseList = [];
+                    for (var i = 0; i < r.data.length; i++) {
+                        const curr = r.data[i];
+                        const { firstName, lastName } = curr.instructor.user;
+                        courseList.push({
+                            cid: curr.id,
+                            title: curr.courseName,
+                            instructor: firstName + " " + lastName,
+                            description: curr.courseDesc
+                        });
+                    }
+                    this.setState({ courseList: courseList });
+                }
+            );
+        }
+        
     }
 
     render() {
-        const { uid, role, socialInit, courseList } = this.state;
+        const { role, courseList, enrolled } = this.state;
         const type = role ? role.name : null;
         const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
         const isLearner = true ? type === "IMPACT_LEARNER" : false;
@@ -33,7 +67,9 @@ class MyCourses extends Component {
         var subheader;
         var buttonText;
         var buttonLink;
-        if (isLearner || isEmployee) {
+        if (isEmployee) {
+            return(<React.Fragment/>)
+        } else if (isLearner) {
             subheader = "Enrolled Courses";
             buttonText = "Explore";
             buttonLink = "/courses/explore";
@@ -56,7 +92,7 @@ class MyCourses extends Component {
                     className="btn btn-sm btn-outline-dark courses-button"
                     to={{
                         pathname: buttonLink,
-                        state: {}
+                        state: { enrolled: enrolled }
                     }}>
                     {buttonText}
                 </Link>
@@ -67,7 +103,8 @@ class MyCourses extends Component {
                             cid={c.cid}
                             title={c.title}
                             description={c.description}
-                            instructor={c.instructor} />
+                            instructor={c.instructor}
+                            isConsultant={isConsultant} />
                     ))}
                 </div>
 
