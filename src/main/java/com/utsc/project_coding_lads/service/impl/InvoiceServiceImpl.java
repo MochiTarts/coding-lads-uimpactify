@@ -130,4 +130,18 @@ public class InvoiceServiceImpl implements InvoiceService{
 		Invoice saved = savedUser.getInvoices().get(user.getInvoices().size() - 1);
 		return saved;
 	}
+	
+	public Invoice updateInvoice(Invoice invoice) throws ValidationFailedException {
+		if(invoice == null) 
+			throw new MissingInformationException("Invoice body is null");
+		invoiceValidator.init(invoice.getCost(), invoice.getUser(), invoice.getCourse());
+		invoiceValidator.validateExists();
+		User user = userService.findUserById(invoice.getUser().getId());
+		invoice.setUser(user);
+		return invoiceRepo.save(invoice);
+	}
+	
+	public void deleteInvoiceById(Integer id) throws Exception{
+		invoiceRepo.deleteById(id);
+	}
 }
