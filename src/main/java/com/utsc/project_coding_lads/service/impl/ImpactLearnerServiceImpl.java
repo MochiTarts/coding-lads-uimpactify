@@ -15,7 +15,6 @@ import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
-import com.utsc.project_coding_lads.repository.ImpactLearnerCourseRepository;
 import com.utsc.project_coding_lads.repository.ImpactLearnerRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactConsultantService;
@@ -73,7 +72,6 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		courseValidator.init(courseService.findCourseById(course.getId()));
 		courseValidator.validateExist();
 		userValidator.init(userService.findUserById(student.getId()));
-		userValidator.validate();
 		userValidator.validateExists();
 		userValidator.validateHasRole();
 		ImpactLearnerCourse learnerCourse = new ImpactLearnerCourse();
@@ -81,9 +79,16 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 		Course savedCourse = courseService.findCourseById(course.getId());
 		learnerCourse.setCourse(savedCourse);
 		learnerCourse.setStudent(savedStudent);
+		Integer savedLearnerCourseId = learnerCourseService.saveLearnerCourse(learnerCourse);
+		learnerCourse = learnerCourseService.findLearnerCourseById(savedLearnerCourseId);
+		
 		savedStudent.getCourses().size();
 		savedStudent.getCourses().add(learnerCourse);
 		learnerRepo.save(savedStudent);
+		
+		savedCourse.getStudents().add(learnerCourse);
+		courseService.updateCourse(savedCourse);
+		
 		Invoice inv = new Invoice();
 		inv.setCourse(savedCourse);
 		inv.setUser(userService.findUserById(student.getId()));
@@ -145,6 +150,12 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 				foundCourses.add(ilc);
 		}
 		return foundCourses;
+	}
+
+	@Override
+	public Integer updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException {
+		if (!existsById(impactLearner.getId())) throw new EntityNotExistException("That Impact Learner does not exist.");
+		return learnerRepo.save(impactLearner).getId();
 	}
 
 }

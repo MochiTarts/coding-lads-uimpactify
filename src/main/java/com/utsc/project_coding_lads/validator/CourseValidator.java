@@ -24,6 +24,7 @@ public class CourseValidator implements Validator {
 	private String courseDesc;
 	private ImpactConsultant instructor;
 	private List<ClassSession> session;
+	private Integer cost;
 	
 	@Autowired
 	CourseService courseService;
@@ -53,12 +54,13 @@ public class CourseValidator implements Validator {
 		this.courseDesc = course.getCourseDesc();
 		this.instructor = course.getInstructor();
 		this.session = course.getSessions();
+		this.cost = course.getCost();
 	}
 
 	@Override
 	public void validate() throws ValidationFailedException {
 		// I assume a course can have no class session
-		if (courseName == null || courseDesc == null || instructor == null)
+		if (courseName == null || courseDesc == null || instructor == null || cost == null)
 			throw new MissingInformationException("The required field is missing");
 		if (instructor.getId() == null)
 			throw new EntityNotExistException("The impact consultant id cannot be null");
@@ -76,6 +78,8 @@ public class CourseValidator implements Validator {
 	
 	public void validateExist() throws ValidationFailedException {
 		validate();
+		if (courseId == null)
+			throw new MissingInformationException("The course id field is missing");
 		if (!courseService.existsById(courseId))
 			throw new EntityNotExistException("This course does not exist");
 	}
