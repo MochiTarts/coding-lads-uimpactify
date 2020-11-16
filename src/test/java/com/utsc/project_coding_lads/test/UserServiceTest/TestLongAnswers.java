@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -138,21 +139,29 @@ class TestLongAnswers {
 		
 		QuizQuestion qn = savedQuiz.getQuizQuestions().get(0);
 		Solution soln = qn.getSolution();
+		StudentAnswer answer1 = new StudentAnswer();
+		answer1.setQuestion(qn);
+		answer1.setStudent(savedStudent);
+		answer1.setStudentAnswer("answer");
 		Assert.assertNotNull(soln);
 		Assert.assertEquals("answer", soln.getAnswer());
 		
 		QuizQuestion qn2 = savedQuiz.getQuizQuestions().get(1);
 		Solution soln2 = qn2.getSolution();
+		StudentAnswer answer2 = new StudentAnswer();
+		answer2.setQuestion(qn2);
+		answer2.setStudent(savedStudent);
+		answer2.setStudentAnswer("answer 2");
 		Assert.assertNotNull(soln2);
 		Assert.assertEquals("answer 2", soln2.getAnswer());
 		
-		StudentAnswer answer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), "answer");
-		Assert.assertNotNull(answer);
-		Assert.assertEquals("answer", answer.getStudentAnswer());
+		List<StudentAnswer> studentAnswers = new ArrayList<>();
+		studentAnswers.add(answer1);
+		studentAnswers.add(answer2);
 		
-		StudentAnswer answer2 = learnerService.longAnswerQuizQuestion(qn2.getId(), savedStudent.getId(), "answer 2");
-		Assert.assertNotNull(answer2);
-		Assert.assertEquals("answer 2", answer2.getStudentAnswer());
+		List<StudentAnswer> answers = learnerService.answerQuizQuestions(studentAnswers);
+		Assert.assertNotNull(answers);
+		Assert.assertFalse(answers.isEmpty());
 		
 		for (StudentAnswer studentAnswer: qn.getStudentAnswers()) {
 			if (studentAnswer.getStudent().equals(savedStudent)) {
@@ -168,11 +177,11 @@ class TestLongAnswers {
 			}
 		}
 		
-		try {
-			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), null);
-		} catch(MissingInformationException e) {
-			Assert.assertTrue(e.getMessage().contains("Question ID, student ID, or answer cannot be null"));
-		}
+//		try {
+//			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), null);
+//		} catch(MissingInformationException e) {
+//			Assert.assertTrue(e.getMessage().contains("Question ID, student ID, or answer cannot be null"));
+//		}
 		
 		
 		

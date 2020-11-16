@@ -171,24 +171,24 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	}
 
 	@Override
-	public StudentAnswer longAnswerQuizQuestion(Integer questionId, Integer studentId, String answer) throws Exception {
-		if (questionId == null || studentId == null || answer == null)
-			throw new MissingInformationException("Question ID, student ID, or answer cannot be null");
-		questionValidator.init(questionService.findQuizQuestionById(questionId).getQuestionType(), new ArrayList<QuizQuestionOption>());
-		userValidator.init(userService.findUserById(studentId));
-		userValidator.validate();
-		userValidator.validateExists();
-		userValidator.validateHasRole();
-		ImpactLearner savedStudent = findLearnerById(studentId);
-		savedStudent.getQuestions().size();
-		for (StudentAnswer studentAnswer: savedStudent.getQuestions()) {
-			if (studentAnswer.getQuestion().getId() == questionId) {
-				studentAnswer.setStudentAnswer(answer);
-				Integer savedAnswerId = studentAnswerService.updateStudentAnswer(studentAnswer);
-				return studentAnswerService.findStudentAnswerById(savedAnswerId);
-			}
+	public List<StudentAnswer> answerQuizQuestions(List<StudentAnswer> studentAnswers) throws Exception {
+		if (studentAnswers == null || studentAnswers.size() == 0)
+			throw new MissingInformationException("The list of student answers cannot be null or empty");
+		List<StudentAnswer> savedStudentAnswers = new ArrayList<>();
+		for (StudentAnswer studentAnswer: studentAnswers) {
+			questionValidator.init(questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionType(),
+					questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionOptions());
+			questionValidator.validate();
+			userValidator.init(userService.findUserById(studentAnswer.getStudent().getId()));
+			userValidator.validate();
+			userValidator.validateExists();
+			userValidator.validateHasRole();
+			StudentAnswer savedAnswer = studentAnswerService.findByStudentAndQuestion(studentAnswer.getQuestion().getId(), studentAnswer.getStudent().getId());
+			savedAnswer.setStudentAnswer(studentAnswer.getStudentAnswer());
+			Integer updatedAnswerId = studentAnswerService.updateStudentAnswer(savedAnswer);
+			savedStudentAnswers.add(studentAnswerService.findStudentAnswerById(updatedAnswerId));
 		}
-		return null;
+		return savedStudentAnswers;
 	}
 
 }

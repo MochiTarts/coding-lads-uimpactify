@@ -27,6 +27,6 @@ public interface ImpactLearnerService {
 	
 	public Integer updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException;
 	
-	public StudentAnswer longAnswerQuizQuestion(Integer questionId, Integer studentId, String answer) throws Exception;
+	public List<StudentAnswer> answerQuizQuestions(List<StudentAnswer> studentAnswers) throws Exception;
 	
 }

@@ -69,23 +69,23 @@ public class StudentAnswerServiceImpl implements StudentAnswerService {
 		return studentAnswerRepo.existsById(id);
 	}
 
-//	@Override
-//	public StudentAnswer findByStudentAndQuestion(Integer quizQuestionId, Integer studentId) throws ValidationFailedException {
-//		questionValidator.init(questionService.findQuizQuestionById(quizQuestionId).getQuestionType(), new ArrayList<QuizQuestionOption>());
-//		questionValidator.validate();
-//		userValidator.init(userService.findUserById(studentId));
-//		userValidator.validate();
-//		userValidator.validateExists();
-//		userValidator.validateHasRole();
-//		QuizQuestion savedQuestion = questionService.findQuizQuestionById(quizQuestionId);
-//		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
-//		for (StudentAnswer studentAnswer: savedQuestion.getStudentAnswers()) {
-//			if (studentAnswer.getStudent().equals(savedStudent)) {
-//				return studentAnswer;
-//			}
-//		}
-//		throw new EntityNotExistException("There does not exist a Student Answer record with this quiz question and this impact learner");
-//	}
+	@Override
+	public StudentAnswer findByStudentAndQuestion(Integer quizQuestionId, Integer studentId) throws ValidationFailedException {
+		questionValidator.init(questionService.findQuizQuestionById(quizQuestionId).getQuestionType(), new ArrayList<QuizQuestionOption>());
+		questionValidator.validate();
+		userValidator.init(userService.findUserById(studentId));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
+		QuizQuestion savedQuestion = questionService.findQuizQuestionById(quizQuestionId);
+		ImpactLearner savedStudent = learnerService.findLearnerById(studentId);
+		for (StudentAnswer studentAnswer: savedQuestion.getStudentAnswers()) {
+			if (studentAnswer.getStudent().equals(savedStudent)) {
+				return studentAnswer;
+			}
+		}
+		throw new EntityNotExistException("There does not exist a Student Answer record with this quiz question and this impact learner");
+	}
 
 	
 }

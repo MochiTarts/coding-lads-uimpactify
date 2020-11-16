@@ -15,5 +15,5 @@ public interface StudentAnswerService {
 	
 	public Boolean existsById(Integer id);
 	
-//	public StudentAnswer findByStudentAndQuestion(Integer quizQuestionId, Integer studentId) throws ValidationFailedException;
+	public StudentAnswer findByStudentAndQuestion(Integer quizQuestionId, Integer studentId) throws ValidationFailedException;
 }
