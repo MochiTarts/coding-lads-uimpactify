@@ -174,10 +174,21 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	public StudentAnswer longAnswerQuizQuestion(Integer questionId, Integer studentId, String answer) throws Exception {
 		if (questionId == null || studentId == null || answer == null)
 			throw new MissingInformationException("Question ID, student ID, or answer cannot be null");
-		StudentAnswer studentAnswer = studentAnswerService.findByStudentAndQuestion(questionId, studentId);
-		studentAnswer.setStudentAnswer(answer);
-		Integer updatedAnswerId = studentAnswerService.updateStudentAnswer(studentAnswer);
-		return studentAnswerService.findStudentAnswerById(updatedAnswerId);
+		questionValidator.init(questionService.findQuizQuestionById(questionId).getQuestionType(), new ArrayList<QuizQuestionOption>());
+		userValidator.init(userService.findUserById(studentId));
+		userValidator.validate();
+		userValidator.validateExists();
+		userValidator.validateHasRole();
+		ImpactLearner savedStudent = findLearnerById(studentId);
+		savedStudent.getQuestions().size();
+		for (StudentAnswer studentAnswer: savedStudent.getQuestions()) {
+			if (studentAnswer.getQuestion().getId() == questionId) {
+				studentAnswer.setStudentAnswer(answer);
+				Integer savedAnswerId = studentAnswerService.updateStudentAnswer(studentAnswer);
+				return studentAnswerService.findStudentAnswerById(savedAnswerId);
+			}
+		}
+		return null;
 	}
 
 }
