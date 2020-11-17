@@ -15,6 +15,7 @@ import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.domain.QuizQuestionOption;
 import com.utsc.project_coding_lads.domain.StudentAnswer;
+import com.utsc.project_coding_lads.enums.QuizQuestionTypeEnum;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
@@ -176,6 +177,9 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 			throw new MissingInformationException("The list of student answers cannot be null or empty");
 		List<StudentAnswer> savedStudentAnswers = new ArrayList<>();
 		for (StudentAnswer studentAnswer: studentAnswers) {
+			if (studentAnswer.getStudent() == null || studentAnswer.getQuestion() == null || studentAnswer.getStudent().getId() == null
+					|| studentAnswer.getQuestion().getId() == null || studentAnswer.getStudentAnswer() == null)
+				throw new MissingInformationException("The question, question ID, student, student ID, or answer cannot be null");
 			questionValidator.init(questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionType(),
 					questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionOptions());
 			questionValidator.validate();

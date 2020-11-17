@@ -33,6 +33,7 @@ import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.enums.QuizQuestionTypeEnum;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
+import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.CourseRepository;
 import com.utsc.project_coding_lads.repository.RoleRepository;
 import com.utsc.project_coding_lads.service.CourseService;
@@ -44,7 +45,7 @@ import com.utsc.project_coding_lads.service.UserService;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {Application.class})
 @Transactional
-class TestLongAnswers {
+class TestAnsweringQuiz {
 
 	@Autowired
 	CourseService courseService;
@@ -177,11 +178,12 @@ class TestLongAnswers {
 			}
 		}
 		
-//		try {
-//			StudentAnswer nullAnswer = learnerService.longAnswerQuizQuestion(qn.getId(), savedStudent.getId(), null);
-//		} catch(MissingInformationException e) {
-//			Assert.assertTrue(e.getMessage().contains("Question ID, student ID, or answer cannot be null"));
-//		}
+		studentAnswers.get(0).setStudentAnswer(null);
+		try {
+			learnerService.answerQuizQuestions(studentAnswers);
+		} catch(Exception e) {
+			Assert.assertTrue(e.getClass().getSimpleName().equals("MissingInformationException"));
+		}
 		
 		
 		
