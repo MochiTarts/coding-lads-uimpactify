@@ -18,6 +18,10 @@ public interface InvoiceService {
 	public Integer payInvoicePerCourse(Integer userId, Integer courseId) throws Exception;
 	
 	public Integer InstructorPayment(Integer userId, Integer courseId) throws Exception;
+	
+	public Invoice updateInvoice(Invoice invoice) throws ValidationFailedException;
+	
+	public void deleteInvoiceById(Integer id) throws Exception;
 
 	Boolean existsById(Integer invoiceId);
 

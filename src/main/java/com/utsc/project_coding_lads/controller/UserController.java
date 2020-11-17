@@ -255,30 +255,41 @@ public class UserController extends BaseController {
 	}
 
 	@GetMapping(path = "/getInvoice")
+	@ApiOperation(value = "retrieves unpaid invoices for specific user", response = Invoice.class)
 	public List<Invoice> getInvoiceForLearner(@RequestParam("userId") Integer userId) throws Exception {
 		return invoiceService.getUnpaidInvoice(userId);
 	}
 
 	@GetMapping(path = "/payInvoice")
+	@ApiOperation(value = "pays specific course based on invoiceId", response = Invoice.class)
 	public Integer payInvoice(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
 		return invoiceService.payInvoice(invoiceId);
 	}
 
 	@GetMapping(path = "/getPaid")
+	@ApiOperation(value = "sets amount to paid for specific invoiceId for instructor", response = Invoice.class)
 	public Integer getPaid(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
 		return invoiceService.payInvoice(invoiceId);
 	}
 
 	@GetMapping(path = "/setInvoice")
+	@ApiOperation(value = "sets invoice", response = Invoice.class)
 	public Invoice setPayable(@RequestBody Invoice inv) throws ValidationFailedException {
 		return invoiceService.saveInvoice(inv);
 
 	}
 
 	@GetMapping(path = "/allInvoices")
+	@ApiOperation(value = "returns all invoices for user, both paid and unpaid", response = Invoice.class)
 	public List<Invoice> allInvoices(@RequestParam Integer userId) throws ValidationFailedException {
 		return invoiceService.getAllInvoicesByUserId(userId);
 
+	}
+	
+	@GetMapping(path = "/updateInvoice")
+	@ApiOperation(value = "update an Invoice", response = Invoice.class)
+	public Invoice updateInvoice(@RequestBody Invoice invoice) throws ValidationFailedException {
+		return invoiceService.updateInvoice(invoice);
 	}
 
 	@PostMapping(path = "/createCourse")
@@ -287,6 +298,14 @@ public class UserController extends BaseController {
 		Course savedCourse = null;
 		savedCourse = courseService.storeCourse(course);
 		return savedCourse;
+	}
+	
+	@PostMapping(path = "/deleteInvoice/{id}")
+	@ApiOperation(value = "Delete an invoice", response = Boolean.class)
+	public Boolean deleteInvoice(@PathVariable("id") Integer id) throws Exception {
+		Boolean ok = true;
+		invoiceService.deleteInvoiceById(id);
+		return ok;
 	}
 
 	@PostMapping(path = "/updateCourse")
