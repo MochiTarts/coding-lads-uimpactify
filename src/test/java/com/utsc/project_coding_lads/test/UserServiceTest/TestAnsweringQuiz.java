@@ -117,6 +117,7 @@ class TestAnsweringQuiz {
 		
 		QuizQuestion question = new QuizQuestion();
 		question.setQuestionType(QuizQuestionTypeEnum.SHORT_ANSWER.name());
+		question.setQuestion("Short answer question 1");
 		Solution solution = new Solution();
 		solution.setAnswer("answer");
 		question.setSolution(solution);
@@ -124,6 +125,7 @@ class TestAnsweringQuiz {
 		
 		QuizQuestion question2 = new QuizQuestion();
 		question2.setQuestionType(QuizQuestionTypeEnum.SHORT_ANSWER.name());
+		question2.setQuestion("Short answer question 2");
 		Solution solution2 = new Solution();
 		solution2.setAnswer("answer 2");
 		question2.setSolution(solution2);
