@@ -134,7 +134,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 	public Invoice updateInvoice(Invoice invoice) throws ValidationFailedException {
 		if(invoice == null) 
 			throw new MissingInformationException("Invoice body is null");
-		invoiceValidator.init(invoice.getCost(), invoice.getUser(), invoice.getCourse());
+		invoiceValidator.init(invoice.getCost(), invoice.getUser(), invoice.getCourse(), invoice.getId());
 		invoiceValidator.validateExists();
 		User user = userService.findUserById(invoice.getUser().getId());
 		invoice.setUser(user);
