@@ -48,9 +48,10 @@ class Sidebar extends React.Component {
               <NavItem>
                 <NavLink href="/calendar">Calendar</NavLink>
               </NavItem>,
+              {userContext.user && userContext.user.role &&
               <NavItem>
                 <NavLink href="/courses/mycourses">Courses</NavLink>
-              </NavItem>,
+              </NavItem>},
               <Dropdown open={this.state.dropdownOpen} toggle={this.toggleDropdown} direction="right">
                 <DropdownToggle nav caret>Opportunities</DropdownToggle>
                 <DropdownMenu>

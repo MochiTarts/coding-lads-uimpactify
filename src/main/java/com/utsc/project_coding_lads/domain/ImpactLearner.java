@@ -50,10 +50,14 @@ public class ImpactLearner extends BaseDataEntity {
 		this.questions = questions;
 	}
 	
-	
+	@Override
+	public boolean equals(Object object) {
+		if (!(object instanceof ImpactLearner))
+			return false;
+		ImpactLearner learner = (ImpactLearner) object;
+		return learner.getId() == this.getId();
+	}
 
-	
-	
 	
 	
 	

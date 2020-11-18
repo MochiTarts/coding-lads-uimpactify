@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.utsc.project_coding_lads.domain.ClassSession;
 import com.utsc.project_coding_lads.domain.Course;
+import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.repository.ClassSessionRepository;
@@ -35,10 +36,10 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	CourseValidator courseValidator;
 
 	@Override
-	public ClassSession findSessionById(Integer id) {
-		if (classSessionRepo.existsById(id))
-			return classSessionRepo.getOne(id);
-		return null;
+	public ClassSession findSessionById(Integer id) throws ValidationFailedException {
+		if (!classSessionRepo.existsById(id))
+			throw new EntityNotExistException("This class session does not exist");
+		return classSessionRepo.getOne(id);
 	}
 
 	@Override
@@ -103,7 +104,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 		List<ClassSession> sessions = courseService.findCourseById(id).getSessions();
 		for (ClassSession session : sessions) {
 			if (session.getStartDate().isBefore(startDate) || session.getEndDate().isAfter(endDate))
-			sessions.remove(session);
+				sessions.remove(session);
 		}
 		return sessions;
 	}

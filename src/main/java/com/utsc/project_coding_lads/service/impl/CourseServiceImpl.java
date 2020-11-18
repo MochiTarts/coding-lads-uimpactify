@@ -38,10 +38,13 @@ public class CourseServiceImpl implements CourseService {
 	ClassSessionService classSessionService;
 	
 	@Autowired
-	CourseValidator validator;
+	CourseValidator courseValidator;
 
 	@Autowired
 	ClassSessionValidator classSessionValidator;
+
+	@Autowired
+	ImpactConsultantValidator impactConsultantValidator;
 	
 	@Override
 	public Boolean existsById(Integer id) {
@@ -52,8 +55,8 @@ public class CourseServiceImpl implements CourseService {
 	public Course storeCourse(Course course) throws ValidationFailedException {
 		if (course == null)
 			throw new MissingInformationException("Course body is null");
-		validator.init(course);
-		validator.validate();
+		courseValidator.init(course);
+		courseValidator.validate();
 		return courseRepo.save(course);
 	}
 
@@ -70,8 +73,8 @@ public class CourseServiceImpl implements CourseService {
 	public Course updateCourse(Course course) throws ValidationFailedException {
 		if (course == null)
 			throw new MissingInformationException("Course body is null");
-		validator.init(course);
-		validator.validateExist();
+		courseValidator.init(course);
+		courseValidator.validateExist();
 		ImpactConsultant savedImpactConsultant = impactConsultantService.findImpactConsultantById(course.getInstructor().getId());
 		course.setInstructor(savedImpactConsultant);
 		// batch update class sessions
@@ -90,8 +93,8 @@ public class CourseServiceImpl implements CourseService {
 		if (id == null)
 			throw new MissingInformationException("Instructor id is null");
 		ImpactConsultant instructor = impactConsultantService.findImpactConsultantById(id);
-		ImpactConsultantValidator validator = new ImpactConsultantValidator(instructor);
-		validator.validateExist();
+		impactConsultantValidator.init(instructor);
+		impactConsultantValidator.validateExist();
 		return instructor.getCourses();
 	}
 
@@ -101,7 +104,7 @@ public class CourseServiceImpl implements CourseService {
 			throw new MissingInformationException("Class session id is null");
 		ClassSession classSession = classSessionService.findSessionById(id);
 		classSessionValidator.init(classSession);
-		validator.validateExist();
+		courseValidator.validateExist();
 		return classSession.getCourse();
 	}
 
