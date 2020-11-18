@@ -12,6 +12,10 @@ import com.utsc.project_coding_lads.domain.ImpactConsultant;
 import com.utsc.project_coding_lads.domain.ImpactLearner;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Invoice;
+import com.utsc.project_coding_lads.domain.QuizQuestion;
+import com.utsc.project_coding_lads.domain.QuizQuestionOption;
+import com.utsc.project_coding_lads.domain.StudentAnswer;
+import com.utsc.project_coding_lads.enums.QuizQuestionTypeEnum;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
@@ -21,8 +25,11 @@ import com.utsc.project_coding_lads.service.ImpactConsultantService;
 import com.utsc.project_coding_lads.service.ImpactLearnerCourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
 import com.utsc.project_coding_lads.service.InvoiceService;
+import com.utsc.project_coding_lads.service.QuizQuestionService;
+import com.utsc.project_coding_lads.service.StudentAnswerService;
 import com.utsc.project_coding_lads.service.UserService;
 import com.utsc.project_coding_lads.validator.CourseValidator;
+import com.utsc.project_coding_lads.validator.QuizQuestionValidator;
 import com.utsc.project_coding_lads.validator.UserValidator;
 
 @Service
@@ -45,6 +52,12 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	UserValidator userValidator;
 	@Autowired
 	InvoiceService invoiceService;
+	@Autowired
+	QuizQuestionService questionService;
+	@Autowired
+	StudentAnswerService studentAnswerService;
+	@Autowired
+	QuizQuestionValidator questionValidator;
 	
 	@Override
 	public Integer storeImpactLearner(ImpactLearner impactLearner) throws Exception {
@@ -156,6 +169,30 @@ public class ImpactLearnerServiceImpl implements ImpactLearnerService {
 	public Integer updateImpactLearner(ImpactLearner impactLearner) throws ValidationFailedException {
 		if (!existsById(impactLearner.getId())) throw new EntityNotExistException("That Impact Learner does not exist.");
 		return learnerRepo.save(impactLearner).getId();
+	}
+
+	@Override
+	public List<StudentAnswer> answerQuizQuestions(List<StudentAnswer> studentAnswers) throws Exception {
+		if (studentAnswers == null || studentAnswers.size() == 0)
+			throw new MissingInformationException("The list of student answers cannot be null or empty");
+		List<StudentAnswer> savedStudentAnswers = new ArrayList<>();
+		for (StudentAnswer studentAnswer: studentAnswers) {
+			if (studentAnswer.getStudent() == null || studentAnswer.getQuestion() == null || studentAnswer.getStudent().getId() == null
+					|| studentAnswer.getQuestion().getId() == null || studentAnswer.getStudentAnswer() == null)
+				throw new MissingInformationException("The question, question ID, student, student ID, or answer cannot be null");
+			questionValidator.init(questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionType(),
+					questionService.findQuizQuestionById(studentAnswer.getQuestion().getId()).getQuestionOptions());
+			questionValidator.validate();
+			userValidator.init(userService.findUserById(studentAnswer.getStudent().getId()));
+			userValidator.validate();
+			userValidator.validateExists();
+			userValidator.validateHasRole();
+			StudentAnswer savedAnswer = studentAnswerService.findByStudentAndQuestion(studentAnswer.getQuestion().getId(), studentAnswer.getStudent().getId());
+			savedAnswer.setStudentAnswer(studentAnswer.getStudentAnswer());
+			Integer updatedAnswerId = studentAnswerService.updateStudentAnswer(savedAnswer);
+			savedStudentAnswers.add(studentAnswerService.findStudentAnswerById(updatedAnswerId));
+		}
+		return savedStudentAnswers;
 	}
 
 }

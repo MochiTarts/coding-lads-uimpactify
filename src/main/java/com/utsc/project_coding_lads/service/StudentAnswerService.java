@@ -14,4 +14,6 @@ public interface StudentAnswerService {
 	public void deleteStudentAnswerById(Integer id) throws ValidationFailedException;
 	
 	public Boolean existsById(Integer id);
+	
+	public StudentAnswer findByStudentAndQuestion(Integer quizQuestionId, Integer studentId) throws ValidationFailedException;
 }

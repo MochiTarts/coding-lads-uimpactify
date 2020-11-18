@@ -3,6 +3,7 @@ package com.utsc.project_coding_lads.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
 import com.utsc.project_coding_lads.domain.Invoice;
 import com.utsc.project_coding_lads.domain.Posting;
 import com.utsc.project_coding_lads.domain.Quiz;
+import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.domain.User;
 import com.utsc.project_coding_lads.exception.BadRequestException;
@@ -63,9 +65,9 @@ public class UserController extends BaseController {
 	@Autowired
 	InvoiceService invoiceService;
 	@Autowired
-	CourseService courseService;
-	@Autowired
 	QuizService quizService;
+	@Autowired
+	CourseService courseService;
 	@Autowired
 	QuizQuestionService quizQuestionService;
 
@@ -339,6 +341,13 @@ public class UserController extends BaseController {
 	@ApiOperation(value = "find the course by a class session id", response = Course.class)
 	public Course getCourseByClassSession(@PathVariable("id") Integer classSessionId) throws ValidationFailedException {
 		return courseService.findCourseByClassSessionId(classSessionId);
+	}
+	
+	@PostMapping(path = "/submitQuizByStudent")
+	@ApiOperation(value = "answer this quiz question", response = StudentAnswer.class)
+	public List<StudentAnswer> answerLongQuizQuestion(@RequestBody List<StudentAnswer> studentAnswers)
+			throws Exception {
+		return learnerService.answerQuizQuestions(studentAnswers);
 	}
 
 	@GetMapping(path = "/getQuizQuestions/{id}")
