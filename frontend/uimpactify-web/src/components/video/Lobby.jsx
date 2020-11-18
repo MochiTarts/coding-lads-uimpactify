@@ -10,7 +10,7 @@ const Lobby = ({
     handleRoomNameChange(name);
     handleSubmit();
   }
-  const sessions = [{name:"yeet",time:"12pm", description:"loooooooooooool"}, {name:"hay", time:"12am", description:"haaaaaaaaaaaa"}]
+  const sessions = [{name:"Lecture 0001",time:"5pm-7pm", description:"lecture live session #1"}, {name:"Tutorial 0001", time:"10am-11am", description:"tutorial live session #1"}]
   const sessionItems = sessions.map((session) =>(
     <ListGroupItem key={session.name}>
       <Row>
