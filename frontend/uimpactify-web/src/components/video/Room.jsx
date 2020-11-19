@@ -63,7 +63,7 @@ const Room = ({ roomName, token, handleLogout }) => {
 
   const remoteParticipants = participants.map(participant => {
     return(   
-    <Col xs="4">
+    <Col xs="6">
       <Participant key={participant.sid} participant={participant} isSelf={false} vidDisabled={vidDisabledParticipants.includes(participant.sid)}/>
     </Col>)
   }
@@ -80,7 +80,7 @@ const Room = ({ roomName, token, handleLogout }) => {
       <div className="remote-participants">
         <Container>
           <Row>
-            <Col xs="4">
+            <Col xs="6">
                 {room ? (
                 <Participant
                   key={room.localParticipant.sid}
