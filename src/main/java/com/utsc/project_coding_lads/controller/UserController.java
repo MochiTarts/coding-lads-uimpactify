@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Application;
+import com.utsc.project_coding_lads.domain.ClassSession;
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.Event;
 import com.utsc.project_coding_lads.domain.ImpactLearnerCourse;
@@ -35,6 +36,7 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.security.PasswordHash;
 import com.utsc.project_coding_lads.security.SecurityConfig;
 import com.utsc.project_coding_lads.service.ApplicationService;
+import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.EventService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
@@ -68,6 +70,8 @@ public class UserController extends BaseController {
 	QuizService quizService;
 	@Autowired
 	CourseService courseService;
+	@Autowired
+	ClassSessionService classSessionService;
 	@Autowired
 	QuizQuestionService quizQuestionService;
 
@@ -294,20 +298,20 @@ public class UserController extends BaseController {
 		return invoiceService.updateInvoice(invoice);
 	}
 
-	@PostMapping(path = "/createCourse")
-	@ApiOperation(value = "create a new course", response = Course.class)
-	public Course createCourse(@RequestBody Course course) throws ValidationFailedException {
-		Course savedCourse = null;
-		savedCourse = courseService.storeCourse(course);
-		return savedCourse;
-	}
-	
 	@PostMapping(path = "/deleteInvoice/{id}")
 	@ApiOperation(value = "Delete an invoice", response = Boolean.class)
 	public Boolean deleteInvoice(@PathVariable("id") Integer id) throws Exception {
 		Boolean ok = true;
 		invoiceService.deleteInvoiceById(id);
 		return ok;
+	}
+
+	@PostMapping(path = "/createCourse")
+	@ApiOperation(value = "create a new course", response = Course.class)
+	public Course createCourse(@RequestBody Course course) throws ValidationFailedException {
+		Course savedCourse = null;
+		savedCourse = courseService.storeCourse(course);
+		return savedCourse;
 	}
 
 	@PostMapping(path = "/updateCourse")
@@ -382,5 +386,5 @@ public class UserController extends BaseController {
 	public Quiz getQuiz(@PathVariable("id") Integer id) throws ValidationFailedException {
 		return quizService.findQuizById(id);
 	}
-
+	
 }
