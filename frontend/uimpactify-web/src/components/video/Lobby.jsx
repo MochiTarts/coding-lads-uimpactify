@@ -1,7 +1,11 @@
 import React, {useState,useEffect } from 'react';
 import { FormInput, Button,Row,Col,ListGroup,ListGroupItem, ListGroupItemHeading } from 'shards-react';
-
+import DatePicker from 'react-datepicker';
+import {createCourseLiveSession, getCourseSessions, deleteSession} from '../../helpers/services/course-service';
+import moment from 'moment';
 const Lobby = ({
+  user,
+  cid,
   roomName,
   handleRoomNameChange,
   handleSubmit
@@ -9,80 +13,124 @@ const Lobby = ({
   const [sessionList, setSessionList] = useState([]);
   const [creationOpen, setCreationOpen] = useState(false);
   const [newSessionName, setNewSessionName] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [newSessionTime, setNewSessionTime] = useState('');
   const [newSessionDesc, setNewSessionDesc] = useState('');
   const handleCreate = () => {
     if(!creationOpen) {
       setCreationOpen(true);
     } else {
+      createCourseLiveSession(cid, startDate, endDate).then(
+        () => {
+          fetchSessions(cid);
+          setNewSessionName('');
+          setNewSessionTime('');
+          setNewSessionDesc('');
+          setCreationOpen(false);
+        }
+      )
       setSessionList([...sessionList, {name: newSessionName, time: newSessionTime, description: newSessionDesc}]);
-      setNewSessionName('');
-      setNewSessionTime('');
-      setNewSessionDesc('');
-      setCreationOpen(false);
+
     }
+  }
+  const deleteSession = (sessionId) => {
+    deleteSession(sessionId).then(
+      () => {
+        fetchSessions();
+      }
+    )
   }
   const selectRoom = (name) => {
     handleRoomNameChange(name);
     handleSubmit();
   }
+  const fetchSessions = (cid) => {
+    getCourseSessions(cid).then(
+      (res) => {
+        setSessionList(res.data);
+      }
+    )
+  }
   useEffect(() => {
-    const sessions = [{name:"Lecture 0001",time:"5pm-7pm", description:"lecture live session #1"}, {name:"Tutorial 0001", time:"10am-11am", description:"tutorial live session #1"}]
-    setSessionList(sessions);
+    fetchSessions(cid);
   }, []);
-  const sessionItems = sessionList.map((session) =>(
-    <ListGroupItem key={session.name}>
+  const isInstructor = user.role.name === "IMPACT_CONSULTANT";
+  const sessionItems = sessionList.map((session) =>{
+    const startMoment = moment(session.startDate);
+    const endMoment = moment(session.endDate);    
+    return(
+    <ListGroupItem key={session.id}>
       <Row>
-        <Col xs="1">
-          <Button pill theme="success" size="small" onClick={()=>{selectRoom(session.name)}}>
+        <Col xs="2">
+          <Button pill theme="success" size="small" onClick={()=>{selectRoom(session.id)}}>
             Enter
           </Button>
         </Col>
         <Col xs="2">
-        {session.name}
+        {session.id}
+        </Col>
+        <Col xs="3">
+        {startMoment.format("dddd h:mm a")}
+        </Col>
+        <Col xs="3">
+        {endMoment.format("dddd h:mm a")}
         </Col>
         <Col xs="2">
-        {session.time}
+        {isInstructor &&<Button pill theme="danger" size="small" onClick={()=>{deleteSession(session.id)}}>
+            Delete
+          </Button>}
         </Col>
       </Row>
 
-    </ListGroupItem>))
+  </ListGroupItem>)})
   return (
     <ListGroup>
           <ListGroupItemHeading>
       <Row>
-        <Col xs="1">
+        <Col xs="2">
         
         </Col>
         <Col xs="2">
-        Session Name
+        Session Name/Id
         </Col>
-        <Col xs="2">
-        Time
+        <Col xs="3">
+        Start Time
         </Col>
-        <Col xs="4">
-        Description
+        <Col xs="3">
+        End Time
         </Col>
       </Row>
 
     </ListGroupItemHeading>
           {sessionItems}
-          <ListGroupItem >
+          <ListGroupItem key="create">
       <Row>
-        <Col xs="1">
-          <Button pill theme="light" size="small" onClick={handleCreate}>
+        <Col xs="2">
+          {isInstructor && <Button pill theme="light" size="small" onClick={handleCreate}>
             {creationOpen ? "Confirm" : "Create"}
-          </Button>
+          </Button>}
         </Col>
         <Col xs="2">
-        {creationOpen && <FormInput placeholder="Session Name" value={newSessionName} onChange={(event)=>{setNewSessionName(event.target.value)}}/>}
         </Col>
-        <Col xs="2">
-        {creationOpen && <FormInput placeholder="Session Time" value={newSessionTime} onChange={(event)=>{setNewSessionTime(event.target.value)}}/>}
+        <Col xs="3">
+          {creationOpen &&     
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            showTimeSelect
+            dateFormat="EEE h:mm aa"
+          />}
+
         </Col>
-        <Col xs="4">
-        {creationOpen && <FormInput placeholder="Session Description" value={newSessionDesc} onChange={(event)=>{setNewSessionDesc(event.target.value)}}/>}
-        </Col>
+        <Col xs="3">
+        {creationOpen &&     
+          <DatePicker
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            showTimeSelect
+            dateFormat="EEE h:mm aa"
+          />}        </Col>
       </Row>
 
     </ListGroupItem>

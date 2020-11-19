@@ -65,7 +65,7 @@ class CoursePage extends Component {
 
                     <div id="class-sessions-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        <CourseSessionRoom uid={this.props.uid}></CourseSessionRoom>
+                        <CourseSessionRoom cid={this.state.cid} uid={this.props.uid}></CourseSessionRoom>
                     </div>
                     
                     <div id="assignments-tab-content" className="courses-page-content"

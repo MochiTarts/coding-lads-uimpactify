@@ -16,6 +16,21 @@ export const getAllCourses = () => {
     return axios.get(`${apiUrl}/courses/getAllCourses`);
 }
 
+export const getCourseSessions = (courseId) => {
+    return axios.get(`${apiUrl}/courses/getAllSessionByCourse/${courseId}`);
+}
+
+export const createCourseLiveSession = (courseId, startDate, endDate) => {
+    return axios.post(`${apiUrl}/courses/createSession`, {
+        course: {id: courseId},
+        startDate, endDate
+    });
+}
+
+export const deleteSession = (sessionId) => {
+    return axios.post(`${apiUrl}/courses/deleteSession/${sessionId}`);
+}
+
 export const enrollInCourse = (course_id, student_id) => {
     return axios.post(`${apiUrl}/users/addCourseToStudent`, {
         course: {id: course_id},

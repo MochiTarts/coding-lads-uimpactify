@@ -10,7 +10,7 @@ class CourseSessionRoom extends React.Component {
     render() {
         const storedAuthenticatedUser = JSON.parse(localStorage.getItem('authenticatedUser'));
         return(
-            <VideoChat username={storedAuthenticatedUser.username} />
+            <VideoChat cid={this.props.cid} user={storedAuthenticatedUser} username={storedAuthenticatedUser.username} />
         );
     }
 

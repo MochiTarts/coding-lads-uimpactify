@@ -3,7 +3,7 @@ import Lobby from './Lobby.jsx';
 import Room from './Room.jsx';
 import {getAccessToken} from '../../helpers/services/twilio-service';
 
-const VideoChat = ({username}) => {
+const VideoChat = ({cid, user}) => {
   const [roomName, setRoomName] = useState('');
   const [token, setToken] = useState(null);
 
@@ -14,7 +14,7 @@ const VideoChat = ({username}) => {
   }, []);
 
   const handleSubmit = () => {
-    setToken(getAccessToken(username));
+    setToken(getAccessToken(user.username));
   }
 
   const handleLogout = useCallback(event => {
@@ -29,7 +29,9 @@ const VideoChat = ({username}) => {
   } else {
     render = (
       <Lobby
-        username={username}
+        cid = {cid}
+        user={user}
+        username={user.username}
         roomName={roomName}
         handleRoomNameChange={handleRoomNameChange}
         handleSubmit={handleSubmit}
