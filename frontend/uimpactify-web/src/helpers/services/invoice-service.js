@@ -1,5 +1,6 @@
 import axios from 'axios';
-const apiUrl = 'http://localhost:8080/uimpactify/users';
+import properties from '../../properties';
+const apiUrl = `${properties.url}/uimpactify/users`;
 
 export const getAllInvoices = (userId) => {
     return axios.get(`${apiUrl}/allInvoices?userId=${userId}`);

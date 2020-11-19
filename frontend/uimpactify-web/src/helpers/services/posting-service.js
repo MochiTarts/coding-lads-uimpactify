@@ -1,5 +1,6 @@
 import axios from 'axios';
-const apiUrl = 'http://localhost:8080/uimpactify/postings';
+import properties from '../../properties';
+const apiUrl = `${properties.url}/uimpactify/postings`;
 
 export const getAllPosting = () => {
     return axios.get(`${apiUrl}/getAllPostings`);
