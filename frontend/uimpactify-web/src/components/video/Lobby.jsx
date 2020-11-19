@@ -21,7 +21,9 @@ const Lobby = ({
     if(!creationOpen) {
       setCreationOpen(true);
     } else {
-      createCourseLiveSession(cid, startDate, endDate).then(
+      const startTime = moment.utc(startDate).subtract(5, "hours").toISOString();
+      const endTime = moment.utc(endDate).subtract(5, "hours").toISOString();
+      createCourseLiveSession(cid, startTime, endTime).then(
         () => {
           fetchSessions(cid);
           setNewSessionName('');
@@ -34,10 +36,10 @@ const Lobby = ({
 
     }
   }
-  const deleteSession = (sessionId) => {
+  const deleteCourseSession = (sessionId) => {
     deleteSession(sessionId).then(
       () => {
-        fetchSessions();
+        fetchSessions(cid);
       }
     )
   }
@@ -57,8 +59,9 @@ const Lobby = ({
   }, []);
   const isInstructor = user.role.name === "IMPACT_CONSULTANT";
   const sessionItems = sessionList.map((session) =>{
-    const startMoment = moment(session.startDate);
-    const endMoment = moment(session.endDate);    
+    const startMoment = moment(session.startDate).utcOffset("-05:00");
+    const endMoment = moment(session.endDate).utcOffset("-05:00");
+
     return(
     <ListGroupItem key={session.id}>
       <Row>
@@ -77,7 +80,7 @@ const Lobby = ({
         {endMoment.format("dddd h:mm a")}
         </Col>
         <Col xs="2">
-        {isInstructor &&<Button pill theme="danger" size="small" onClick={()=>{deleteSession(session.id)}}>
+        {isInstructor &&<Button pill theme="danger" size="small" onClick={()=>{deleteCourseSession(session.id)}}>
             Delete
           </Button>}
         </Col>
