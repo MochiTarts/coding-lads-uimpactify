@@ -9,6 +9,7 @@ import com.utsc.project_coding_lads.exception.ValidationFailedException;
 
 public interface ClassSessionService {
 
+	final String SERVICE_NAME = "sessions";
 
 	public ClassSession findSessionById(Integer id) throws ValidationFailedException;
 	
@@ -16,13 +17,19 @@ public interface ClassSessionService {
 	
 	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startDate, LocalDateTime endDate) throws MissingInformationException, ValidationFailedException;
 	
+	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startDate, LocalDateTime endDate) throws ValidationFailedException;
+	
+	public List<ClassSession> getAllSession();
+	
 	public ClassSession updateSingleSession(ClassSession classSession) throws ValidationFailedException;
 	
 	public List<ClassSession> batchUpdateSession(List<ClassSession> sessions) throws ValidationFailedException;
 	
-	public void deleteSingleSession(ClassSession classSession) throws ValidationFailedException;
+	public void deleteSingleSessionById(Integer id) throws ValidationFailedException;
+
+	public void deleteAllSessionByCourseId(Integer id) throws ValidationFailedException;
 	
 	public void batchDeleteSession(List<ClassSession> sessions) throws ValidationFailedException;
 	
-	public ClassSession storeClassSession(ClassSession classSession) throws Exception;
+	public ClassSession storeClassSession(ClassSession classSession) throws ValidationFailedException;
 }

@@ -84,7 +84,8 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public void deleteCourseById(Integer id) throws Exception {
-		classSessionService.batchDeleteSession(findCourseById(id).getSessions());
+		// delete all the sessions of the course first
+		classSessionService.deleteAllSessionByCourseId(id);
 		courseRepo.deleteById(id);
 	}
 
