@@ -6,6 +6,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = StudentAnswer.TABLE_NAME)
 public class StudentAnswer extends BaseDataEntity {
@@ -13,6 +16,7 @@ public class StudentAnswer extends BaseDataEntity {
 	public static final String TABLE_NAME = "STUDENT_ANSWER";
 	
 	private ImpactLearner student;
+	@JsonProperty("question")
 	private QuizQuestion question;
 	private String studentAnswer;
 	
@@ -24,6 +28,7 @@ public class StudentAnswer extends BaseDataEntity {
 	public void setStudent(ImpactLearner student) {
 		this.student = student;
 	}
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "question_id")
 	public QuizQuestion getQuestion() {

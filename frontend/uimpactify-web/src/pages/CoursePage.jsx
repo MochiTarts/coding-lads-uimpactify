@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CourseSessionRoom from '../components/CourseSessionRoom';
 import "../stylesheets/css/Courses.css";
 
 class CoursePage extends Component {
@@ -64,7 +65,7 @@ class CoursePage extends Component {
 
                     <div id="class-sessions-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        Add content for "Class Sessions" here
+                        <CourseSessionRoom cid={this.state.cid} uid={this.props.uid}></CourseSessionRoom>
                     </div>
                     
                     <div id="assignments-tab-content" className="courses-page-content"

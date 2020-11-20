@@ -46,7 +46,7 @@ public class User extends BaseDataEntity {
 	private List<Application> application;
 	private List<Event> events = new ArrayList<>();
 	private List<Posting> postings = new ArrayList<>();
-	private List<Invoice> invoices;
+	private List<Invoice> invoices = new ArrayList<>();
 	
 	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)

@@ -54,10 +54,14 @@ public class ClassSessionValidator implements Validator {
 			throw new MissingInformationException("The required field is missing");
 		if (!courseService.existsById(course.getId()))
 			throw new UnauthenticatedException("The course does not exist");
+		if (!startDate.isBefore(endDate))
+			throw new UnauthenticatedException("The end time should be after the start time");
 	}
 	
 	public void validateExist(ClassSession session) throws ValidationFailedException {
 		validate();
+		if (id == null)
+			throw new MissingInformationException("The class session id field is missing");
 		if (classSessionService.findSessionById(id) == null)
 			throw new EntityNotExistException("The class session does not exist");
 	}
