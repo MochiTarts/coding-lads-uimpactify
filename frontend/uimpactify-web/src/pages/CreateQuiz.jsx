@@ -1,0 +1,256 @@
+import React, { Component } from "react";
+import "../stylesheets/css/CreateQuiz.css";
+import { createQuiz } from "../helpers/services/quizzes-service";
+import GenericQuestion from "../components/quizzes/GenericQuestion";
+import MultipleChoiceQuestion from "../components/quizzes/MultipleChoiceQuestion";
+import ShortAnswerQuestion from "../components/quizzes/ShortAnswerQuestion";
+import TrueFalseQuestion from "../components/quizzes/TrueFalseQuestion";
+import {
+  Button,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "shards-react";
+
+class CreateQuiz extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      quizzes: [], // each quiz has type:int, index: int, question:String, choices:[{choice:String, isCorrect:Bool}]
+      open: false,
+    };
+    this.toggle = this.toggle.bind(this);
+  }
+
+  updateQuizIndex = () => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz, i) => {
+          let updatedQuiz = quiz;
+          updatedQuiz.index = i;
+          return updatedQuiz;
+        }),
+      },
+      () => {
+        console.log(this.state);
+      }
+    );
+  };
+
+  updateChoicesIndex = () => {
+    this.setState({
+      quizzes: this.state.quizzes.map((quiz) => {
+        let updatedQuiz = quiz;
+        updatedQuiz.choices = updatedQuiz.choices.map((choice, i) => {
+          let updatedChoice = choice;
+          updatedChoice.index = i;
+          return updatedChoice;
+        });
+        return updatedQuiz;
+      }),
+    });
+  };
+
+  onQuestionRemove = (quizIndexToRemove) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.filter((quiz) => {
+          return quiz.index !== quizIndexToRemove;
+        }),
+      },
+      () => {
+        this.updateQuizIndex();
+      }
+    );
+  };
+
+  onQuestionEdit = (quizIndexToEdit, textToChangeTo) => {
+    console.log(quizIndexToEdit);
+    console.log(textToChangeTo);
+    console.log("------------------------");
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          let updatedQuiz = quiz;
+          if (quizIndexToEdit === quiz.index) {
+            updatedQuiz.question = textToChangeTo;
+            return updatedQuiz;
+          }
+          return updatedQuiz;
+        }),
+      },
+      () => this.updateQuizIndex()
+    );
+  };
+
+  onChoiceAdd = (quizIndexToAddChoice, addedChoice) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          if (quizIndexToAddChoice === quiz.index) {
+            let updatedQuiz = quiz;
+            updatedQuiz.choices.push(addedChoice);
+            return updatedQuiz;
+          }
+          return quiz;
+        }),
+      },
+      () => this.updateChoicesIndex()
+    );
+  };
+
+  onChoiceRemove = (quizIndexToRemoveChoice, choiceIndexToRemove) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          let updatedQuiz = quiz;
+          if (quizIndexToRemoveChoice === quiz.index) {
+            updatedQuiz.choices = updatedQuiz.choices.filter((choice) => {
+              return choice.index !== choiceIndexToRemove;
+            });
+          }
+          return updatedQuiz;
+        }),
+      },
+      () => this.updateChoicesIndex()
+    );
+  };
+  handleDropdownAdd = (type) => {
+    this.setState(
+      (prevState) => {
+        let quizzes = prevState.quizzes.concat({
+          index: 0,
+          question: "",
+          choices: [],
+          type: type,
+        });
+        return {
+          quizzes,
+        };
+      },
+      () => {
+        this.updateQuizIndex();
+      }
+    );
+  };
+
+  onChoiceEdit = (
+    quizIndexToRemoveChoice,
+    choiceIndexToChange,
+    textToChangeTo
+  ) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          let updatedQuiz = quiz;
+          if (quizIndexToRemoveChoice === quiz.index) {
+            updatedQuiz.choices = updatedQuiz.choices.map((choice) => {
+              if (choice.index === choiceIndexToChange) {
+                let updatedChoice = choice;
+                updatedChoice.choice = textToChangeTo;
+                return updatedChoice;
+              }
+              return choice;
+            });
+          }
+          return updatedQuiz;
+        }),
+      },
+      () => this.updateChoicesIndex()
+    );
+  };
+
+  onChoiceSelectTrueFalse = (quizIndexToChange, choiceIndexToChange) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          let updatedQuiz = quiz;
+          if (quizIndexToChange === quiz.index) {
+            updatedQuiz.choices = updatedQuiz.choices.map((choice) => {
+              if (choice.index === choiceIndexToChange) {
+                let updatedChoice = choice;
+                updatedChoice.isCorrect = !updatedChoice.isCorrect;
+                return updatedChoice;
+              }
+              return choice;
+            });
+          }
+          return updatedQuiz;
+        }),
+      },
+      () => this.updateChoicesIndex()
+    );
+  };
+
+  handleDropdownAdd = (type) => {
+    this.setState(
+      (prevState) => {
+        let quizzes = prevState.quizzes.concat({
+          index: 0,
+          question: "",
+          choices: [],
+          type: type,
+        });
+        return {
+          quizzes,
+        };
+      },
+      () => {
+        this.updateQuizIndex();
+      }
+    );
+  };
+
+  toggle = () => {
+    this.setState((prevState) => {
+      return { open: !prevState.open };
+    });
+  };
+
+  render = () => {
+    return (
+      <div id="quiz-creator">
+        {this.state.quizzes.map((quiz) => {
+          if (quiz.type == 0) {
+            return (
+              <MultipleChoiceQuestion
+                quiz={quiz}
+                onQuestionEdit={this.onQuestionEdit}
+                onQuestionRemove={this.onQuestionRemove}
+                onChoiceAdd={this.onChoiceAdd}
+                onChoiceRemove={this.onChoiceRemove}
+                onChoiceEdit={this.onChoiceEdit}
+                onChoiceSelectTrueFalse={this.onChoiceSelectTrueFalse}
+              />
+            );
+          } else if (quiz.type == 1) {
+            return <TrueFalseQuestion />;
+          } else if (quiz.type == 2) {
+            return <ShortAnswerQuestion />;
+          }
+        })}
+        <div id="quiz-type-dropdown">
+          <h3>Add a...</h3>
+          <Dropdown open={this.state.open} toggle={this.toggle}>
+            <DropdownToggle>Question</DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => this.handleDropdownAdd(0)}>
+                Multiple choice
+              </DropdownItem>
+              <DropdownItem onClick={() => this.handleDropdownAdd(1)}>
+                True or False
+              </DropdownItem>
+              <DropdownItem onClick={() => this.handleDropdownAdd(2)}>
+                Short Answer
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </div>
+        <Button id="quiz-submit">Done, submit</Button>
+      </div>
+    );
+  };
+}
+
+export default CreateQuiz;
