@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 import CourseSessionRoom from '../components/CourseSessionRoom';
+import AssignmentTab from '../components/AssignmentsTab';
 import "../stylesheets/css/Courses.css";
+import { getCourseById } from "../helpers/services/course-service";
 
 class CoursePage extends Component {
     constructor(props) {
         super(props);
-        const { cid, title, description, instructor } = props.location.state;
         this.state = {
-            cid: cid,
-            title: title,
-            description: description,
-            instructor: instructor
+            cid: this.props.match.params.cid,
+            title: "",
+            description: "",
+            instructor: ""
         }
+    }
+
+    componentDidMount() {
+        getCourseById(this.state.cid).then(
+            (r) => {
+                const title = r.data.courseName;
+                const description = r.data.courseDesc;
+                const instructor = r.data.instructor.user.firstName + r.data.instructor.user.lastName;
+                this.setState({ title: title, description: description, instructor: instructor });
+            }
+        );
     }
 
     handleSwitch(tab) {
@@ -70,7 +82,7 @@ class CoursePage extends Component {
                     
                     <div id="assignments-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        Add content for "Assignments" here
+                        <AssignmentTab/>
                     </div>
                     
                     <div id="quizzes-tab-content" className="courses-page-content"

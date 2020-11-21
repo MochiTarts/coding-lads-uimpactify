@@ -60,7 +60,7 @@ function App() {
                 component={CreateQuiz}
               />
               <PrivateRoute
-                path="/courses/mycourses/coursepage"
+                path="/courses/mycourses/:cid"
                 component={CoursePage}
               />
               <PrivateRoute
@@ -72,19 +72,19 @@ function App() {
                 component={ExploreOpportunities}
               />
               <PrivateRoute
-                path="/opportunity/apply"
+                path="/opportunity/apply/:pid"
                 component={ApplyOpportunity}
               />
               <PrivateRoute
-                path="/opportunity/manage"
+                path="/opportunity/manage/:pid"
                 component={ManageOpportunity}
               />
               <PrivateRoute
-                path="/opportunity/create"
+                path="/opportunity/create/:type"
                 component={CreateOpportunity}
               />
               <PrivateRoute
-                path="/opportunity/details"
+                path="/opportunity/details/:pid"
                 component={DetailsOpportunity}
               />
               <PrivateRoute path="/billing" component={Billing} />

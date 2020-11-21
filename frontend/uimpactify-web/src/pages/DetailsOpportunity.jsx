@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/Opportunities.css";
-import { getApplicationsByPosting } from "../helpers/services/user-service";
+import { getPosting, getApplicationsByPosting } from "../helpers/services/user-service";
 
 class DetailsOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { type, pid, title, description } = props.location.state;
         this.state = {
                 uid: props.uid,
-                type: type,
-                pid: pid,
-                title: title,
-                description: description,
+                pid: props.match.params.pid,
+                title: "",
+                type: "",
+                description: "",
                 applied: false
         }
     }
@@ -19,6 +18,20 @@ class DetailsOpportunity extends Component {
     componentDidMount() {
         const { pid, uid } = this.state;
         const int_uid = parseInt(uid);
+
+        getPosting(pid).then(
+            (r) => {
+                const title = r.data.name;
+                const type = r.data.postingType;
+                const description = r.data.postingDesc;
+                this.setState({
+                    title: title,
+                    type: type,
+                    description: description
+                });
+            }
+        );
+
         getApplicationsByPosting(pid).then(
             (r) => {
                 var applied = false;
@@ -58,10 +71,10 @@ class DetailsOpportunity extends Component {
 
                 {this.state.applied &&
                 <h4 className="text-danger">*Your application is currently being processed... Check your email for any updates.</h4>}
-                <a href="javascript:history.back()"
+                <button onClick={() => this.props.history.goBack()}
                     className="btn btn-secondary opportunity-formButtons">
                     Back
-                </a>
+                </button>
             </div>
         );
     }

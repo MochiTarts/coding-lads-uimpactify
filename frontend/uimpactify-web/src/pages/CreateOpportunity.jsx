@@ -5,11 +5,10 @@ import "../stylesheets/css/Opportunities.css";
 class CreateOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { type } = props.location.state;
         this.state = {
                 uid: props.uid,
                 socialInit: props.uinfo.socialInit,
-                type: type,
+                type: props.match.params.type,
                 title: "",
                 description: ""
         }
@@ -71,10 +70,10 @@ class CreateOpportunity extends Component {
                             onClick={(event) => this.handleSave(event)}>
                         Save
                     </button>
-                    <a href="javascript:history.back()"
+                    <button onClick={() => this.props.history.goBack()}
                        className="btn btn-secondary opportunity-formButtons">
                         Cancel
-                    </a>
+                    </button>
                 </form>
             </div>
         );

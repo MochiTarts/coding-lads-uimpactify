@@ -18,7 +18,7 @@ function CourseCard(props) {
             <div className="card-body course-card-title">
                 <h5 className="card-title">
                     <Link to={{
-                        pathname: "/courses/mycourses/coursepage",
+                        pathname: `/courses/mycourses/${props.cid}`,
                         state: {
                             cid: props.cid,
                             title: props.title,
