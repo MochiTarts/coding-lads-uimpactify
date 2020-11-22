@@ -1,24 +1,36 @@
 import React, { Component } from 'react';
-import { updatePosting, deletePosting, getApplicationsByPosting, deleteApplication } from "../helpers/services/user-service";
+import { getPosting, updatePosting, deletePosting, getApplicationsByPosting, deleteApplication } from "../helpers/services/user-service";
 import "../stylesheets/css/Opportunities.css";
 
 class ManageOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { type, pid, title, description } = props.location.state;
         this.state = {
-                uid: props.uid,
-                socialInit: props.uinfo.socialInit,
-                type: type,
-                pid: pid,
-                title: title,
-                description: description,
-                appList: []
+            uid: props.uid,
+            socialInit: props.uinfo.socialInit,
+            pid: props.match.params.pid,
+            type: "",
+            title: "",
+            description: "",
+            appList: []
         }
     }
 
     componentDidMount() {
         const { pid } = this.state;
+        getPosting(pid).then(
+            (r) => {
+                const title = r.data.name;
+                const type = r.data.postingType;
+                const description = r.data.postingDesc;
+                this.setState({
+                    title: title,
+                    type: type,
+                    description: description
+                });
+            }
+        );
+
         var appList = [];
         getApplicationsByPosting(pid).then(
             (r) => {
@@ -127,10 +139,10 @@ class ManageOpportunity extends Component {
                                 onClick={(event) => this.handleSave(event)}>
                             Save
                         </button>
-                        <a href="javascript:history.back()"
+                        <button onClick={() => this.props.history.push("/opportunity/myopportunities")}
                            className="btn btn-secondary opportunity-formButtons">
                             Cancel
-                        </a>
+                        </button>
                         <button type="submit" 
                                 className="btn btn-danger opportunity-formButtons" 
                                 style={ { float: "right" } }

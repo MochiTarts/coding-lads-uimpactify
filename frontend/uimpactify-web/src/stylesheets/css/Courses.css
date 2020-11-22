@@ -26,8 +26,8 @@
 
 .courses-page-grid {
     display: grid;
-    grid-template-columns: 12% 88%;
-    grid-template-rows: 75vh;
+    grid-auto-columns: minmax(auto, 12%) minmax(auto, 88%);
+    grid-auto-rows: minmax(75vh, auto);
     grid-template-areas: "cSidebar cContent";
 }
 

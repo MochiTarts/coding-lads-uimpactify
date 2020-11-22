@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/Opportunities.css";
-import { createApplication, getApplicationsByPosting } from "../helpers/services/user-service";
+import { getPosting, createApplication, getApplicationsByPosting } from "../helpers/services/user-service";
 
 class ApplyOpportunity extends Component {
     constructor(props) {
         super(props);
-        const { pid, type, title, description } = props.location.state;
         this.state = {
                 uid: props.uid,
-                type: type,
-                pid: pid,
-                title: title,
-                description: description,
+                pid: props.match.params.pid,
+                title: "",
+                type: "",
+                description: "",
                 email: "",
                 applied: false
         }
@@ -20,6 +19,20 @@ class ApplyOpportunity extends Component {
     componentDidMount() {
         const { pid, uid } = this.state;
         const int_uid = parseInt(uid);
+
+        getPosting(pid).then(
+            (r) => {
+                const title = r.data.name;
+                const type = r.data.postingType;
+                const description = r.data.postingDesc;
+                this.setState({
+                    title: title,
+                    type: type,
+                    description: description
+                });
+            }
+        );
+
         getApplicationsByPosting(pid).then(
             (r) => {
                 var applied = false;
@@ -86,10 +99,10 @@ class ApplyOpportunity extends Component {
                         onClick={() => this.handleApply()}>
                     Apply
                 </button>
-                <a href="javascript:history.back()"
+                <button onClick={() => this.props.history.goBack()}
                     className="btn btn-secondary opportunity-formButtons">
                     Cancel
-                </a>
+                </button>
                 {this.state.applied &&
                 <div className="badge badge-danger">you already applied for this opportunity!</div>}
             </div>

@@ -66,7 +66,7 @@ export const deletePosting = (pid) => {
 }
 
 export const getPosting = (pid) => {
-    return axios.post(`${apiUrl}/getPosting/${pid}`);
+    return axios.get(`${apiUrl}/getPosting/${pid}`);
 }
 
 export const getUser = (uid) => {

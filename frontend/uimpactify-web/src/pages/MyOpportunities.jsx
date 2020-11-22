@@ -72,10 +72,7 @@ class MyOpportunities extends Component {
                 {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
-                    to={{
-                        pathname: "/opportunity/create",
-                        state: {uid: uid, type: "VOLUNTEERING"}
-                    }}>
+                    to={{pathname: "/opportunity/create/VOLUNTEERING"}}>
                     New
                 </Link>}
                 {(isEmployee || isLearner) &&
@@ -101,10 +98,7 @@ class MyOpportunities extends Component {
                 {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
-                    to={{
-                        pathname: "/opportunity/create",
-                        state: {uid: uid, type: "EMPLOYMENT"}
-                    }}>
+                    to={{pathname: "/opportunity/create/EMPLOYMENT"}}>
                     New
                 </Link>}
                 {(isEmployee || isLearner) &&
@@ -130,10 +124,7 @@ class MyOpportunities extends Component {
                 {isEmployee &&
                 <Link
                     className="btn btn-sm btn-outline-dark opportunity-newButton"
-                    to={{
-                        pathname: "/opportunity/create",
-                        state: {uid: uid, type: "CONSULTING"}
-                    }}>
+                    to={{pathname: "/opportunity/create/CONSULTING"}}>
                     New
                 </Link>}
                 {(isEmployee || isConsultant) &&

@@ -65,10 +65,10 @@ class CreateCourse extends Component {
                         </div>
                     </div>
 
-                    <a href="javascript:history.back()"
+                    <button onClick={() => this.props.history.push("/courses/mycourses")}
                        className="btn btn-secondary course-formButton">
                         Cancel
-                    </a>
+                    </button>
                     <button type="submit" 
                             className="btn btn-primary course-formButton"
                             onClick={(event) => this.handleSave(event)}>
