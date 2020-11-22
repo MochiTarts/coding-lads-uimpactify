@@ -82,7 +82,7 @@ class CoursePage extends Component {
                     
                     <div id="assignments-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        <AssignmentTab/>
+                        <AssignmentTab cid={cid} uid={this.props.uid} role={this.props.uinfo.role}/>
                     </div>
                     
                     <div id="quizzes-tab-content" className="courses-page-content"

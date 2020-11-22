@@ -1,44 +1,45 @@
 import React, { Component } from 'react';
 import "../stylesheets/css/AssignmentsTab.css";
+import AssignmentListing from "./assignments/AssignmentListing";
+import AssignmentCreate from "./assignments/AssignmentCreate";
+import AssignmentDetails from "./assignments/AssignmentDetails";
 
 class AssignmentsTab extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            assignList: []
+            page: "listing",
+            curr_assign: null,
+            cid: props.cid,
+            uid: props.uid,
+            role: props.role,
         }
     }
 
-    componentDidMount() {
-        var assignList = [
-            {aid: 1, name: "Assignment 1", due: Date.now()},
-            {aid: 2, name: "Assignment 2", due: Date.now()}
-        ];
-        this.setState({ assignList: assignList });
+    handleBackToListing = () => {
+        this.setState({ page: "listing" })
     }
 
-    render() { 
-        const { assignList } = this.state;
-        const dateRegex = "[A-Za-z]+ [A-Za-z]+ [0-9]{1,2} [0-9]{4} [0-9]{2}:[0-9]{2}";
+    handleCreateButton = () => {
+        this.setState({ page: "create" });
+    }
 
-        return (
-            <div>
-                <h3>Available Assignments</h3>
-                <div className="assign-list">
-                    {assignList.map((assign) => (
-                        <div className="card assign-card">
-                            <div className="card-body assign-card-body">
-                                <h5 className="assign-title">{assign.name}</h5>
-                                <p className="assign-due-date float-right">
-                                    Due {Date(assign.due).toString().match(dateRegex)[0]}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div> 
-                
-            </div>
-        );
+    handleGoToDetails = (assign) => {
+        this.setState({ curr_assign: assign, page: "details" });
+    }
+
+    render() {
+        const { page, curr_assign, cid, uid, role } = this.state;
+        if (page === "listing") {
+            return <AssignmentListing cid={cid} uid={uid} role={role} 
+                        onCreate={this.handleCreateButton} onGoDetails={this.handleGoToDetails}/>
+        } else if (page === "create") {
+            return <AssignmentCreate cid={cid} uid={uid} role={role}
+                        onBack={this.handleBackToListing}/>
+        } else if (page === "details") {
+            return <AssignmentDetails cid={cid} uid={uid} role={role} curr_assign={curr_assign}
+                        onBack={this.handleBackToListing}/>
+        }
     }
 }
 
