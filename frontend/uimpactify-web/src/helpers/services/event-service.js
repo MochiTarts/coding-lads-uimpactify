@@ -50,9 +50,9 @@ export const updateEvent = (
   endDate,
   endTime
 ) => {
+
   const startTimestamp = new Date(`${startDate}T${startTime}`).toISOString();
   const endTimestamp = new Date(`${endDate}T${endTime}`).toISOString();
-
   const authedUserInfo = JSON.parse(localStorage.getItem("authenticatedUser"));
   const authedUserID = authedUserInfo.id;
   const authedUserSocialInit = authedUserInfo.socialInit.name;
