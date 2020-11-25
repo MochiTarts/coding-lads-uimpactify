@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "../../stylesheets/css/AssignmentsTab.css";
 import assign_plus from "../../img/assign_plus.png";
+import firebase from "../../firebase.js";
 
 class AssignmentListing extends Component {
     constructor(props) {
@@ -11,11 +12,14 @@ class AssignmentListing extends Component {
     }
 
     componentDidMount() {
-        var assignList = [
-            {aid: 1, name: "Assignment 1", due: Date()},
-            {aid: 2, name: "Assignment 2", due: Date()}
-        ];
-        this.setState({ assignList: assignList });
+        const assignRef = firebase.firestore().collection('assignments');
+        assignRef.where("courseId", "==", this.props.cid).onSnapshot((qSnapshot) => {
+            const assignList = [];
+            qSnapshot.forEach((doc) => {
+                assignList.push({ id: doc.id, name: doc.data().name, due: doc.data().due.toDate() });
+            });
+            this.setState({ assignList: assignList });
+        });
     }
 
 
@@ -31,12 +35,12 @@ class AssignmentListing extends Component {
                 <h3>Available Assignments</h3>
                 <div>
                     {assignList.map((assign) => (
-                        <div className="card assign-card">
+                        <div className="card assign-card" key={assign.id}>
                             <div className="card-body assign-card-body"
                                 onClick={() => onGoDetails(assign)}>
                                 <h5 className="assign-title">{assign.name}</h5>
                                 <p className="assign-due-date float-right">
-                                    Due {Date(assign.due).toString().match(dateRegex)[0]}
+                                    Due {assign.due.toString().match(dateRegex)[0]}
                                 </p>
                             </div>
                         </div>

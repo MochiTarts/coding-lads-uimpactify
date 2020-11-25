@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import "../../stylesheets/css/AssignmentsTab.css";
 import file_icon from "../../img/file.png";
+import firebase from "../../firebase.js";
 
 class AssignmentDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
             assign: props.curr_assign,
+            handoutLink: null,
             submitFile: null,
             submittedFile: null,
             submissionList: []
@@ -18,13 +20,17 @@ class AssignmentDetails extends Component {
         const isLearner = true ? type === "IMPACT_LEARNER" : false;
         const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
 
+        const storageRef = firebase.storage().ref();
+        storageRef.child(this.state.assign.id).getDownloadURL().then(
+            (url) => {
+                this.setState({ handoutLink: url });
+            }
+        );
+
         if (isConsultant) {
-            var submissionList = [];
-            submissionList.push({sid: 100, submitedBy: "Ryan Lin", fileName: "assign.pdf"});
-            submissionList.push({sid: 101, submitedBy: "Bob Li", fileName: "assign123.pdf"});
-            this.setState({ submissionList: submissionList });
+            // get submissionList from firebase
         } else if (isLearner) {
-            this.setState({ submittedFile: "assign.pdf" });
+            // get submitted file from firebase
         }
     }
 
@@ -35,11 +41,12 @@ class AssignmentDetails extends Component {
     }
 
     handleClickSubmit = () => {
+        // upload submission to firebase
         console.log(this.state.submitFile);
     }
 
     render() {
-        const { assign, submitFile, submittedFile, submissionList } = this.state;
+        const { assign, handoutLink, submitFile, submittedFile, submissionList } = this.state;
         const type = this.props.role ? this.props.role.name : null;
         const isLearner = true ? type === "IMPACT_LEARNER" : false;
         const isConsultant = true ? type === "IMPACT_CONSULTANT" : false;
@@ -51,8 +58,8 @@ class AssignmentDetails extends Component {
                     Back to Available Assignments
                 </button>
                 <h3>{assign.name}</h3>
-                <p>Due {assign.due}</p>
-                <a href="#">
+                <p>Due {assign.due.toString()}</p>
+                <a href={handoutLink}>
                     <img src={file_icon} className="download-link-icon"/>
                     Download the assignment handout here
                 </a><br/>
