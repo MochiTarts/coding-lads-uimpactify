@@ -45,3 +45,7 @@ export const getStudentCourses = (student_id) => {
 export const getInstructorCourses = (instructor_id) => {
     return axios.get(`${apiUrl}/users/getCoursesByInstructor/${instructor_id}`);
 }
+
+export const getCourseById = (courseId) => {
+    return axios.get(`${apiUrl}/users/getCourse/${courseId}`);
+}

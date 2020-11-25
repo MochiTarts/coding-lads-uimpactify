@@ -6,11 +6,11 @@ import applied from "../img/applied_stamp.png";
 function OpportunityCard(props) {
     var linkPath = "/";
     if (props.button === "Manage") {
-        linkPath = "/opportunity/manage";
+        linkPath = "/opportunity/manage/";
     } else if (props.button === "Apply") {
-        linkPath = "/opportunity/apply";
+        linkPath = "/opportunity/apply/";
     } else if (props.button === "Details") {
-        linkPath = "/opportunity/details";
+        linkPath = "/opportunity/details/";
     }
 
     return (
@@ -23,7 +23,7 @@ function OpportunityCard(props) {
                 <Link 
                 className="btn btn-primary"
                 to={{
-                    pathname: linkPath,
+                    pathname: linkPath + props.pid,
                     state: {
                         type: props.type,
                         pid: props.pid,
