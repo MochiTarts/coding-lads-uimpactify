@@ -48,17 +48,17 @@ public class CourseController extends BaseController {
 		return courses;
 	}
 	
-	@GetMapping(path = "/getAllSessions")
-	@ApiOperation(value = "get all sessions", response = ClassSession.class, responseContainer = "List")
-	public List<ClassSession> getAllSessions() {
-		List<ClassSession> sessions = new ArrayList<>();
-		try {
-			sessions = classSessionService.getAllSession();
-		} catch (Exception e) {
-			log.info("Could not get all sessions", e.getMessage());
-		}
-		return sessions;
-	}
+	// @GetMapping(path = "/getAllSessions")
+	// @ApiOperation(value = "get all sessions", response = ClassSession.class, responseContainer = "List")
+	// public List<ClassSession> getAllSessions() {
+	// 	List<ClassSession> sessions = new ArrayList<>();
+	// 	try {
+	// 		sessions = classSessionService.getAllSession();
+	// 	} catch (Exception e) {
+	// 		log.info("Could not get all sessions", e.getMessage());
+	// 	}
+	// 	return sessions;
+	// }
 
 	@GetMapping(path = "/getSession/{id}")
 	@ApiOperation(value = "find a class session by id", response = ClassSession.class)

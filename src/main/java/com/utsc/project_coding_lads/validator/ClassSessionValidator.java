@@ -62,7 +62,7 @@ public class ClassSessionValidator implements Validator {
 		validate();
 		if (id == null)
 			throw new MissingInformationException("The class session id field is missing");
-		if (classSessionService.findSessionById(id) == null)
+		if (!classSessionService.existsById(id))
 			throw new EntityNotExistException("The class session does not exist");
 	}
 

@@ -39,8 +39,13 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	CourseValidator courseValidator;
 
 	@Override
+	public Boolean existsById(Integer id) {
+		return classSessionRepo.existsById(id);
+	}
+
+	@Override
 	public ClassSession findSessionById(Integer id) throws ValidationFailedException {
-		if (!classSessionRepo.existsById(id))
+		if (!existsById(id))
 			throw new EntityNotExistException("This class session does not exist");
 		return classSessionRepo.getOne(id);
 	}
@@ -76,7 +81,8 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 
 	@Override
 	public void deleteSingleSessionById(Integer id) throws ValidationFailedException {
-		classSessionRepo.deleteById(id);
+		if (existsById(id))
+			classSessionRepo.deleteById(id);
 	}
 
 	@Override
@@ -103,41 +109,37 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	}
 
 	@Override
-	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startDate, LocalDateTime endDate)
+	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startTime, LocalDateTime endTime)
 			throws ValidationFailedException {
 		if (id == null)
 			throw new MissingInformationException("Instructor id is null");
-		if (startDate == null || endDate == null)
+		if (startTime == null || endTime == null)
 			throw new MissingInformationException("Date is null");
-		if (!startDate.isBefore(endDate))
+		if (!startTime.isBefore(endTime))
 			throw new UnauthenticatedException("The end time should be after the start time");
+		List<ClassSession> validSessions = new ArrayList<>();
 		List<ClassSession> sessions = courseService.findCourseById(id).getSessions();
-		if (sessions == null)
-			return new ArrayList<>();
-		for (Iterator<ClassSession> it = sessions.iterator(); it.hasNext();) {
-			ClassSession session = it.next();
-			if (session.getStartDate().isBefore(startDate) || session.getEndDate().isAfter(endDate))
-				it.remove();
+		for (ClassSession session : sessions) {
+			if (session.getStartDate().isAfter(startTime) && session.getEndDate().isBefore(endTime))
+				validSessions.add(session);
 		}
-		return sessions;
+		return validSessions;
 	}
 
 	@Override
-	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startDate, LocalDateTime endDate)
+	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startTime, LocalDateTime endTime)
 			throws ValidationFailedException {
-		if (startDate == null || endDate == null)
+		if (startTime == null || endTime == null)
 			throw new MissingInformationException("Date is null");
-		if (!startDate.isBefore(endDate))
+		if (!startTime.isBefore(endTime))
 			throw new UnauthenticatedException("The end time should be after the start time");
+		List<ClassSession> validSessions = new ArrayList<>();
 		List<ClassSession> sessions = getAllSession();
-		if (sessions == null)
-			return new ArrayList<>();
-		for (Iterator<ClassSession> it = sessions.iterator(); it.hasNext();) {
-			ClassSession session = it.next();
-			if (session.getStartDate().isBefore(startDate) || session.getEndDate().isAfter(endDate))
-				it.remove();
+		for (ClassSession session : sessions) {
+			if (session.getStartDate().isAfter(startTime) && session.getEndDate().isBefore(endTime))
+				validSessions.add(session);
 		}
-		return sessions;
+		return validSessions;
 	}
 
 	@Override
