@@ -43,7 +43,6 @@ class AssignmentCreate extends Component {
                         this.props.onBack();
                     },
                     (err) => {
-                        console.log(err);
                         this.setState({ createFailed: true })
                     }
                 );

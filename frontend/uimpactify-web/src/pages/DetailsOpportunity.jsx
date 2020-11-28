@@ -36,7 +36,6 @@ class DetailsOpportunity extends Component {
             (r) => {
                 var applied = false;
                 for (var i = 0; i < r.data.length; i++) {
-                    console.log(r.data[i].applicant.id);
                     if (r.data[i].applicant.id === int_uid) {
                         applied = true;
                         break;

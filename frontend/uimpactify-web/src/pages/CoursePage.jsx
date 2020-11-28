@@ -20,7 +20,7 @@ class CoursePage extends Component {
             (r) => {
                 const title = r.data.courseName;
                 const description = r.data.courseDesc;
-                const instructor = r.data.instructor.user.firstName + r.data.instructor.user.lastName;
+                const instructor = r.data.instructor.user.firstName + " " + r.data.instructor.user.lastName;
                 this.setState({ title: title, description: description, instructor: instructor });
             }
         );
