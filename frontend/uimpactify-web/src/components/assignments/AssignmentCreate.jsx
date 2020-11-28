@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "../../stylesheets/css/AssignmentsTab.css";
 import DatePicker from 'react-datepicker';
+import firebase from "../../firebase.js";
 
 class AssignmentCreate extends Component {
     constructor(props) {
@@ -8,7 +9,8 @@ class AssignmentCreate extends Component {
         this.state = {
             newAssignName: "",
             newAssignDue: null,
-            newAssignFile: null
+            newAssignFile: null,
+            createFailed: false
         }
     }
 
@@ -27,9 +29,25 @@ class AssignmentCreate extends Component {
     }
 
     handleClickCreate = () => {
-        console.log(this.state.newAssignName);
-        console.log(this.state.newAssignDue);
-        console.log(this.state.newAssignFile);
+        const firestoreDb = firebase.firestore();
+        const storageRef = firebase.storage().ref();
+        firestoreDb.collection('assignments').add({
+            name: this.state.newAssignName,
+            due: this.state.newAssignDue,
+            courseId: this.props.cid
+        }).then(
+            (doc) => {
+                const fileRef = storageRef.child(doc.id);
+                fileRef.put(this.state.newAssignFile).then(
+                    () => {
+                        this.props.onBack();
+                    },
+                    (err) => {
+                        this.setState({ createFailed: true })
+                    }
+                );
+            }
+        );
     }
 
     render() {
@@ -71,6 +89,10 @@ class AssignmentCreate extends Component {
                             onClick={this.handleClickCreate}>
                         Create
                     </button>
+                    {this.state.createFailed &&
+                    <div className="badge badge-danger">
+                        Oops, something went wrong with uploading the assignment handout. Try again later...
+                    </div>}
             </div>
         );
     }
