@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.utsc.project_coding_lads.domain.Course;
 import com.utsc.project_coding_lads.domain.ClassSession;
+import com.utsc.project_coding_lads.domain.Quiz;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
 import com.utsc.project_coding_lads.service.ClassSessionService;
 import com.utsc.project_coding_lads.service.CourseService;
+import com.utsc.project_coding_lads.service.QuizService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -33,7 +35,9 @@ public class CourseController extends BaseController {
 	CourseService courseService;
 	@Autowired
 	ClassSessionService classSessionService;
-	
+	@Autowired
+	QuizService quizService;
+
 	final static Logger log = LoggerFactory.getLogger(CourseController.class);
 	
 	@GetMapping(path = "/getAllCourses")
@@ -70,6 +74,12 @@ public class CourseController extends BaseController {
 	@ApiOperation(value = "find all class sessions of a course", response = ClassSession.class, responseContainer = "List")
 	public List<ClassSession> getAllSessionByCourse(@PathVariable("id") Integer courseId) throws ValidationFailedException {
 		return classSessionService.findAllSessionByCourseId(courseId);
+	}
+
+	@GetMapping(path = "/getAllQuizzesByCourse/{id}")
+	@ApiOperation(value = "find all quizzes of a course", response = Quiz.class, responseContainer = "List")
+	public List<Quiz> getAllQuizzesByCourse(@PathVariable("id") Integer courseId) throws ValidationFailedException {
+		return quizService.findAllQuizzesByCourseId(courseId);
 	}
 
 	@GetMapping(path = "/getAllSessionByTime/{id}")
