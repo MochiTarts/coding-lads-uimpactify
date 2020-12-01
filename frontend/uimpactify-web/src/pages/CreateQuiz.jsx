@@ -4,7 +4,6 @@ import { createQuiz } from "../helpers/services/quizzes-service";
 import GenericQuestion from "../components/quizzes/GenericQuestion";
 import MultipleChoiceQuestion from "../components/quizzes/MultipleChoiceQuestion";
 import ShortAnswerQuestion from "../components/quizzes/ShortAnswerQuestion";
-import TrueFalseQuestion from "../components/quizzes/TrueFalseQuestion";
 import {
   Button,
   Dropdown,
@@ -12,6 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "shards-react";
+import moment from 'moment';
 
 class CreateQuiz extends Component {
   constructor(props) {
@@ -75,6 +75,22 @@ class CreateQuiz extends Component {
           let updatedQuiz = quiz;
           if (quizIndexToEdit === quiz.index) {
             updatedQuiz.question = textToChangeTo;
+            return updatedQuiz;
+          }
+          return updatedQuiz;
+        }),
+      },
+      () => this.updateQuizIndex()
+    );
+  };
+
+  onAnswerEdit = (quizIndexToEdit, textToChangeTo) => {
+    this.setState(
+      {
+        quizzes: this.state.quizzes.map((quiz) => {
+          let updatedQuiz = quiz;
+          if (quizIndexToEdit === quiz.index) {
+            updatedQuiz.solution = textToChangeTo;
             return updatedQuiz;
           }
           return updatedQuiz;
@@ -149,6 +165,7 @@ class CreateQuiz extends Component {
               if (choice.index === choiceIndexToChange) {
                 let updatedChoice = choice;
                 updatedChoice.choice = textToChangeTo;
+                updatedQuiz.solution = updatedChoice.choice;
                 return updatedChoice;
               }
               return choice;
@@ -202,6 +219,39 @@ class CreateQuiz extends Component {
     );
   };
 
+  handleSubmit = () => {
+    const quizQuestions = this.state.quizzes.map(
+      (quiz)=>{
+        console.log(quiz);
+        if(quiz.type == "MULTIPLE_CHOICE") {
+          const quizQuestionOptions = quiz.choices.map(
+            (choice) => {
+              return {
+                questionOption: choice.choice
+              }
+            }
+          )
+          return {
+            questionType: quiz.type,
+            question: quiz.question,
+            solution:{answer:quiz.solution},
+            questionOptions: quizQuestionOptions
+          }
+        } else if (quiz.type == "SHORT_ANSWER") {
+          return {
+            questionType: quiz.type,
+            question: quiz.question,
+            solution:{answer:quiz.solution},
+          }
+        }
+      });
+    createQuiz(this.props.cid, moment().toISOString(), moment().toISOString(), quizQuestions).then(
+      (res) => {
+        console.log(res);
+      }
+    );
+  };
+  
   toggle = () => {
     this.setState((prevState) => {
       return { open: !prevState.open };
@@ -212,7 +262,7 @@ class CreateQuiz extends Component {
     return (
       <div id="quiz-creator">
         {this.state.quizzes.map((quiz) => {
-          if (quiz.type == 0) {
+          if (quiz.type == "MULTIPLE_CHOICE") {
             return (
               <MultipleChoiceQuestion
                 quiz={quiz}
@@ -224,10 +274,13 @@ class CreateQuiz extends Component {
                 onChoiceSelectTrueFalse={this.onChoiceSelectTrueFalse}
               />
             );
-          } else if (quiz.type == 1) {
-            return <TrueFalseQuestion />;
-          } else if (quiz.type == 2) {
-            return <ShortAnswerQuestion />;
+          } else if (quiz.type == "SHORT_ANSWER") {
+            return <ShortAnswerQuestion 
+                    quiz={quiz} 
+                    onQuestionEdit={this.onQuestionEdit}
+                    onQuestionRemove={this.onQuestionRemove}
+                    onAnswerEdit={this.onAnswerEdit}
+                    />;
           }
         })}
         <div id="quiz-type-dropdown">
@@ -235,19 +288,16 @@ class CreateQuiz extends Component {
           <Dropdown open={this.state.open} toggle={this.toggle}>
             <DropdownToggle>Question</DropdownToggle>
             <DropdownMenu>
-              <DropdownItem onClick={() => this.handleDropdownAdd(0)}>
+              <DropdownItem onClick={() => this.handleDropdownAdd("MULTIPLE_CHOICE")}>
                 Multiple choice
               </DropdownItem>
-              <DropdownItem onClick={() => this.handleDropdownAdd(1)}>
-                True or False
-              </DropdownItem>
-              <DropdownItem onClick={() => this.handleDropdownAdd(2)}>
+              <DropdownItem onClick={() => this.handleDropdownAdd("SHORT_ANSWER")}>
                 Short Answer
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </div>
-        <Button id="quiz-submit">Done, submit</Button>
+        <Button id="quiz-submit" onClick={this.handleSubmit}>Done, submit</Button>
       </div>
     );
   };

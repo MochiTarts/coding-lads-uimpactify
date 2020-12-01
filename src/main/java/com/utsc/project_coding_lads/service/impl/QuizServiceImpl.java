@@ -18,6 +18,7 @@ import com.utsc.project_coding_lads.domain.QuizQuestion;
 import com.utsc.project_coding_lads.domain.StudentAnswer;
 import com.utsc.project_coding_lads.exception.EntityNotExistException;
 import com.utsc.project_coding_lads.exception.ValidationFailedException;
+import com.utsc.project_coding_lads.exception.MissingInformationException;
 import com.utsc.project_coding_lads.repository.QuizRepository;
 import com.utsc.project_coding_lads.service.CourseService;
 import com.utsc.project_coding_lads.service.ImpactLearnerService;
@@ -90,6 +91,15 @@ public class QuizServiceImpl implements QuizService {
 	@Override
 	public Quiz findQuizById(Integer id) throws ValidationFailedException {
 		return quizRepo.findById(id).get();
+	}
+
+	@Override
+	public List<Quiz> findAllQuizzesByCourseId(Integer id) throws ValidationFailedException {
+		if (id == null)
+			throw new MissingInformationException("Course id is null");
+		Course course = courseService.findCourseById(id);
+		List<Quiz> quizzes = course.getQuizzes();
+		return quizzes;
 	}
 
 	@Override
