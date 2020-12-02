@@ -9,3 +9,15 @@ export const createQuiz = (courseId, quizStartDate, quizEndDate, quizQuestions) 
     quizQuestions,
   });
 };
+
+export const deleteQuiz = (quizId) => {
+  return axios.post(`${apiUrl}/users/deleteQuiz/${quizId}`);
+};
+
+export const getAllQuizzesByCourseId = (courseId) => {
+  return axios.get(`${apiUrl}/courses/getAllQuizzesByCourse/${courseId}`);
+};
+
+export const submitQuiz = (answers) => {
+  return axios.post(`${apiUrl}/users/submitQuizByStudent`, answers);
+};
