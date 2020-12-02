@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CourseSessionRoom from '../components/CourseSessionRoom';
 import AssignmentTab from '../components/AssignmentsTab';
+import CreateQuiz from '../pages/CreateQuiz'
 import "../stylesheets/css/Courses.css";
 import { getCourseById } from "../helpers/services/course-service";
 
@@ -20,7 +21,7 @@ class CoursePage extends Component {
             (r) => {
                 const title = r.data.courseName;
                 const description = r.data.courseDesc;
-                const instructor = r.data.instructor.user.firstName + r.data.instructor.user.lastName;
+                const instructor = r.data.instructor.user.firstName + " " + r.data.instructor.user.lastName;
                 this.setState({ title: title, description: description, instructor: instructor });
             }
         );
@@ -87,7 +88,7 @@ class CoursePage extends Component {
                     
                     <div id="quizzes-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        Add content for "Quizzes" here
+                        <CreateQuiz cid={cid}></CreateQuiz>
                     </div>
                 </div>
 
