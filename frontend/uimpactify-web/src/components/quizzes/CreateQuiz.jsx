@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import "../stylesheets/css/CreateQuiz.css";
-import { createQuiz } from "../helpers/services/quizzes-service";
-import GenericQuestion from "../components/quizzes/GenericQuestion";
-import MultipleChoiceQuestion from "../components/quizzes/MultipleChoiceQuestion";
-import ShortAnswerQuestion from "../components/quizzes/ShortAnswerQuestion";
+import "../../stylesheets/css/CreateQuiz.css";
+import { createQuiz } from "../../helpers/services/quizzes-service";
+import GenericQuestion from "./GenericQuestion";
+import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
+import ShortAnswerQuestion from "./ShortAnswerQuestion";
 import {
   Button,
   Dropdown,
@@ -247,6 +247,8 @@ class CreateQuiz extends Component {
       });
     createQuiz(this.props.cid, moment().toISOString(), moment().toISOString(), quizQuestions).then(
       (res) => {
+        this.setState({quizzes: []});
+        this.props.onCreate();
         console.log(res);
       }
     );

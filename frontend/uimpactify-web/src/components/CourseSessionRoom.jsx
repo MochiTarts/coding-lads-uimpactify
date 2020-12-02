@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import Video from 'twilio-video';
-import {getAccessToken} from '../helpers/services/twilio-service';
 import VideoChat from './video/VideoChat.jsx';
-class CourseSessionRoom extends React.Component {
+class CourseSessionRoom extends Component {
     constructor(props) {
         super(props);
     }
