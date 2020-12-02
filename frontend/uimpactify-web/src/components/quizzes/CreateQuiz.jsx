@@ -10,8 +10,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Row,
+  Col,
 } from "shards-react";
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
 
 class CreateQuiz extends Component {
   constructor(props) {
@@ -19,6 +22,8 @@ class CreateQuiz extends Component {
     this.state = {
       quizzes: [], // each quiz has type:int, index: int, question:String, choices:[{choice:String, isCorrect:Bool}]
       open: false,
+      startDate: null,
+      endDate: null
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -245,7 +250,10 @@ class CreateQuiz extends Component {
           }
         }
       });
-    createQuiz(this.props.cid, moment().toISOString(), moment().toISOString(), quizQuestions).then(
+    const startTime = moment.utc(this.state.startDate).subtract(5, "hours").toISOString();
+    const endTime = moment.utc(this.state.endDate).subtract(5, "hours").toISOString();
+    console.log(startTime);
+    createQuiz(this.props.cid, startTime, endTime, quizQuestions).then(
       (res) => {
         this.setState({quizzes: []});
         this.props.onCreate();
@@ -263,6 +271,27 @@ class CreateQuiz extends Component {
   render = () => {
     return (
       <div id="quiz-creator">
+        <Row>
+          <Col xs="4">
+          Quiz start time
+            <DatePicker
+              selected={this.state.startDate}
+              onChange={date => this.setState({startDate: date})}
+              showTimeSelect
+              dateFormat="MMMM d, h:mm aa"
+            />
+          </Col>
+          <Col xs="4">
+          Quiz end time
+            <DatePicker
+              selected={this.state.endDate}
+              onChange={date => this.setState({endDate: date})}
+              showTimeSelect
+              dateFormat="MMMM d, h:mm aa"
+            />
+          </Col>
+        </Row>
+
         {this.state.quizzes.map((quiz) => {
           if (quiz.type == "MULTIPLE_CHOICE") {
             return (
