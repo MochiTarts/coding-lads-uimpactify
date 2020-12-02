@@ -104,13 +104,14 @@ public class CourseServiceImpl implements CourseService {
 		if (id == null)
 			throw new MissingInformationException("Class session id is null");
 		ClassSession classSession = classSessionService.findSessionById(id);
-		classSessionValidator.init(classSession);
+		Course course = classSession.getCourse();
+		courseValidator.init(course);
 		courseValidator.validateExist();
-		return classSession.getCourse();
+		return course;
 	}
 
 	@Override
-	public List<Course> getAllCourses() {
+	public List<Course> getAllCourses() throws Exception {
 		return courseRepo.findAll();
 	}
 

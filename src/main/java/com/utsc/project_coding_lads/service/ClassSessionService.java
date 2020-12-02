@@ -11,13 +11,15 @@ public interface ClassSessionService {
 
 	final String SERVICE_NAME = "sessions";
 
+	public Boolean existsById(Integer id);
+
 	public ClassSession findSessionById(Integer id) throws ValidationFailedException;
 	
 	public List<ClassSession> findAllSessionByCourseId(Integer id) throws ValidationFailedException;
 	
-	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startDate, LocalDateTime endDate) throws MissingInformationException, ValidationFailedException;
+	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startTime, LocalDateTime endTime) throws MissingInformationException, ValidationFailedException;
 	
-	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startDate, LocalDateTime endDate) throws ValidationFailedException;
+	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startTime, LocalDateTime endTime) throws ValidationFailedException;
 	
 	public List<ClassSession> getAllSession();
 	

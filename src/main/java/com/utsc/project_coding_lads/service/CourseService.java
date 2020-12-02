@@ -21,7 +21,7 @@ public interface CourseService {
 
 	public Course findCourseByClassSessionId(Integer id) throws MissingInformationException, ValidationFailedException;
 
-	public List<Course> getAllCourses();
+	public List<Course> getAllCourses() throws Exception;
 	
 //	public List<Course> findAllCourseByInstructorIdDate(Integer id, LocalDateTime date) throws ValidationFailedException;
 	
