@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import CourseSessionRoom from '../components/CourseSessionRoom';
 import AssignmentTab from '../components/AssignmentsTab';
-import CreateQuiz from '../pages/CreateQuiz'
+import QuizTab from '../components/QuizTab';
 import "../stylesheets/css/Courses.css";
 import { getCourseById } from "../helpers/services/course-service";
 
@@ -88,7 +88,7 @@ class CoursePage extends Component {
                     
                     <div id="quizzes-tab-content" className="courses-page-content"
                         style={{display: "none"}}>
-                        <CreateQuiz cid={cid}></CreateQuiz>
+                        <QuizTab cid={cid}></QuizTab>
                     </div>
                 </div>
 

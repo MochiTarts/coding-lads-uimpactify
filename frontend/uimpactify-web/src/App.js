@@ -4,7 +4,6 @@ import Dashboard from "./pages/Dashboard.jsx";
 import MyCourses from "./pages/MyCourses.jsx";
 import CoursePage from "./pages/CoursePage.jsx";
 import CreateCourse from "./pages/CreateCourse.jsx";
-import CreateQuiz from "./pages/CreateQuiz.jsx";
 import ExploreCourse from "./pages/ExploreCourse.jsx";
 import MyOpportunities from "./pages/MyOpportunities.jsx";
 import ExploreOpportunities from "./pages/ExploreOpportunities.jsx";
@@ -55,10 +54,6 @@ function App() {
               />
               <PrivateRoute path="/courses/new" component={CreateCourse} />
               <PrivateRoute path="/courses/explore" component={ExploreCourse} />
-              <PrivateRoute
-                path="/quizzes/new"
-                component={CreateQuiz}
-              />
               <PrivateRoute
                 path="/courses/mycourses/:cid"
                 component={CoursePage}
