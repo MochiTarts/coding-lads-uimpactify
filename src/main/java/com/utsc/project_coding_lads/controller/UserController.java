@@ -44,6 +44,7 @@ import com.utsc.project_coding_lads.service.InvoiceService;
 import com.utsc.project_coding_lads.service.PostingService;
 import com.utsc.project_coding_lads.service.QuizQuestionService;
 import com.utsc.project_coding_lads.service.QuizService;
+import com.utsc.project_coding_lads.service.StudentAnswerService;
 import com.utsc.project_coding_lads.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -74,6 +75,8 @@ public class UserController extends BaseController {
 	ClassSessionService classSessionService;
 	@Autowired
 	QuizQuestionService quizQuestionService;
+	@Autowired
+	StudentAnswerService studentAnswerService;
 
 	final static Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -386,5 +389,10 @@ public class UserController extends BaseController {
 	public Quiz getQuiz(@PathVariable("id") Integer id) throws ValidationFailedException {
 		return quizService.findQuizById(id);
 	}
-	
+
+	@GetMapping(path = "/{uid}/getQuizQAnswer/{qid}")
+	@ApiOperation(value = "retrieving all courses from a student's load", response = StudentAnswer.class)
+	public StudentAnswer getAllCoursesFromStudent(@PathVariable("qid") Integer quizQId, @PathVariable("uid") Integer studentId) throws Exception {
+		return studentAnswerService.findByStudentAndQuestion(quizQId, studentId);
+	}
 }

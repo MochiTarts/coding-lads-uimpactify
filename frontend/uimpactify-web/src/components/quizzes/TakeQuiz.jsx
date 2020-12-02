@@ -17,6 +17,7 @@ class TakeQuiz extends Component {
       console.log(this.state.answers);
       submitQuiz(answersToSubmit).then(
           (res) => {
+              this.props.onSubmit();
               console.log(res);
           }
       )

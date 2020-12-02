@@ -21,3 +21,7 @@ export const getAllQuizzesByCourseId = (courseId) => {
 export const submitQuiz = (answers) => {
   return axios.post(`${apiUrl}/users/submitQuizByStudent`, answers);
 };
+
+export const getQuizQAnswer = (uid, qid) => {
+  return axios.get(`${apiUrl}/users/${uid}/getQuizQAnswer/${qid}`);
+};
