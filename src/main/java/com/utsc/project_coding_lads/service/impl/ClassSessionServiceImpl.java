@@ -93,7 +93,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 	@Override
 	public void batchDeleteSession(List<ClassSession> sessions) throws ValidationFailedException {
 		for (ClassSession session : sessions) {
-			classSessionRepo.deleteById(session.getId());
+			deleteSingleSessionById(session.getId());
 		}
 	}
 
@@ -120,7 +120,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 		List<ClassSession> validSessions = new ArrayList<>();
 		List<ClassSession> sessions = courseService.findCourseById(id).getSessions();
 		for (ClassSession session : sessions) {
-			if (session.getStartDate().isAfter(startTime) && session.getEndDate().isBefore(endTime))
+			if (session.getStartDate().compareTo(startTime) >= 0 && session.getEndDate().compareTo(endTime) <= 0)
 				validSessions.add(session);
 		}
 		return validSessions;
@@ -136,7 +136,7 @@ public class ClassSessionServiceImpl implements ClassSessionService {
 		List<ClassSession> validSessions = new ArrayList<>();
 		List<ClassSession> sessions = getAllSession();
 		for (ClassSession session : sessions) {
-			if (session.getStartDate().isAfter(startTime) && session.getEndDate().isBefore(endTime))
+			if (session.getStartDate().compareTo(startTime) >= 0 && session.getEndDate().compareTo(endTime) <= 0)
 				validSessions.add(session);
 		}
 		return validSessions;

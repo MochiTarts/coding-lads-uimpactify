@@ -17,7 +17,7 @@ public interface ClassSessionService {
 	
 	public List<ClassSession> findAllSessionByCourseId(Integer id) throws ValidationFailedException;
 	
-	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startDate, LocalDateTime endTime) throws MissingInformationException, ValidationFailedException;
+	public List<ClassSession> findAllSessionByCourseIdPeriod(Integer id, LocalDateTime startTime, LocalDateTime endTime) throws MissingInformationException, ValidationFailedException;
 	
 	public List<ClassSession> findAllSessionByPeriod(LocalDateTime startTime, LocalDateTime endTime) throws ValidationFailedException;
 	
