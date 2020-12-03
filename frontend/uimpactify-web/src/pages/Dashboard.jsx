@@ -6,29 +6,57 @@ import SuggestedEvents from "../components/dashboard/SuggestedEvents";
 import WorkShops from "../components/dashboard/WorkShops";
 import YourCourses from "../components/dashboard/YourCourses";
 import News from "../components/dashboard/News";
+import {
+  getTodayEvent,
+  getTomorrowEvent,
+} from "../helpers/services/event-service";
 import { getStudentCourses } from "../helpers/services/course-service";
-
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       courses: [],
+      today: null,
+      tomorrow: null,
     };
   }
   componentDidMount() {
-    getStudentCourses(localStorage.getItem("authenticatedUserId")).then(
-      (resp) => {
+    let authId = localStorage.getItem("authenticatedUserId");
+    getStudentCourses(authId).then((resp) => {
+      this.setState({
+        courses: resp.data.map((x) => {
+          return {
+            title: x.course.courseName,
+            image: "/static/media/knowledge_clipart.e38938d0.png",
+            id: x.course.id,
+          };
+        }),
+      });
+    });
+    getTodayEvent(authId).then((resp) => {
+      let firstEvent = resp.data[0];
+      if (firstEvent) {
+        let firstEventName = firstEvent.eventName;
+        let firstEventTime = `${
+          firstEvent.eventStartDate.split("T")[1].split(":")[0]
+        }:${firstEvent.eventStartDate.split("T")[1].split(":")[1]}`;
         this.setState({
-          courses: resp.data.map((x) => {
-            return {
-              title: x.course.courseName,
-              image: "/static/media/knowledge_clipart.e38938d0.png",
-              id: x.course.id,
-            };
-          }),
+          today: `${firstEventName} starting ${firstEventTime}`,
         });
       }
-    );
+    });
+    getTomorrowEvent(authId).then((resp) => {
+      let firstEvent = resp.data[0];
+      if (firstEvent) {
+        let firstEventName = firstEvent.eventName;
+        let firstEventTime = `${
+          firstEvent.eventStartDate.split("T")[1].split(":")[0]
+        }:${firstEvent.eventStartDate.split("T")[1].split(":")[1]}`;
+        this.setState({
+          tomorrow: `${firstEventName} starting ${firstEventTime}`,
+        });
+      }
+    });
   }
   render() {
     return (
@@ -37,16 +65,31 @@ class Dashboard extends React.Component {
           <Row className="row-1-1">
             <div className="title-group">
               <h4>Upcoming Events</h4>
-              <Button>Open Calendar</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = "/calendar";
+                }}
+              >
+                Open Calendar
+              </Button>
             </div>
             <div id="upcoming-events" className="dash-component">
-              <UpcomingEvents />
+              <UpcomingEvents
+                today={this.state.today}
+                tomorrow={this.state.tomorrow}
+              />
             </div>
           </Row>
           <Row className="row-1-2">
             <div className="title-group">
               <h4>Your Courses</h4>
-              <Button>See All</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = "/courses/mycourses";
+                }}
+              >
+                See All
+              </Button>
             </div>
             <YourCourses courses={this.state.courses} />
           </Row>

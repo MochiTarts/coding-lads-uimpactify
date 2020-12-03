@@ -27,6 +27,9 @@ class YourCourses extends React.Component {
             })}
             <Col>
               <EventItem
+                onClick={() => {
+                  window.location.href = "/courses/mycourses";
+                }}
                 className="add-new-courses"
                 image="https://image.flaticon.com/icons/png/512/32/32339.png"
                 title="Add a New Course"

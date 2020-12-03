@@ -1,5 +1,5 @@
 import axios from "axios";
-import properties from '../../properties';
+import properties from "../../properties";
 const apiUrl = `${properties.url}/uimpactify/users`;
 export const createEvent = (
   eventName,
@@ -14,7 +14,9 @@ export const createEvent = (
 
   const authedUserInfo = JSON.parse(localStorage.getItem("authenticatedUser"));
   const authedUserID = authedUserInfo.id;
-  const authedUserSocialInit = authedUserInfo.socialInit.name;
+  const authedUserSocialInit = authedUserInfo.socialInit
+    ? authedUserInfo.socialInit.name
+    : null;
   const payload = {
     eventName: eventName,
     eventDesc: eventDesc,
@@ -37,8 +39,19 @@ export const getEvent = (userId) => {
 export const getEvents = (userId) => {
   return axios.get(`${apiUrl}/getEvents/${userId}`);
 };
-export const getEventsByDate = (userId) => {
-  return axios.get(`${apiUrl}/getEventsByDate/${userId}`);
+export const getEventsByDate = (userId, date) => {
+  return axios.get(`${apiUrl}/getEventsByDate/${userId}?date=${date}`);
+};
+export const getTodayEvent = (userId) => {
+  let date = new Date();
+  let isoDate = date.toISOString().split("T")[0];
+  return getEventsByDate(userId, isoDate);
+};
+export const getTomorrowEvent = (userId) => {
+  let date = new Date();
+  date.setDate(date.getDate() + 1);
+  let isoDate = date.toISOString().split("T")[0];
+  return getEventsByDate(userId, isoDate);
 };
 
 export const updateEvent = (
@@ -50,7 +63,6 @@ export const updateEvent = (
   endDate,
   endTime
 ) => {
-
   const startTimestamp = new Date(`${startDate}T${startTime}`).toISOString();
   const endTimestamp = new Date(`${endDate}T${endTime}`).toISOString();
   const authedUserInfo = JSON.parse(localStorage.getItem("authenticatedUser"));
