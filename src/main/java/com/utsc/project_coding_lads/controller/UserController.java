@@ -304,7 +304,7 @@ public class UserController extends BaseController {
 
 	}
 	
-	@GetMapping(path = "/updateInvoice")
+	@PostMapping(path = "/updateInvoice")
 	@ApiOperation(value = "update an Invoice", response = Invoice.class)
 	public Invoice updateInvoice(@RequestBody Invoice invoice) throws ValidationFailedException {
 		return invoiceService.updateInvoice(invoice);
