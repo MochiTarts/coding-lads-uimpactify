@@ -269,6 +269,18 @@ public class UserController extends BaseController {
 		return invoiceService.getUnpaidInvoice(userId);
 	}
 
+	@GetMapping(path = "/getInvoiceByCourseId")
+	@ApiOperation(value = "returns all invoices of a course", response = Invoice.class)
+	public List<Invoice> getInvoiceByCourseId(@RequestParam Integer courseId) throws ValidationFailedException {
+		return invoiceService.getAllInvoiceByCourseId(courseId);
+	}
+
+	@GetMapping(path = "/getInvoiceByUserIdCourseId")
+	@ApiOperation(value = "returns the invoice for a user of a course", response = Invoice.class)
+	public Invoice getInvoiceByUserIdCourseId(@RequestParam Integer userId, @RequestParam Integer courseId) throws ValidationFailedException {
+		return invoiceService.findInvoiceByUserIdAndCourseId(userId, courseId);
+	}
+
 	@GetMapping(path = "/payInvoice")
 	@ApiOperation(value = "pays specific course based on invoiceId", response = Invoice.class)
 	public Integer payInvoice(@RequestParam("invoiceId") Integer invoiceId) throws Exception {
@@ -281,7 +293,7 @@ public class UserController extends BaseController {
 		return invoiceService.payInvoice(invoiceId);
 	}
 
-	@GetMapping(path = "/setInvoice")
+	@PostMapping(path = "/setInvoice")
 	@ApiOperation(value = "sets invoice", response = Invoice.class)
 	public Invoice setPayable(@RequestBody Invoice inv) throws ValidationFailedException {
 		return invoiceService.saveInvoice(inv);
@@ -295,7 +307,7 @@ public class UserController extends BaseController {
 
 	}
 	
-	@GetMapping(path = "/updateInvoice")
+	@PostMapping(path = "/updateInvoice")
 	@ApiOperation(value = "update an Invoice", response = Invoice.class)
 	public Invoice updateInvoice(@RequestBody Invoice invoice) throws ValidationFailedException {
 		return invoiceService.updateInvoice(invoice);

@@ -27,6 +27,7 @@ public class Course extends BaseDataEntity {
 	private List<ClassSession> sessions = new ArrayList<>();
 	private Integer cost;
 	private List<Quiz> quizzes = new ArrayList<>();
+	private List<Invoice> invoices = new ArrayList<>();
 	
 	@Column(name = "course_name", length = 64)
 	public String getCourseName() {
@@ -80,6 +81,14 @@ public class Course extends BaseDataEntity {
 	}
 	public void setQuizzes(List<Quiz> quizzes) {
 		this.quizzes = quizzes;
+	}
+	@JsonIgnore
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
 	}
 	
 	@Override

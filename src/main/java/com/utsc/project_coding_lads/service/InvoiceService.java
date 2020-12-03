@@ -9,11 +9,13 @@ public interface InvoiceService {
 	
 	public Integer payInvoice(Integer invoiceId) throws Exception;
 
-	public List<Invoice> getUnpaidInvoice(int userId);
+	public List<Invoice> getUnpaidInvoice(int userId) throws ValidationFailedException;
 	
 	public List<Invoice> getAllInvoicesByUserId(Integer userId) throws ValidationFailedException;
 
-	public Invoice findInvoiceByUserIdAndCourseId(Integer userId, Integer CourseId) throws Exception;
+	public List<Invoice> getAllInvoiceByCourseId(Integer courseId) throws ValidationFailedException;
+
+	public Invoice findInvoiceByUserIdAndCourseId(Integer userId, Integer courseId) throws ValidationFailedException;
 
 	public Integer payInvoicePerCourse(Integer userId, Integer courseId) throws Exception;
 	

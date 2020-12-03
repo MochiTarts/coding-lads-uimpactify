@@ -40,7 +40,7 @@ public class Invoice extends BaseDataEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "course_id")
 	public Course getCourse() {
 		return course;
