@@ -8,7 +8,6 @@ class UpcomingEvents extends React.Component {
   render() {
     return (
       <Container>
-        <Button>Open calendar</Button>
         <Col>
           <h4>Today</h4>
           <Row>{this.props.today ? this.props.today : "Nothing!"}</Row>

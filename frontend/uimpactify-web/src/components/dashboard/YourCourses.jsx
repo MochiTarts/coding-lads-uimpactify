@@ -8,13 +8,20 @@ class YourCourses extends React.Component {
   }
   render() {
     return (
-      <div className="dash-component" >
+      <div className="dash-component">
         <Container id="courses">
           <Row className="item-row">
             {this.props.courses.slice(0, 4).map((x) => {
               return (
                 <Col>
-                  <EventItem image={x.image} title={x.title} omittime />
+                  <EventItem
+                    image={x.image}
+                    title={x.title}
+                    onClick={() => {
+                      window.location.href = "/courses/mycourses/" + x.id;
+                    }}
+                    omittime
+                  />
                 </Col>
               );
             })}

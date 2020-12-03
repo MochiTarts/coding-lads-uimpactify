@@ -1,11 +1,4 @@
-#main-container {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-}
-
-.container {
+#content-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -16,9 +9,13 @@
   -webkit-box-align: baseline;
       -ms-flex-align: baseline;
           align-items: baseline;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
 }
 
-.container .col {
+#content-container .col-1,
+#content-container .col-2 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -31,9 +28,11 @@
   min-width: -webkit-fit-content;
   min-width: -moz-fit-content;
   min-width: fit-content;
+  min-height: 90vh;
 }
 
-.container .row {
+#content-container .row-1-1,
+#content-container .row-1-2 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -41,14 +40,19 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  background-color: whitesmoke;
+  border-radius: 20px;
+  border-style: double;
+  padding: 5px;
+  margin: 5px;
 }
 
-.container .btn {
+#content-container .btn {
   background-color: #a64dff;
   border-color: white;
 }
 
-.container .title-group {
+#content-container .title-group {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -61,13 +65,15 @@
           justify-content: space-between;
 }
 
-.container #upcoming-events {
+#content-container #upcoming-events {
   background-color: whitesmoke;
   -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
           box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
+  max-width: 100%;
+  margin: 10px;
 }
 
-.container .dash-component {
+#content-container .dash-component {
   max-width: -webkit-max-content;
   max-width: -moz-max-content;
   max-width: max-content;
@@ -76,9 +82,9 @@
   border-radius: 15px;
 }
 
-.container .dash-component #suggested-events,
-.container .dash-component #workshops,
-.container .dash-component #courses {
+#content-container .dash-component #suggested-events,
+#content-container .dash-component #workshops,
+#content-container .dash-component #courses {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -88,9 +94,9 @@
           flex-direction: column;
 }
 
-.container .dash-component #suggested-events .item-row,
-.container .dash-component #workshops .item-row,
-.container .dash-component #courses .item-row {
+#content-container .dash-component #suggested-events .item-row,
+#content-container .dash-component #workshops .item-row,
+#content-container .dash-component #courses .item-row {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -100,16 +106,16 @@
           flex-direction: row;
 }
 
-.container .dash-component #suggested-events .item-row .col,
-.container .dash-component #workshops .item-row .col,
-.container .dash-component #courses .item-row .col {
+#content-container .dash-component #suggested-events .item-row .col,
+#content-container .dash-component #workshops .item-row .col,
+#content-container .dash-component #courses .item-row .col {
   padding: 0%;
   margin: 3px;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item,
-.container .dash-component #workshops .item-row .col .event-item,
-.container .dash-component #courses .item-row .col .event-item {
+#content-container .dash-component #suggested-events .item-row .col .event-item,
+#content-container .dash-component #workshops .item-row .col .event-item,
+#content-container .dash-component #courses .item-row .col .event-item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -129,48 +135,62 @@
   margin: 0%;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item .event-image,
-.container .dash-component #workshops .item-row .col .event-item .event-image,
-.container .dash-component #courses .item-row .col .event-item .event-image {
+#content-container .dash-component #suggested-events .item-row .col .event-item .event-image,
+#content-container .dash-component #workshops .item-row .col .event-item .event-image,
+#content-container .dash-component #courses .item-row .col .event-item .event-image {
   height: 50px;
   width: 50px;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item .event-title,
-.container .dash-component #workshops .item-row .col .event-item .event-title,
-.container .dash-component #courses .item-row .col .event-item .event-title {
+#content-container .dash-component #suggested-events .item-row .col .event-item .event-title,
+#content-container .dash-component #workshops .item-row .col .event-item .event-title,
+#content-container .dash-component #courses .item-row .col .event-item .event-title {
   text-align: center;
   width: 80px;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item .event-time,
-.container .dash-component #workshops .item-row .col .event-item .event-time,
-.container .dash-component #courses .item-row .col .event-item .event-time {
+#content-container .dash-component #suggested-events .item-row .col .event-item .event-time,
+#content-container .dash-component #workshops .item-row .col .event-item .event-time,
+#content-container .dash-component #courses .item-row .col .event-item .event-time {
   text-align: center;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item.add-new-courses,
-.container .dash-component #workshops .item-row .col .event-item.add-new-courses,
-.container .dash-component #courses .item-row .col .event-item.add-new-courses {
+#content-container .dash-component #suggested-events .item-row .col .event-item:hover,
+#content-container .dash-component #workshops .item-row .col .event-item:hover,
+#content-container .dash-component #courses .item-row .col .event-item:hover {
+  cursor: pointer;
+  background-color: #d6cccb;
+}
+
+#content-container .dash-component #suggested-events .item-row .col .event-item.add-new-courses,
+#content-container .dash-component #workshops .item-row .col .event-item.add-new-courses,
+#content-container .dash-component #courses .item-row .col .event-item.add-new-courses {
   background: transparent;
   border-style: dashed;
 }
 
-.container .dash-component #suggested-events .item-row .col .event-item.add-new-courses .event-image,
-.container .dash-component #workshops .item-row .col .event-item.add-new-courses .event-image,
-.container .dash-component #courses .item-row .col .event-item.add-new-courses .event-image {
+#content-container .dash-component #suggested-events .item-row .col .event-item.add-new-courses .event-image,
+#content-container .dash-component #workshops .item-row .col .event-item.add-new-courses .event-image,
+#content-container .dash-component #courses .item-row .col .event-item.add-new-courses .event-image {
   height: 20px;
   width: 20px;
 }
 
-.container .dash-component.news {
+#content-container .dash-component #suggested-events .item-row .col .event-item:hover,
+#content-container .dash-component #workshops .item-row .col .event-item:hover,
+#content-container .dash-component #courses .item-row .col .event-item:hover {
+  cursor: pointer;
+  background-color: #d6cccb;
+}
+
+#content-container .dash-component.news {
   -webkit-box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
           box-shadow: 0px 5px 11px 1px rgba(0, 0, 0, 0.15);
   background-color: whitesmoke;
   border-radius: 15px;
 }
 
-.container .dash-component.news .container {
+#content-container .dash-component.news .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -180,7 +200,7 @@
           flex-direction: column;
 }
 
-.container .dash-component.news .container .news-display {
+#content-container .dash-component.news .container .news-display {
   height: 100px;
 }
 /*# sourceMappingURL=Dashboard.css.map */
