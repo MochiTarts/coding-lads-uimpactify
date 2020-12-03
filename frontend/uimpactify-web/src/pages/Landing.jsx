@@ -1,5 +1,6 @@
 import React from "react";
 import "../stylesheets/css/Landing.css";
+import landingImage from "../img/landing-img.jpg";
 
 class Landing extends React.Component {
   render() {
@@ -20,11 +21,7 @@ class Landing extends React.Component {
             GET STARTED
           </div>
         </div>
-        <img
-          className="about-image"
-          src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.clipartpanda.com%2Feducation-clip-art-yikL9r6iE.jpeg&f=1&nofb=1"
-          alt="land page pic"
-        />
+        <img className="about-image" src={landingImage} alt="land page pic" />
       </div>
     );
   }
