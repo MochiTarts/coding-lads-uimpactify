@@ -89,21 +89,21 @@ class CalendarPlanner extends React.Component {
             } else {
               let localDateList = event.start.toLocaleDateString().split("/");
               const startDate =
-                localDateList[2] +
-                "-" +
                 localDateList[0] +
                 "-" +
-                localDateList[1];
+                localDateList[1] +
+                "-" +
+                localDateList[2];
               const startTime = event.start.toLocaleTimeString("en-US", {
                 hour12: false,
               });
               localDateList = event.end.toLocaleDateString().split("/");
               const endDate =
-                localDateList[2] +
-                "-" +
                 localDateList[0] +
                 "-" +
-                localDateList[1];
+                localDateList[1] +
+                "-" +
+                localDateList[2];
               const endTime = event.end.toLocaleTimeString("en-US", {
                 hour12: false,
               });
@@ -123,15 +123,15 @@ class CalendarPlanner extends React.Component {
           onSelectSlot={(slot) => {
             const localDateList = slot.start.toLocaleDateString().split("/");
             const startDate =
-              localDateList[2] +
-              "-" +
               localDateList[0] +
               "-" +
-              localDateList[1];
+              localDateList[1] +
+              "-" +
+              localDateList[2];
             this.setState({ startDate: startDate, startTime: null });
           }}
         />
-        <div>
+        <div className="event-details-display">
           <Form>
             <h3>Event details</h3>
             <FormGroup className="calender-form-group">
