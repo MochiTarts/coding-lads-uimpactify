@@ -8,18 +8,28 @@ class YourCourses extends React.Component {
   }
   render() {
     return (
-      <div className="dash-component" >
+      <div className="dash-component">
         <Container id="courses">
           <Row className="item-row">
             {this.props.courses.slice(0, 4).map((x) => {
               return (
                 <Col>
-                  <EventItem image={x.image} title={x.title} omittime />
+                  <EventItem
+                    image={x.image}
+                    title={x.title}
+                    onClick={() => {
+                      window.location.href = "/courses/mycourses/" + x.id;
+                    }}
+                    omittime
+                  />
                 </Col>
               );
             })}
             <Col>
               <EventItem
+                onClick={() => {
+                  window.location.href = "/courses/mycourses";
+                }}
                 className="add-new-courses"
                 image="https://image.flaticon.com/icons/png/512/32/32339.png"
                 title="Add a New Course"

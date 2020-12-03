@@ -7,7 +7,10 @@ class EventItems extends React.Component {
   }
   render() {
     return (
-      <Container className={`${this.props.className} event-item`}>
+      <Container
+        className={`${this.props.className} event-item`}
+        onClick={this.props.onClick}
+      >
         <Row>
           <img
             class="event-image"
