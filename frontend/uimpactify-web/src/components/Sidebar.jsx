@@ -97,7 +97,7 @@ class Sidebar extends React.Component {
             {!userContext.userId && (
               <div>
                 <NavItem>
-                  <NavLink href="/aboutus">About Us</NavLink>
+                  <NavLink href="/">About Us</NavLink>
                 </NavItem>
                 ,
                 <NavItem>
