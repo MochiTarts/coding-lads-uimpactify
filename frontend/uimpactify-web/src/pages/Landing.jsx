@@ -9,7 +9,7 @@ class Landing extends React.Component {
         <div className="about-text">
           <h5>What is Uimpactify?</h5>
           <h2>
-            An online learning platform for scoial entrepreneurs and
+            An online learning platform for social entrepreneurs and
             intrapreneurs
           </h2>
           <div
