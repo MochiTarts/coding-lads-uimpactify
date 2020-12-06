@@ -70,7 +70,7 @@ class CreateOpportunity extends Component {
                             onClick={(event) => this.handleSave(event)}>
                         Save
                     </button>
-                    <button onClick={() => this.props.history.goBack()}
+                    <button onClick={() => this.props.history.push("/opportunity/myopportunities")}
                        className="btn btn-secondary opportunity-formButtons">
                         Cancel
                     </button>
