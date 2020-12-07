@@ -101,8 +101,14 @@ class Dashboard extends React.Component {
               <Button>See All</Button>
             </div>
             <div className="dash-component">
-              <SuggestedEvents networking={[{}, {}, {}]} />
-              <WorkShops workshops={[{}, {}, {}]} />
+              <SuggestedEvents networking={[
+                {image:"https://i1.wp.com/www.eatthis.com/wp-content/uploads/2019/03/old-fashioned-cocktail.jpg?resize=970%2C546&ssl=1", title:"Party1", time:"Tomorrow"},
+                {image:"https://i1.wp.com/www.eatthis.com/wp-content/uploads/2019/03/old-fashioned-cocktail.jpg?resize=970%2C546&ssl=1", title:"Party2", time:"Tomorrow"},
+                {image:"https://i1.wp.com/www.eatthis.com/wp-content/uploads/2019/03/old-fashioned-cocktail.jpg?resize=970%2C546&ssl=1", title:"Party3", time:"Tomorrow"}]} />
+              <WorkShops workshops={[
+               {image:"https://i1.wp.com/www.manae-business.fr/wp-content/uploads/2020/03/you-x-ventures-Oalh2MojUuk-unsplash.jpg?resize=2000%2C1200&ssl=1", title:"Workshop1", time:"Tomorrow"},
+               {image:"https://i1.wp.com/www.manae-business.fr/wp-content/uploads/2020/03/you-x-ventures-Oalh2MojUuk-unsplash.jpg?resize=2000%2C1200&ssl=1", title:"Workshop2", time:"Tomorrow"},
+               {image:"https://i1.wp.com/www.manae-business.fr/wp-content/uploads/2020/03/you-x-ventures-Oalh2MojUuk-unsplash.jpg?resize=2000%2C1200&ssl=1", title:"Workshop3", time:"Tomorrow"}]} />
             </div>
           </Row>
           <Row className="row-1-2">
